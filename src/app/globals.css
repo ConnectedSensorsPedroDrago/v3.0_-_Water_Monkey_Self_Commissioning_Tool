@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: var(--font-firasans);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@layer components {
+  .container-pages {
+    @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 pb-8;
+  }
+  .container-pages-scroll {
+    @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 overflow-hidden;
+  }
+  .title {
+    @apply w-full flex justify-start items-center font-bold text-4xl md:text-6xl mt-4 mb-4 text-purple;
+  }
+  .input-base {
+    @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-14 border-[0.5px] border-grey p-2 lg:text-xl font-light text-grey mb-2  text-sm md:text-lg rounded;
+  }
+  .input-small {
+    @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-10 border-[0.5px] border-grey p-2 lg:text-base font-light text-grey mb-2  text-sm md:text-lg rounded;
+  }
+  .button-big {
+    @apply w-[240px] md:w-[350px] lg:w-[460px] bg-purple rounded md:h-12 text-white font-light md:text-lg hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
+  }
+  .button-small {
+    @apply w-[120px] md:w-[140px] lg:w-[200px] bg-purple rounded md:h-8 text-white font-light hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
+  }
+  .button-small-delete {
+    @apply w-[120px] md:w-[140px] lg:w-[200px] bg-white rounded md:h-8 text-purple border-purple font-light hover:border-white border-[0.5px] hover:bg-purple hover:text-white hover:font-bold h-8 text-sm cursor-pointer;
+  }
+  .auth-text {
+    @apply text-dark-grey lg:text-base text-sm text-center;
+  }
+  .logo-big {
+    @apply scale-75 lg:scale-100;
+  }
+  .font-outline-2 {
+    -webkit-text-stroke: 0.45px white;
+  }
+}

@@ -1,0 +1,12 @@
+<svg width="107" height="81" viewBox="0 0 107 81" fill="none" xmlns="http://www.w3.org/2000/svg" id="svg8327" preserveAspectRatio="xMidYMid">
+<g clip-path="url(#clip0_321_6)" id="g7701">
+<path d="M 26.8299 37 C 26.2999 35.36 35.1699 9.99996 58.8299 2.21996 C 84.8299 -6.35004 105.58 12.22 105.58 12.22 C 112.54 33.34 88.5399 79.73 82.9999 80.11 C 76.1899 80.58 33.7999 58.64 26.8299 37 Z" fill="#898989" id="path8098"></path>
+<path d="M 15.6801 64.18 C 14.5301 64.17 0.160119 53 0.000119462 36.07 C -0.169881 17.44 15.8901 8 15.8901 8 C 30.7801 8 55.5101 33.45 54.6201 37.09 C 53.5301 41.64 30.8901 64.3 15.6801 64.18 Z" fill="#8E8E8E" id="path1692"></path>
+<path d="M 54.6199 37.09 C 55.1399 35 46.8499 25.33 36.8999 17.73 C 29.4999 26.76 26.5199 36 26.8299 37 C 28.6799 42.73 33.0299 48.48 38.5499 53.84 C 47.1499 47.27 53.9999 39.53 54.6199 37.09 Z" fill="#565656" id="path9724"></path>
+<animateTransform attributeName="transform" attributeType="auto" type="scale" values="1 1;0.9 0.9;1 1" calcMode="spline" keyTimes="0;0.5000000000000001;1" keySplines=".25 0 .75 1;.25 0 .75 1" dur="2s" begin="0s" repeatCount="indefinite" additive="sum" accumulate="none" fill="freeze" id="animateTransform2441"></animateTransform></g>
+<defs id="defs9608">
+<clipPath id="clip0_321_6">
+<rect width="106.85" height="80.11" fill="white" id="rect4864"></rect>
+</clipPath>
+</defs>
+</svg>
