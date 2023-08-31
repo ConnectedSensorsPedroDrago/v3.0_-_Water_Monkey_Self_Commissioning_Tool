@@ -1,5 +1,5 @@
 const OrganizationsTable = ({organizations, action, userId}) => {
-    console.log(organizations)
+    
   return (
     <div className="mt-4">
         {

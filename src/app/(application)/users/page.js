@@ -22,7 +22,7 @@ const Users = () => {
   const [ address, setAddress ] = useState()
   const [ description, setDescription ] = useState()
   const [ userSelected, setUserSelected ] = useState()
-  const [ userToAdd, setUserToAdd ] = useState()
+  const [ orgToAdd, setOrgToAdd ] = useState()
 
   return (
     <>
@@ -98,11 +98,11 @@ const Users = () => {
                   <div className="w-full mt-8 overflow-scroll">
                     <h2 className="font-semibold text-3xl">Organizations</h2>
                     <DropDownMenuTextBig 
-                      elements={user.users} 
-                      setter={setUserToAdd} 
+                      elements={user.organizations} 
+                      setter={setOrgToAdd} 
                       placeholder={`Add ${userSelected.username} to an Organization`} 
                       buttonText={"Add"} 
-                      buttonAction={()=> console.log(userToAdd)}
+                      buttonAction={()=> console.log(orgToAdd)}
                     />
                     <OrganizationsTable organizations={user.organizations} action={(i)=> console.log("Removed organization: " + i)} userId={userSelected.id}/>
                   </div>
