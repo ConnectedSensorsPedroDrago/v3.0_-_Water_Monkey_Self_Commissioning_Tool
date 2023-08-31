@@ -13,6 +13,7 @@ const nextConfig = {
         ".env.development*": "env",
         ".env.production*": "env",
         ".env.local*": "env",
+        ".env.*": "properties",
     },
 }
 

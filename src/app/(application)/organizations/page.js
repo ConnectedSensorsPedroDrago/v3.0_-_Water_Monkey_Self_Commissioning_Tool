@@ -11,6 +11,8 @@ import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTi
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import DropDownMenuTextBig from "@/src/components/DropDownMenuTextBig/page"
+import UserTable from "@/src/components/UserTable/page"
+import MessageScreen from "@/src/components/MessageScreen/page"
 
 const Organization = () => {
 
@@ -34,7 +36,7 @@ const Organization = () => {
               alt="Add Organization Button"
               className="scale-[25%] -ml-6"
             />
-            <p className="font-semibold text-sm hover:underline -ml-6">Add new organization</p>
+            <p className="font-semibold text-sm hover:underline -ml-6">Add new Organization</p>
           </div>
           <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
             <SideMenu 
@@ -45,7 +47,7 @@ const Organization = () => {
             <DropDownMenuObjects 
               elements={user.organizations} 
               setter={setOrganization} 
-              name={"Organization"}
+              name={"Choose an Organization"}
             />
             <div className="md:pl-8 w-full h-5/6 md:overflow-scroll mt-4 md:mt-0">
               {
@@ -87,31 +89,11 @@ const Organization = () => {
                       buttonText={"Add"} 
                       buttonAction={()=> console.log(userToAdd)}
                     />
-                    <div className="w-full h-10 border-b-[0.5px] border-dark-grey mt-4 flex flex-row justify-between items-center pl-1 pr-1">
-                      <p className="font-light md:w-24 text-start">Username</p>
-                      {/* <p className="hidden lg:flex font-light w-16 text-start">Name</p> */}
-                      {/* <p className="hidden lg:flex font-light w-16 text-start">Surname</p> */}
-                      <p className="hidden lg:flex font-light md:w-28 text-start">Email</p>
-                      <p className="md:flex font-light md:w-24 text-start"></p>
-                    </div>
-                    {
-                      organization.users &&
-                      organization.users[0].map(user =>
-                        <div className="w-full border-b-[0.5px] border-dark-grey h-10 flex flex-row justify-between items-center hover:bg-light-purple cursor-pointer hover:font-semibold pl-1 pr-1">
-                          <p className="md:w-24 text-start text-sm text-blue-hard">{user.username ? user.username : '-'}</p>
-                          {/* <p className="hidden lg:flex w-16 text-start text-sm text-blue-hard">{user.firstName ? user.firstName : '-'}</p> */}
-                          {/* <p className="hidden lg:flex w-16 text-start text-sm text-blue-hard">{user.lastName ? user.lastName : '-'}</p> */}
-                          <p className="hidden lg:flex md:w-28 text-start text-sm text-blue-hard">{user.email ? user.email : '-'}</p>
-                          <p className="md:w-24 text-start text-sm text-blue-hard font-bold underline cursor-pointer hover:text-light-purple">Edit</p>
-                        </div>
-                      )
-                    }
+                    <UserTable users={organization.users} action={(i)=> console.log(i)}/>
                   </div>
                 </div>
                 :
-                <div className="w-full h-full md:flex items-start justify-center text-4xl font-semibold text-grey hidden">
-                  <p>Choose an organization</p>
-                </div>
+                <MessageScreen text={"Choose an Organization"}/> 
               }
             </div>
           </div>

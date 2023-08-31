@@ -55,7 +55,11 @@ export const completeUser = async(setUser, session, setLoader) => {
                 let data1 = await response1.json()
                 if(data1.results){
                     users.push(data1.results)
-                    data1.results.forEach(user => usersMain.push(user))
+                    data1.results.forEach(user => {
+                        if(!usersMain.some(({id}) => id === user.id)){
+                            usersMain.push(user)
+                        }
+                    })
                     userInfo.organizations[i].users = users
                 }
             }catch(e){

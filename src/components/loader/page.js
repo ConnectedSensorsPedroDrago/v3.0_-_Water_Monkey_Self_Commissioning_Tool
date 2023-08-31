@@ -7,7 +7,8 @@ const Loader = () => {
         <Image
             src={LoaderBig}
             alt="Loader small"
-            className="scale-[250%] "
+            className="scale-[250%]"
+            priority={true}
         />
     </div>
   )
