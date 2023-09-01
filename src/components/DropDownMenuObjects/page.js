@@ -1,16 +1,16 @@
-const DropDownMenuObjects = ({ elements, setter, name }) => {
+const DropDownMenuObjects = ({ elements, setter, action, name }) => {
   return (
     <div className="flex flex-col justify-center md:items-start md:hidden">
         <p className="font-semibold text-sm mb-2">{name}</p>
         <select 
           className="border-grey border-[0.5px] p-2 rounded w-full text-dark-grey"
-          onChange={(e)=> setter(JSON.parse(e.target.value))}
+          onChange={(e)=> action(e.target.value)}
         >
         <option>--</option>
         { elements &&
             elements.map(element => 
             <option
-                value={JSON.stringify(element)}
+                value={element.id}
                 key={element.id}
             >
                 {element.name ? element.name : element.username ? element.username : "Undefined"}

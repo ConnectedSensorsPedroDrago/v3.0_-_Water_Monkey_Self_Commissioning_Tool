@@ -31,12 +31,11 @@ const Users = () => {
           <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
             <SideMenu 
               elements={user.users} 
-              // setter={setUserSelected} 
               name={"User"}
             />
             <DropDownMenuObjects 
-              elements={user.users} 
-              // setter={setUserSelected}
+              elements={user.users}
+              action={(id)=> router.push(`/users/${id}`)}
               name={"Choose a User"}
             />
             <div className="md:pl-8 w-full h-5/6 md:overflow-scroll mt-4 md:mt-0">

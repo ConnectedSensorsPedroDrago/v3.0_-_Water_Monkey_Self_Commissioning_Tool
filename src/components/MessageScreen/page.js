@@ -6,7 +6,7 @@ import OrgNotFound from '@/public/orgNotFound.svg'
 
 const MessageScreen = ({text}) => {
   return (
-    <div className="w-full h-full md:flex flex-col items-center justify-start text-4xl font-semibold text-grey hidden">
+    <div className={`${(text === "Choose a User" || text === "Choose an Organization") ? "hidden md:flex" : "flex"} w-full h-full flex flex-col items-center justify-center md:justify-start text-4xl font-semibold text-grey`}>
         <Image
           width={200}
           height={200}
@@ -14,7 +14,7 @@ const MessageScreen = ({text}) => {
           src={text === "Choose a User" ? User : text === "Choose an Organization" ? Organization : text === "User not found" ? UserNotFound : OrgNotFound}
           className="scale-75"
         />
-        <p>{text}</p>
+        <p className="text-center">{text}</p>
     </div>
   )
 }
