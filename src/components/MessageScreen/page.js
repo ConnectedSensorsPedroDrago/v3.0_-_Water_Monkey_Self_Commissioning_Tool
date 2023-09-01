@@ -2,6 +2,7 @@ import Image from "next/image"
 import User from "@/public/user.svg"
 import Organization from '@/public/organization.svg'
 import UserNotFound from "@/public/userNotFound.svg"
+import OrgNotFound from '@/public/orgNotFound.svg'
 
 const MessageScreen = ({text}) => {
   return (
@@ -9,8 +10,8 @@ const MessageScreen = ({text}) => {
         <Image
           width={200}
           height={200}
-          alt={`${text === "Choose a User" ? "User" : "Organization"} icon`}
-          src={text === "Choose a User" ? User : text === "Choose an Organization" ? Organization : UserNotFound}
+          alt={`${text === "Choose a User" ? "User" : "Organization"}`}
+          src={text === "Choose a User" ? User : text === "Choose an Organization" ? Organization : text === "User not found" ? UserNotFound : OrgNotFound}
           className="scale-75"
         />
         <p>{text}</p>
