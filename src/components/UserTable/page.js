@@ -15,6 +15,7 @@ const UserTable = ({users, action}) => {
                 <div   
                     className="w-full border-b-[0.5px] border-dark-grey h-10 flex flex-row justify-between items-center hover:bg-light-purple cursor-pointer hover:font-semibold pl-1 pr-1"
                     key={user.id}
+                    onClick={()=> action(user.id)}
                 >
                     <p className="md:w-24 text-start text-sm text-blue-hard">{user.username ? user.username : '-'}</p>
                     {/* <p className="hidden lg:flex w-16 text-start text-sm text-blue-hard">{user.firstName ? user.firstName : '-'}</p> */}
@@ -22,7 +23,7 @@ const UserTable = ({users, action}) => {
                     <p className="hidden lg:flex md:w-28 text-start text-sm text-blue-hard">{user.email ? user.email : '-'}</p>
                     <button 
                         className="md:w-24 text-start text-sm text-blue-hard font-bold underline cursor-pointer hover:text-light-purple"
-                        onClick={()=> action(user)}
+                        onClick={()=> action(user.id)}
                     >
                         Edit
                     </button>

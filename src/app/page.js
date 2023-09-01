@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation'
 export default function Header() {
 
   const router = useRouter()
-
-  router.push("/home")
+  setTimeout(()=>{
+    router.push("/home")
+  },100)
   
   return (
     <>

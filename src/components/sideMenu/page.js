@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import AddButton from '@/public/addDevice.svg'
+import AddNewSmall from '../AddNewSmall/page'
+import Link from 'next/link'
 
 import React from 'react'
 
@@ -11,22 +11,19 @@ const SideMenu = ({elements, setter, name}) => {
                 elements.map(element => 
                     <div 
                         className="w-full hover:bg-light-purple active:bg-light-purple mb-2 rounded flex justify-start items-center p-2 cursor-pointer"
-                        onClick={()=> setter(element)}
+                        // onClick={()=> setter(element)}
                         key={element.id}
                     >
-                        <p className="font-semibold md:text-base lg:text-lg">{element.name ? element.name : element.username ? element.username : "Undefined" }</p>
+                        <Link
+                            href={name === "User" ? `/users/${element.id}` : `/organizations/${element.id}`}
+                        >
+                            <p className="font-semibold md:text-base lg:text-lg">{element.name ? element.name : element.username ? element.username : "Undefined" }</p>
+                        </Link>
                     </div>
                 )
             }
         </div>
-        <div className="absolute bottom-4 flex flex-row justify-center items-center hover:scale-105 duration-500 cursor-pointer">
-            <Image
-                src={AddButton}
-                alt="Add Button"
-                className="scale-50"
-            />
-            <p className="font-semibold text-sm hover:underline -ml-3">Add new {name}</p>
-        </div>
+        <AddNewSmall name={name} action={()=>console.log(`Add new ${name}`)}/>
     </div>
 
   )

@@ -14,7 +14,7 @@ import DropDownMenuTextBig from "@/src/components/DropDownMenuTextBig/page"
 import UserTable from "@/src/components/UserTable/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 
-const Organization = () => {
+const Organizations = () => {
 
   const { user } = useContext(userContext)
   const [ name, setName ] = useState()
@@ -50,51 +50,7 @@ const Organization = () => {
               name={"Choose an Organization"}
             />
             <div className="md:pl-8 w-full h-5/6 md:overflow-scroll mt-4 md:mt-0">
-              {
-                organization ?
-                <div className="w-full">
-                  <Input50PercentWithTitle 
-                    name={"Name"} 
-                    setter={setName} 
-                    placeholder={organization.name}
-                  />
-                  <Input50PercentWithTitle 
-                    name={"Address"} 
-                    setter={setAddress} 
-                    placeholder={organization.properties?.address ? organization.properties.address : "Add address"}
-                  />
-                  <TextArea50PercentWithTitle 
-                    name={"Description"} 
-                    setter={setDescription} 
-                    placeholder={organization.description  ? organization.description : "Add description"}
-                  />
-                  <div className="w-full h-full flex flex-row items-center justify-between">
-                    <ButtonSmall 
-                      text={"Update"} 
-                      type={"purple"} 
-                      action={()=> console.log("Name: " + name + " / Address: " + address + " / Description: " + description)}
-                    />
-                    <ButtonSmall 
-                      text={"Delete Organization"} 
-                      type={"white"} 
-                      action={()=> console.log(`${organization.name} Deleted`)}
-                    />
-                  </div>
-                  <div className="w-full mt-8 overflow-scroll">
-                    <h2 className="font-semibold text-3xl">Users</h2>
-                    <DropDownMenuTextBig 
-                      elements={user.users} 
-                      setter={setUserToAdd} 
-                      placeholder={`Add new user to ${organization.name}`} 
-                      buttonText={"Add"} 
-                      buttonAction={()=> console.log(userToAdd)}
-                    />
-                    <UserTable users={organization.users} action={(i)=> console.log(i)}/>
-                  </div>
-                </div>
-                :
-                <MessageScreen text={"Choose an Organization"}/> 
-              }
+                <MessageScreen text={"Choose an Organization"}/>
             </div>
           </div>
         </div>
@@ -103,4 +59,4 @@ const Organization = () => {
   )
 }
 
-export default Organization
+export default Organizations
