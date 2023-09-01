@@ -8,10 +8,13 @@ import Loader from "@/src/components/loader/page"
 import SideMenu from "@/src/components/sideMenu/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
+import { useRouter } from "next/navigation"
 
 const Organizations = () => {
 
   const { user } = useContext(userContext)
+
+  const router = useRouter()
 
   return (
     <>

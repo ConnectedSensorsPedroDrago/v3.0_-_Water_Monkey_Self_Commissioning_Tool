@@ -77,59 +77,66 @@ const User = ({ params }) => {
                     <div className="w-full">
                         <div className="flex flex-row flex-wrap justify-between">
                             <Input50PercentWithTitle 
-                            name={"Name"} 
-                            setter={setName} 
-                            placeholder={userSelected.firstName ? userSelected.firstName : "Add First Name"}
+                              name={"Username"} 
+                              setter={setUsername} 
+                              placeholder={userSelected.username ? userSelected.username : "Add Username"}
                             />
                             <Input50PercentWithTitle 
-                            name={"Surname"} 
-                            setter={setSurname} 
-                            placeholder={userSelected.lastName ? userSelected.lastName : "Add Last Name"}
+                              name={"Email"} 
+                              setter={setEmail} 
+                              placeholder={userSelected.email ? userSelected.email : "Add Email"}
                             />
                             <Input50PercentWithTitle 
-                            name={"Username"} 
-                            setter={setUsername} 
-                            placeholder={userSelected.username ? userSelected.username : "Add Username"}
+                              name={"Name"} 
+                              setter={setName} 
+                              placeholder={userSelected.firstName ? userSelected.firstName : "Add First Name"}
                             />
                             <Input50PercentWithTitle 
-                            name={"Email"} 
-                            setter={setEmail} 
-                            placeholder={userSelected.email ? userSelected.email : "Add Email"}
+                              name={"Surname"} 
+                              setter={setSurname} 
+                              placeholder={userSelected.lastName ? userSelected.lastName : "Add Last Name"}
                             />
                             <Input50PercentWithTitle 
-                            name={"Password"} 
-                            setter={setPassword} 
-                            placeholder={"Add a Password"}
-                            type={"password"}
+                              name={"Password"} 
+                              setter={setPassword} 
+                              placeholder={"Add a Password"}
+                              type={"password"}
                             />
                             <Input50PercentWithTitle 
-                            name={"Repeat Password"} 
-                            setter={setRepeatPassword} 
-                            placeholder={"Repeat Password"}
-                            type={"password"}
+                              name={"Repeat Password"} 
+                              setter={setRepeatPassword} 
+                              placeholder={"Repeat Password"}
+                              type={"password"}
                             />
                         </div>
                         <div className="w-full h-full flex flex-row items-center justify-between">
                             <ButtonSmall 
-                            text={"Update"} 
-                            type={"purple"} 
-                            action={()=> console.log("Update")}
+                              text={"Update"} 
+                              type={"purple"} 
+                              action={()=> console.log("Update")}
                             />
                         </div>
                         <div className="w-full mt-8 overflow-scroll">
                             <h2 className="font-semibold text-3xl">Organizations</h2>
                             <DropDownMenuTextBig 
-                            elements={user.organizations} 
-                            setter={setOrgToAdd} 
-                            placeholder={`Add ${userSelected.username} to an Organization`} 
-                            buttonText={"Add"} 
-                            buttonAction={()=> console.log(orgToAdd)}
+                              elements={user.organizations} 
+                              setter={setOrgToAdd} 
+                              placeholder={`Add ${userSelected.username} to an Organization`} 
+                              buttonText={"Add"} 
+                              buttonAction={()=> console.log(orgToAdd)}
                             />
-                            <OrganizationsTable organizations={user.organizations} remove={()=>"Organization Removed"} action={(id)=> router.push(`/organizations/${id}`)} userId={userSelected.id}/>
+                            <OrganizationsTable 
+                              organizations={user.organizations} 
+                              remove={()=>"Organization Removed"} 
+                              action={(id)=> router.push(`/organizations/${id}`)} 
+                              userId={userSelected.id}
+                            />
                         </div>
                     </div>
                 :
-                    <MessageScreen text={"Choose a User"}/> 
+                    <MessageScreen 
+                      text={"Choose a User"}
+                    /> 
               }
             </div>
           </div>
