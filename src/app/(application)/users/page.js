@@ -23,7 +23,10 @@ const Users = () => {
         :
         <div className="container-pages md:container-pages-scroll">
           <h1 className='title'>Users</h1>
-          <div className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full">
+          <div 
+            className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full"
+            onClick={()=> router.push("/users/new-user")}
+          >
             <Image
               src={AddUser}
               alt="Add Organization Button"

@@ -19,7 +19,8 @@ export const completeUser = async(setUser, session, setLoader) => {
             photo: data.mugshotUrl ? data.mugshotUrl : undefined,
             fistName: data.firstName,
             lastName: data.lastName,
-            organizations: data.organizations
+            organizations: data.organizations,
+            role: data.organizations[0].role.label
         }
     } catch(e){
         console.log("There was an error requesting the user: " + e)

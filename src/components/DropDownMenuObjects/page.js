@@ -6,7 +6,7 @@ const DropDownMenuObjects = ({ elements, setter, action, name }) => {
           className="border-grey border-[0.5px] p-2 rounded w-full text-dark-grey"
           onChange={(e)=> action(e.target.value)}
         >
-        <option>--</option>
+        <option></option>
         { elements &&
             elements.map(element => 
             <option

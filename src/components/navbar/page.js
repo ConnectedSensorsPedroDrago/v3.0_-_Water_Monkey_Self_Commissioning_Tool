@@ -20,6 +20,8 @@ const NavBar = ({session}) => {
     completeUser(setUser, session, setLoader, user, setPortfolio)
   }, [])
 
+  console.log(user)
+
   return (
     <>
       { user &&
