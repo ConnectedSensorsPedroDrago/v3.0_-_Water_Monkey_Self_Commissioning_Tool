@@ -38,6 +38,7 @@ const Users = () => {
             <SideMenu 
               elements={user.users} 
               name={"User"}
+              buttonAction={()=> router.push('/users/new-user')}
             />
             <DropDownMenuObjects 
               elements={user.users}

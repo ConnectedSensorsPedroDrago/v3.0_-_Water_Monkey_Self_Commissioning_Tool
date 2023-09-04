@@ -12,6 +12,7 @@ export const completeUser = async(setUser, session, setLoader) => {
             },
         })
         let data = await response.json()
+        console.log(data)
         userInfo = {
             name: session.user.name,
             email: session.user.email,
@@ -20,7 +21,7 @@ export const completeUser = async(setUser, session, setLoader) => {
             fistName: data.firstName,
             lastName: data.lastName,
             organizations: data.organizations,
-            role: data.organizations[0].role.label
+            role: data.organizations[0]
         }
     } catch(e){
         console.log("There was an error requesting the user: " + e)

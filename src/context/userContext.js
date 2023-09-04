@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState({})
     const [loader, setLoader] = useState(true)
     const [portfolio, setPortfolio] = useState([])
+    const [reloadUser, setReloadUser] = useState(true)
 
     return(
         <userContext.Provider
@@ -18,7 +19,9 @@ export const UserProvider = ({ children }) => {
                 loader,
                 setLoader,
                 portfolio,
-                setPortfolio
+                setPortfolio,
+                reloadUser,
+                setReloadUser
             }}
         >
             { children }

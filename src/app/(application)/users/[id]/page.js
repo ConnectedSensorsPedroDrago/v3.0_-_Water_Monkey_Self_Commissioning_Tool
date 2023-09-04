@@ -61,6 +61,7 @@ const User = ({ params }) => {
               elements={user.users} 
               // setter={setUserSelected} 
               name={"User"}
+              buttonAction={()=> router.push('/users/new-user')}
             />
             <DropDownMenuObjects 
               elements={user.users} 
@@ -113,6 +114,10 @@ const User = ({ params }) => {
                             <ButtonSmall 
                               text={"Update"} 
                               type={"purple"} 
+                              action={()=> console.log("Update")}
+                            />
+                            <ButtonSmall 
+                              text={"Delete User"}  
                               action={()=> console.log("Update")}
                             />
                         </div>

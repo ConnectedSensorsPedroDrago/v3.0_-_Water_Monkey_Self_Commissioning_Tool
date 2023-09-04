@@ -58,6 +58,7 @@ const Organization = ({ params }) => {
             <SideMenu 
               elements={user.organizations} 
               name={"Organization"}
+              buttonAction={()=> router.push('/organizations/new-organization')}
             />
             <DropDownMenuObjects 
               elements={user.organizations} 
