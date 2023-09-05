@@ -2,16 +2,13 @@
 
 import { useContext, useState } from "react"
 import { userContext } from "@/src/context/userContext"
+import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
 import SideMenu from "@/src/components/sideMenu/page"
-import { useRouter } from "next/navigation"
 import Input50PercentWithTitle from "@/src/components/Input50PercentWithTitle/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import CheckBox from "@/src/components/CheckBox/page"
 import createUserWithOrgs from "@/src/functions/createUserWithOrgs"
-import { getServerSession } from 'next-auth'
-import { options } from "@/src/app/api/auth/[...nextauth]/options"
-
 
 const NewUser = () => {
     
@@ -66,8 +63,7 @@ const NewUser = () => {
       {!user.organizations?
         <Loader />
         :
-        <div className="container-pages md:container-pages-scroll">
-            
+        <div className="container-pages md:container-pages-scroll">         
           <h1 className='title'>Add new User</h1>
           <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
             <SideMenu 

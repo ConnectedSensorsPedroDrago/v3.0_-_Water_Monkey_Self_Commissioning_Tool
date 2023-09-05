@@ -2,6 +2,7 @@
 
 import { useContext, useState, useEffect } from "react"
 import { userContext } from "@/src/context/userContext"
+import { useRouter } from "next/navigation"
 import AddOrganization from '@/public/addDevice.svg'
 import Image from "next/image"
 import Loader from "@/src/components/loader/page"
@@ -13,7 +14,6 @@ import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import DropDownMenuTextBig from "@/src/components/DropDownMenuTextBig/page"
 import UserTable from "@/src/components/UserTable/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
-import { useRouter } from "next/navigation"
 
 const Organization = ({ params }) => {
 

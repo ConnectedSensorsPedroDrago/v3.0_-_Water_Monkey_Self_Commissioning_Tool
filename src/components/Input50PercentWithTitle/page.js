@@ -32,27 +32,3 @@ const Input50PercentWithTitle = ({name, setter, placeholder, type, disabled}) =>
 }
 
 export default Input50PercentWithTitle
-
-
-
-
-// (
-//   (
-//       !(placeholder.startsWith("Add")) 
-//       && 
-//       !(placeholder.startsWith("Repeat"))
-//   ) 
-//     || 
-//   (
-//     (
-      // (name === "Name") 
-      // || 
-      // (name === "Surname") 
-      // || 
-      // (disabled === true)
-//     )
-//   )
-// )
-
-
-// (((!(placeholder.startsWith("Add")) && !(placeholder.startsWith("Repeat")) && !(type === "password"))) || (((name === "Name") || (name === "Surname") || (disabled === true))))
