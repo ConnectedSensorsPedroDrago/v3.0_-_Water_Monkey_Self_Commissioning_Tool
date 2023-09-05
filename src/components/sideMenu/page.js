@@ -13,11 +13,8 @@ const SideMenu = ({elements, setter, name, buttonAction}) => {
                         href={name === "User" ? `/users/${element.id}` : `/organizations/${element.id}`}
                         className="w-full hover:bg-light-purple active:bg-light-purple mb-2 rounded flex justify-start items-center p-2 cursor-pointer"
                         key={element.id}
-                    >
-                        <div>
-                            
-                            <p className="font-semibold md:text-base lg:text-lg">{element.name ? element.name : element.username ? element.username : "Undefined" }</p>
-                        </div>
+                    >                       
+                        <p className="font-semibold md:text-base lg:text-lg">{element.name ? element.name : element.username ? element.username : "Undefined" }</p>
                     </Link>
                 )
             }

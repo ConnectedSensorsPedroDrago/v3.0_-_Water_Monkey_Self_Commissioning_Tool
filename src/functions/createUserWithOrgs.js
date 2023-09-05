@@ -19,7 +19,11 @@ export default async function createUserWithOrgs(username, email, name, lastName
         let data = await response.json()
         if(data.username === username){
             let reqBody = []
-            organizations.length > 1 && organizations.forEach(org => reqBody.push({label: org, role: role}))
+            if(organizations.length > 1){
+                organizations.forEach(org => reqBody.push({label: org, role: role}))
+            } else {
+                reqBody.push({label: organizations[0], role: role})
+            }
             console.log(reqBody)
             try{
                 let response = await fetch (`https://industrial.api.ubidots.com/api/v2.0/users/~${username}/_/assign_organizations/`, {

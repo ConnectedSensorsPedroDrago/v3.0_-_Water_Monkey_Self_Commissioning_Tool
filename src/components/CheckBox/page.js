@@ -16,11 +16,10 @@ const CheckBox = ({element, setter, set}) => {
             setter(set)
             setChecked(false)
         }
-        console.log(set)
     }
 
   return (
-    <div className="flex flex-row items-center justify-start font-light hover:font-semibold hover:text-blue-hard" >
+    <div className="flex flex-row items-center justify-start font-light hover:font-semibold hover:text-blue-hard text-sm lg:text-base" >
         <input className="cursor-pointer" type="checkbox" id={element.label} value={element.label} name={element.label} onChange={(e)=> handleChange(e)} />
         <label className="ml-4">{element.name}</label>
     </div>
