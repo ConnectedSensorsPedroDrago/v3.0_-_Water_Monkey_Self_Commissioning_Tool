@@ -140,7 +140,7 @@ const NewUser = () => {
                 </div>
                 {
                     role === "viewer" &&
-                    <div className="flex flex-col justify-start items-start w-full md:w-[49%] mb-8 md:mt-2">
+                    <div className="flex flex-col justify-start items-start w-full md:w-[49%] md:mb-8 md:mt-2">
                         <p className="font-semibold text-sm">Choose Organizations (for "Viewer" only)</p>
                         {
                             user.organizations.map(org =>
@@ -149,7 +149,7 @@ const NewUser = () => {
                         }
                     </div>
                 }
-                <div className="flex flex-row w-full justify-center md:justify-end items-center">
+                <div className="flex flex-row w-full justify-center md:justify-end items-center mt-4 md:mt-0">
                     <ButtonSmall 
                         type={"purple"} 
                         text={"Create User"}
@@ -157,8 +157,8 @@ const NewUser = () => {
                     />
                 </div>
                 <div className="flex flex-row w-full justify-center items-center">
-                    {error && <p className="text-red font-semibold md:text-lg mt-4">{error}</p>}
-                    {success && <p className="text-green font-semibold md:text-lg mt-4">{success}</p>}
+                    {error && <p className="text-red font-semibold text-center md:text-lg mt-4">{error}</p>}
+                    {success && <p className="text-green font-semibold text-center md:text-lg mt-4">{success}</p>}
                 </div>
             </div>
           </div>

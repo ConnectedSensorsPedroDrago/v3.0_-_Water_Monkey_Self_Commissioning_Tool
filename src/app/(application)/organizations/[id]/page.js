@@ -99,7 +99,7 @@ const Organization = ({ params }) => {
                             action={()=> console.log(`${organization.name} Deleted`)}
                             />
                         </div>
-                        <div className="w-full mt-8 overflow-scroll">
+                        <div className="w-full mt-8 overflow-scroll mb-8">
                             <h2 className="font-semibold text-3xl">Users</h2>
                             <DropDownMenuTextBig 
                             elements={user.users} 

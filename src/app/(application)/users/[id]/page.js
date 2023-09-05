@@ -14,23 +14,28 @@ import MessageScreen from "@/src/components/MessageScreen/page"
 import OrganizationsTable from "@/src/components/OrganizationsTable/page"
 import { useRouter } from "next/navigation"
 import deleteUser from "@/src/functions/deleteUser"
+import { completeUser } from "@/src/functions/completeUser"
+import updateUser from "@/src/functions/updateUser"
+import Modal from "@/src/components/modal/page"
 
 const User = ({ params }) => {
 
+  
   const { user, setReloadUser, reloadUser } = useContext(userContext)
   const [ name, setName ] = useState()
   const [ surname, setSurname ] = useState()
   const [ username, setUsername ] = useState()
   const [ email, setEmail ] = useState()
-  const [ password, setPassword ] = useState()
-  const [ repeatPassword, setRepeatPassword ] = useState()
   const [ userSelected, setUserSelected ] = useState()
   const [ orgToAdd, setOrgToAdd ] = useState()
   const [ load, setLoad ] = useState(false)
   const [ message, setMessage ] = useState('')
-
+  const [ error, setError ] = useState('')
+  const [ success, setSuccess ] = useState('') 
+  const [modal, setModal] = useState(false)
+  
   const router = useRouter()
-
+  
   useEffect(()=>{
     if(user.users && user.users.some(({id}) => id === params.id)){
         user.users.forEach(userToInspect => {
@@ -45,41 +50,70 @@ const User = ({ params }) => {
   }, [user.users])
 
   const handleDelete = async() => {
+    setModal(false)
+    setError('')
+    setSuccess('')
     await deleteUser(params.id, setLoad, setMessage, setReloadUser, reloadUser)
     .then(data => {
       if(data.message === "user deleted"){
-        router.push('/users')
+        setSuccess('User successfully deleted, redirecting you to Users...')
+        setReloadUser(!reloadUser)
+        setTimeout(()=>{
+          router.push('/users')
+        }, 500)
+      } else {
+        setError('There was an error trying to delete the user, please try again or contact support')
+      }
+    })
+  }
+
+  const handleUpdate = async() => {
+    setError('')
+    setSuccess('')
+    console.log(name, surname)
+    await updateUser(params.id, name, surname, setLoad)
+    .then(data => {
+      if(data.data.firstName === name && data.data.lastName === surname){
+        setSuccess('User updated successfully!')
+        setReloadUser(!reloadUser)
+        setTimeout(()=>{
+          router.push(`/users/${params.id}`)
+        }, 1500)
+      }else{
+        setError('There was an error trying to update the user, please try again or contact support')
       }
     })
   }
 
   return (
     <>
+      {modal && <Modal message={"Are you sure you want to delete this user?"} action1={()=> handleDelete()} action2={()=> setModal(false)} />}
       {load && <Loader />}
       {!user.users ?
         <Loader />
         :
           <div className="container-pages md:container-pages-scroll">
             <h1 className='title'>Users</h1>
-            <div className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full">
+            <div 
+              className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full"
+              onClick={()=> router.push('/users/new-user')}
+            >
               <Image
                 src={AddUser}
                 alt="Add User Button"
                 className="scale-[25%] -ml-6"
               />
-              <p className="font-semibold text-sm hover:underline -ml-6">Add new User</p>
+              <p className="font-semibold text-sm -ml-6">Add new User</p>
             </div>
             <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
               <SideMenu 
                 elements={user.users} 
-                // setter={setUserSelected} 
                 name={"User"}
                 buttonAction={()=> router.push('/users/new-user')}
               />
               <DropDownMenuObjects 
                 elements={user.users} 
                 action={(id)=> router.push(`/users/${id}`)}
-                // setter={setUserSelected} 
                 name={"Choose a User"}
               />
               <div className="md:pl-8 w-full h-5/6 md:overflow-scroll mt-4 md:mt-0">
@@ -94,11 +128,13 @@ const User = ({ params }) => {
                                 name={"Username"} 
                                 setter={setUsername} 
                                 placeholder={userSelected.username ? userSelected.username : "Add Username"}
+                                disabled={true}
                               />
                               <Input50PercentWithTitle 
                                 name={"Email"} 
                                 setter={setEmail} 
                                 placeholder={userSelected.email ? userSelected.email : "Add Email"}
+                                disabled={true}
                               />
                               <Input50PercentWithTitle 
                                 name={"Name"} 
@@ -110,31 +146,19 @@ const User = ({ params }) => {
                                 setter={setSurname} 
                                 placeholder={userSelected.lastName ? userSelected.lastName : "Add Last Name"}
                               />
-                              <Input50PercentWithTitle 
-                                name={"Password"} 
-                                setter={setPassword} 
-                                placeholder={"Add a Password"}
-                                type={"password"}
-                              />
-                              <Input50PercentWithTitle 
-                                name={"Repeat Password"} 
-                                setter={setRepeatPassword} 
-                                placeholder={"Repeat Password"}
-                                type={"password"}
-                              />
                           </div>
                           <div className="w-full h-full flex flex-row items-center justify-between">
                               <ButtonSmall 
                                 text={"Update"} 
                                 type={"purple"} 
-                                action={()=> console.log("Update")}
+                                action={()=> handleUpdate()}
                               />
                               <ButtonSmall 
                                 text={"Delete User"}  
-                                action={()=> handleDelete()}
+                                action={()=> setModal(true)}
                               />
                           </div>
-                          <div className="w-full mt-8 overflow-scroll">
+                          <div className="w-full mt-8 mb-8 overflow-scroll">
                               <h2 className="font-semibold text-3xl">Organizations</h2>
                               <DropDownMenuTextBig 
                                 elements={user.organizations} 
@@ -150,6 +174,8 @@ const User = ({ params }) => {
                                 userId={userSelected.id}
                               />
                           </div>
+                          {error && <p className="w-full text-center font-semibold text-red">{error}</p>}
+                          {success && <p className="w-full text-center font-semibold text-green">{success}</p>}
                       </div>
                   :
                       <MessageScreen 
