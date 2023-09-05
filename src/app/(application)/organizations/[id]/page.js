@@ -17,6 +17,7 @@ import deleteOrganization from "@/src/functions/deleteOrganization"
 import Modal from "@/src/components/modal/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
 import addUserToOrganization from "@/src/functions/addUserToOrganization"
+import updateOrganization from "@/src/functions/updateOrganization"
 
 const Organization = ({ params }) => {
 
@@ -66,16 +67,17 @@ const Organization = ({ params }) => {
   const handleUpdate = async() => {
     setError('')
     setSuccess('')
-    await updateUser(params.id, name, surname, setLoad)
+    await updateOrganization(params.id, address, description, setLoad)
     .then(data => {
-      if(data.data.firstName === name && data.data.lastName === surname){
-        setSuccess('User updated successfully!')
+      console.log(data)
+      if(data.data.description === description || data.data.properties.address === address){
+        setSuccess('Organization updated successfully!')
         setReloadUser(!reloadUser)
         setTimeout(()=>{
-          router.push(`/users/${params.id}`)
-        }, 1500)
+          router.push(`/organizations/${params.id}`)
+        }, 2500)
       }else{
-        setError('There was an error trying to update the user, please try again or contact support')
+        setError('There was an error trying to update the organization, please try again or contact support')
       }
     })
   }
@@ -97,7 +99,12 @@ const Organization = ({ params }) => {
     <>
       {modal && <Modal message={"Are you sure you want to delete this organization?"} action1={()=> handleDelete()} action2={()=> setModal(false)} />}
       {load && <Loader />}
-      {!user.users ?
+      {user.role === "viewer" ?
+        <div className="container-pages flex justify-center items-center">
+          <p className="text-4xl text-red font-bold text-center">Not Found</p>
+        </div>
+        :
+        !user.users ?
         <Loader />
         :
         <div className="container-pages md:container-pages-scroll">

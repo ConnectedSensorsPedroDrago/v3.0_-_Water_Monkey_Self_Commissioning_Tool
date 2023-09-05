@@ -20,6 +20,8 @@ const NavBar = ({session}) => {
     completeUser(setUser, session, setLoader, user, setPortfolio)
   }, [reloadUser])
 
+  console.log(user)
+
   return (
     <>
       { user &&
@@ -40,7 +42,7 @@ const NavBar = ({session}) => {
             <p className='mr-6 text-grey font-light hidden md:flex'>{session.user ? session.user.name : "Welcome"}</p>
             <div>
                 <Image
-                    src={user.photo !== undefined ? user.photo : userDefault}
+                    src={(user.photo === undefined || !user.photo.startsWith('http')) ? userDefault : user.photo }
                     alt="User"
                     width={75}
                     height={75}
@@ -53,7 +55,7 @@ const NavBar = ({session}) => {
                     }}
                 />
                 { menu === true &&
-                  <NavBarMenu setMenu={setMenu}  />
+                  <NavBarMenu setMenu={setMenu} user={user}  />
                 }
             </div>
         </div>

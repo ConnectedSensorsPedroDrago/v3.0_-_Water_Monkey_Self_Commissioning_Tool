@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { userContext } from "@/src/context/userContext"
 import AddUser from '@/public/addDevice.svg'
 import Image from "next/image"
@@ -18,7 +18,12 @@ const Users = () => {
 
   return (
     <>
-      {!user.organizations ?
+      {user.role === "viewer" ?
+        <div className="container-pages flex justify-center items-center">
+          <p className="text-4xl text-red font-bold text-center">Not Found</p>
+        </div>
+        :
+      !user.organizations ?
         <Loader />
         :
         <div className="container-pages md:container-pages-scroll">

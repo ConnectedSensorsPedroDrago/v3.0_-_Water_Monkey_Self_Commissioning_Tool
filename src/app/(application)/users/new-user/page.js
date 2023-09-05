@@ -60,7 +60,12 @@ const NewUser = () => {
   return (
     <>
       {load && <Loader />}
-      {!user.organizations?
+      {user.role === "viewer" ?
+        <div className="container-pages flex justify-center items-center">
+          <p className="text-4xl text-red font-bold text-center">Not Found</p>
+        </div>
+        :
+        !user.organizations?
         <Loader />
         :
         <div className="container-pages md:container-pages-scroll">         

@@ -16,7 +16,7 @@ const OrganizationsTable = ({organizations, action, remove, userId}) => {
                         className="md:w-24 text-start text-sm text-blue-hard font-bold underline cursor-pointer hover:text-light-purple"
                         onClick={()=> remove()}
                     >
-                        Remove
+                        Edit
                     </button>
                 </div>
             )

@@ -17,7 +17,7 @@ export default async function addUserToOrganization(userToAdd, setLoad, orgSelec
         if(response.ok){
             return {message: "User assigned"}
         } else {
-            setError("There was an error assigning the user to the organization: " + data.message + ". Please try again or contact support")
+            setError("There was an error assigning the user to the organization: " + data.message + " Please try again or contact support")
         }
     }catch(e){
         setError("There was an error assigning the user to the organization. Please try again or contact support")

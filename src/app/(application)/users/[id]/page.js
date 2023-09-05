@@ -85,7 +85,12 @@ const User = ({ params }) => {
     <>
       {modal && <Modal message={"Are you sure you want to delete this user?"} action1={()=> handleDelete()} action2={()=> setModal(false)} />}
       {load && <Loader />}
-      {!user.users ?
+      {user.role === "viewer" ?
+        <div className="container-pages flex justify-center items-center">
+          <p className="text-4xl text-red font-bold text-center">Not Found</p>
+        </div>
+        :
+        !user.users ?
         <Loader />
         :
         <div className="container-pages md:container-pages-scroll">

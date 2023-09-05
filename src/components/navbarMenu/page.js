@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 
-const NavBarMenu = ({ setMenu }) => {
+const NavBarMenu = ({ setMenu, user }) => {
 
     const router = useRouter();
 
@@ -23,25 +23,33 @@ const NavBarMenu = ({ setMenu }) => {
             onClick={()=>{
                 router.push("/profile")
             }}
-        >Profile</button>
-        <button 
+        >
+            Profile
+        </button>
+        {user.role === "super-viewer-test" && <button 
             className='text-start text-sm h-9 border-b-[0.5px] border-grey text-dark-grey font-light hover:font-bold cursor-pointer hover:text-blue'
             onClick={()=>{
                 router.push("/users")
             }}
-        >Users</button>
-        <button 
+        >
+            Users
+        </button>}
+        {user.role === "super-viewer-test" && <button 
             className='text-start text-sm h-9 border-b-[0.5px] border-grey text-dark-grey font-light hover:font-bold cursor-pointer hover:text-blue'
             onClick={()=>{
                 router.push("/organizations")
             }}
-        >Organizations</button>
+        >
+            Organizations
+        </button>}
         <button 
             className='text-start text-sm h-9 border-b-[0.5px] border-grey text-dark-grey font-light hover:font-bold cursor-pointer hover:text-blue'
             onClick={()=>{
                 router.push("/support")
             }}
-        >Conatact Support</button>
+        >
+            Conatact Support
+        </button>
         <button 
             className='text-start text-sm h-9 border-b-[0.5px] border-grey text-dark-grey font-light hover:font-bold cursor-pointer hover:text-blue'
             onClick={()=>{ 
@@ -51,7 +59,9 @@ const NavBarMenu = ({ setMenu }) => {
                 })
             }}
         
-        >Sign Out</button>
+        >
+            Sign Out
+        </button>
     </div>
   )
 }
