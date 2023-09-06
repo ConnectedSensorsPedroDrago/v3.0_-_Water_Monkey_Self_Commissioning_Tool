@@ -60,38 +60,17 @@ const Profile = ({ params }) => {
         :
         <div className="container-pages md:container-pages-scroll">
           <h1 className='title'>Profile</h1>
-          <div 
-            className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full"
-            onClick={()=> router.push('/users/new-user')}
-          >
-            <Image
-              src={AddUser}
-              alt="Add User Button"
-              className="scale-[25%] -ml-6"
-            />
-            <p className="font-semibold text-sm -ml-6">Add new User</p>
-          </div>
           <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
             <div className="border-r-[0.25px] border-dark-grey h-full w-[320px] md:flex hidden flex-col justify-between">
               <div className="w-full h-3/4 flex flex-col justify-start items-center pr-2 overflow-scroll">
-                          <div
-                              href={name === "User" ? `/users/${user.id}` : `/organizations/${user.id}`}
-                              className="w-full bg-light-purple active:bg-light-purple mb-2 rounded flex justify-start items-center p-2 cursor-pointer"
-                          >                       
-                              <p className="font-semibold md:text-base lg:text-lg">{user.name}</p>
-                          </div>
+                <div
+                    href={name === "User" ? `/users/${user.id}` : `/organizations/${user.id}`}
+                    className="w-full bg-light-purple active:bg-light-purple mb-2 rounded flex justify-start items-center p-2 cursor-pointer"
+                >                       
+                    <p className="font-semibold md:text-base lg:text-lg">{user.name}</p>
+                </div>
               </div>
-          </div>
-            {/* <SideMenu 
-              elements={user.users} 
-              name={"User"}
-              buttonAction={()=> router.push('/users/new-user')}
-            /> */}
-            {/* <DropDownMenuObjects 
-              elements={user.users} 
-              action={(id)=> router.push(`/users/${id}`)}
-              name={"Choose a User"}
-            /> */}
+            </div>
             <div className="md:pl-8 w-full h-5/6 md:overflow-scroll mt-4 md:mt-0">
               {
                 user &&
