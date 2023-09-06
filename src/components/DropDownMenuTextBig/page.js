@@ -1,6 +1,6 @@
 import ButtonSmall from '../buttonSmall/page'
 
-const DropDownMenuTextBig = ({ elements, setter, placeholder, buttonText, buttonAction }) => {
+const DropDownMenuTextBig = ({ elements, setter, placeholder, buttonText, buttonAction, type }) => {
   return (
     <div className="flex flex-row mt-4">
         <select
@@ -11,7 +11,7 @@ const DropDownMenuTextBig = ({ elements, setter, placeholder, buttonText, button
         {
             elements.map(element =>
                 <option
-                    value={element.name ? element.name : element.username ? element.username : undefined}
+                    value={type === "organization" ? element.label : element.name ? element.name : element.username ? element.username : undefined}
                     key={element.name ? element.name : element.username ? element.username : undefined}
                 >
                     {element.name ? element.name : element.username ? element.username : "Undefined Name (do not choose)"}

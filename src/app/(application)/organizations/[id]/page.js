@@ -143,6 +143,7 @@ const Organization = ({ params }) => {
                           name={"Name"} 
                           setter={setName} 
                           placeholder={orgSelected.name ? orgSelected.name : "Add Name"}
+                          disabled={true}
                         />
                         <Input50PercentWithTitle 
                           name={"Address"} 

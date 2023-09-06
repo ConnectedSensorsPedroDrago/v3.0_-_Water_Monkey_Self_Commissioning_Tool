@@ -16,6 +16,7 @@ import OrganizationsTable from "@/src/components/OrganizationsTable/page"
 import deleteUser from "@/src/functions/deleteUser"
 import updateUser from "@/src/functions/updateUser"
 import Modal from "@/src/components/modal/page"
+import addUserToOrganization from "@/src/functions/addUserToOrganization"
 
 const User = ({ params }) => {
 
@@ -77,6 +78,19 @@ const User = ({ params }) => {
         }, 1500)
       }else{
         setError('There was an error trying to update the user, please try again or contact support')
+      }
+    })
+  }
+
+  const handleAddUserToOrg = async() => {
+    setError('')
+    setSuccess('')
+    await addUserToOrganization(userSelected.username, setLoad, orgToAdd, setError)
+    .then(data => {
+      if(data.message === "User assigned"){
+        setReloadUser(!reloadUser)
+        setSuccess("User successfully assigned to orgnization!")
+        location.reload()
       }
     })
   }
@@ -166,7 +180,8 @@ const User = ({ params }) => {
                           setter={setOrgToAdd} 
                           placeholder={`Add ${userSelected.username} to an Organization`} 
                           buttonText={"Add"} 
-                          buttonAction={()=> console.log(orgToAdd)}
+                          buttonAction={()=> handleAddUserToOrg()}
+                          type={"organization"}
                         />
                         <OrganizationsTable 
                           organizations={user.organizations} 
