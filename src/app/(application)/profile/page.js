@@ -1,16 +1,14 @@
 "use client"
 
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { userContext } from "@/src/context/userContext"
 import { useRouter } from "next/navigation"
-import AddUser from '@/public/addDevice.svg'
-import Image from "next/image"
 import Loader from "@/src/components/loader/page"
 import Input50PercentWithTitle from "@/src/components/Input50PercentWithTitle/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import updateUser from "@/src/functions/updateUser"
 
-const Profile = ({ params }) => {
+const Profile = () => {
 
   const { user, setReloadUser, reloadUser } = useContext(userContext)
   const [ name, setName ] = useState()
@@ -20,20 +18,6 @@ const Profile = ({ params }) => {
   const [ success, setSuccess ] = useState('') 
   
   const router = useRouter()
-  
-  // useEffect(()=>{
-  //   if(user.users && user.users.some(({id}) => id === params.id)){
-  //       user.users.forEach(userToInspect => {
-  //           if(userToInspect.id === params.id){
-  //               setUserSelected(userToInspect)
-  //           }
-  //       })
-  //   } else {
-  //       setUserSelected("Not Found")
-  //   }
-  // }, [user.users])
-
-  console.log(user)
 
   const handleUpdate = async() => {
     setError('')
@@ -97,7 +81,11 @@ const Profile = ({ params }) => {
                         placeholder={user.lastName ? user.lastName : "Add Last Name"}
                       />
                     </div>
-                    <div className="w-full h-full flex flex-row items-center justify-between">
+                    <div className="w-full flex flex-col items-start justify-around h-[100px]">
+                      <ButtonSmall 
+                        text={"Reset Password"} 
+                        action={()=> router.push('https://www.connectedwater.ca/accounts/password/reset/')}
+                      />
                       <ButtonSmall 
                         text={"Update"} 
                         type={"purple"} 

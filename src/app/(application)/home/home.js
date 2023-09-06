@@ -11,7 +11,7 @@ const Portfolio = () => {
   const { user } = useContext(userContext)
 
   return (
-    <>
+    <div className="mb-32">
         {
           (!user.devices || user.devices.length < 1) ?
             <p className='h-100 w-100 flex justify-center items-center text-8xl h-screen text-blue'>Please add a device</p>
@@ -32,7 +32,7 @@ const Portfolio = () => {
               )}
             </div>
         }
-    </>
+    </div>
   )
 }
 

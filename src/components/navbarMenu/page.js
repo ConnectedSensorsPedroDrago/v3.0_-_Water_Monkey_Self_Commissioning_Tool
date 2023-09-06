@@ -48,7 +48,7 @@ const NavBarMenu = ({ setMenu, user }) => {
                 router.push("/support")
             }}
         >
-            Conatact Support
+            Conatact Us
         </button>
         <button 
             className='text-start text-sm h-9 border-b-[0.5px] border-grey text-dark-grey font-light hover:font-bold cursor-pointer hover:text-blue'
