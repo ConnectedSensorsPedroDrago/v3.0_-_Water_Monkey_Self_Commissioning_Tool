@@ -8,7 +8,6 @@ import Link from "next/link"
 import loaderBig from '@/public/loaderBig.svg'
 import { useRouter } from "next/navigation"
 
-
 const SignIn = () => {
 
     const [user, setUser] = useState('')

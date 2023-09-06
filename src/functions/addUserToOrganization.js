@@ -10,7 +10,7 @@ export default async function addUserToOrganization(userToAdd, setLoad, orgSelec
             },
             body: JSON.stringify([{
                 label: orgSelected,
-                role: "viewer",
+                role: "viewer"   
             }])
         })
         let data = await response.json()
