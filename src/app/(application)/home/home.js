@@ -23,9 +23,9 @@ const Portfolio = () => {
                   alt="Add Device Button"
                 />
               </div>
-              <div className="flex flex-row items-center justify-start w-full mt-6 mb-6">
+              <div className="flex flex-row items-center justify-start w-full mt-6 mb-3 md:mb-6">
                 <p className="text-purple text-2xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey </p>
-                <p className="text-grey text-2xl md:text-4xl lg:text-5xl font-thin ml-2">| Device Overview</p>
+                <p className="text-grey text-xl md:text-4xl lg:text-5xl font-thin ml-2">| Device Overview</p>
               </div>
               {user.devices.map((org) => 
                 <HomeOrganization org={org} key={org.org_id}/>
