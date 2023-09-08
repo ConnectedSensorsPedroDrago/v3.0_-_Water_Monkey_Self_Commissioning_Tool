@@ -1,4 +1,4 @@
-const UserTable = ({users, action}) => {
+const UserTable = ({users, action, seeUser}) => {
 
   return (
     <>
@@ -13,9 +13,13 @@ const UserTable = ({users, action}) => {
                 <div   
                     className="w-full border-b-[0.5px] border-dark-grey h-10 flex flex-row justify-between items-center hover:bg-light-purple cursor-pointer hover:font-semibold pl-1 pr-1"
                     key={user.id}
-                    onClick={()=> action(user.username)}
                 >
-                    <p className="md:w-24 text-start text-sm text-blue-hard">{user.username ? user.username : '-'}</p>
+                    <p 
+                        className="md:w-24 text-start text-sm text-blue-hard"
+                        onClick={()=> seeUser(user.id)}
+                    >
+                        {user.username ? user.username : '-'}
+                    </p>
                     <p className="hidden lg:flex md:w-28 text-start text-sm text-blue-hard">{user.email ? user.email : '-'}</p>
                     <button 
                         className="md:w-24 text-start text-sm text-blue-hard font-bold underline cursor-pointer hover:text-light-purple"

@@ -1,7 +1,7 @@
 export default async function removeUserFromOrganization(userToRemove, setLoad, orgSelected, setError){
     setLoad(true)
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${userToRemove}/_/remove_organizationss/`, {
+        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${userToRemove}/_/remove_organizations/`, {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

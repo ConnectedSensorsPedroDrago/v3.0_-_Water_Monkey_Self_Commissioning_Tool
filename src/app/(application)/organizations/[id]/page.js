@@ -28,12 +28,13 @@ const Organization = ({ params }) => {
   const [ address, setAddress ] = useState()
   const [ orgSelected, setOrgSelected ] = useState()
   const [ userToAdd, setUserToAdd ] = useState()
-  // const [ userToRemove, setUserToRemove ] = useState()
   const [ load, setLoad ] = useState(false)
   const [ message, setMessage ] = useState('')
   const [ error, setError ] = useState('')
   const [ success, setSuccess ] = useState('') 
   const [ modal, setModal ] = useState(false)
+  const [ modalMessage, setModalMessage ] = useState('')
+  const [ userToRemove, setUserToRemove ] = useState()
   
   const router = useRouter()
   
@@ -51,6 +52,7 @@ const Organization = ({ params }) => {
 
   const handleDelete = async() => {
     setModal(false)
+    setModalMessage("")
     setError('')
     setSuccess('')
     await deleteOrganization(params.id, setMessage, setLoad, setReloadUser, setError, reloadUser)
@@ -98,8 +100,10 @@ const Organization = ({ params }) => {
   }
 
   const handleRemove = async(userToRemove) => {
+    setModal(false)
     setError('')
     setSuccess('')
+    setModalMessage("")
     await removeUserFromOrganization(userToRemove, setLoad, orgSelected.label, setError)
     .then(data => {
       if(data.message === "User removed"){
@@ -112,7 +116,7 @@ const Organization = ({ params }) => {
 
   return (
     <>
-      {modal && <Modal message={"Are you sure you want to delete this organization?"} action1={()=> handleDelete()} action2={()=> setModal(false)} />}
+      {modal && <Modal message={modalMessage} action1={()=> modalMessage === 'Are you sure you want to delete this organization?' ? handleDelete() : modalMessage === 'Are you sure you want to remove this user from this organization?' && handleRemove(userToRemove)} action2={()=> setModal(false)} />}
       {load && <Loader />}
       {user.role === "viewer" ?
         <div className="container-pages flex justify-center items-center">
@@ -179,7 +183,10 @@ const Organization = ({ params }) => {
                         />
                         <ButtonSmall 
                           text={"Delete Organization"}  
-                          action={()=> setModal(true)}
+                          action={()=> {
+                            setModalMessage('Are you sure you want to delete this organization?')
+                            setModal(true)
+                          }}
                         />
                       </div>
                       <div className="w-full mt-8 mb-8 overflow-scroll">
@@ -193,8 +200,13 @@ const Organization = ({ params }) => {
                         />
                         <UserTable 
                           users={orgSelected.users} 
-                          remove={()=>"Organization Removed"} 
-                          action={(id)=> handleRemove(id)} 
+                          remove={()=>"Organization Removed"}
+                          action={(id)=> {
+                            setModalMessage('Are you sure you want to remove this user from this organization?')
+                            setModal(true)
+                            setUserToRemove(id)
+                          }}
+                          seeUser={(id)=> router.push(`/users/${id}`)}
                           userId={orgSelected.id}
                         />
                       </div>
