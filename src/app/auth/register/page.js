@@ -48,7 +48,7 @@ const Register = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
           },
           body: JSON.stringify({
             username: user,
@@ -56,11 +56,13 @@ const Register = () => {
             email: email
           })
         })
+        let data = await response.json()
+        console.log(data)
         if(response.ok){
           createOrganization()
         } else {
           setProcessing(false)
-          setError(data)
+          setError('There has been an error creating the user: "' + data.message + '". Please contact try again or contact support@connectedsensors.com')
         }
       } catch(e){
         setProcessing(false)
@@ -74,7 +76,7 @@ const Register = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
           },
           body: JSON.stringify({
             label: name.replaceAll(/[^A-Za-z0-9]/g, ''),
@@ -105,7 +107,7 @@ const Register = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
           },
           body: JSON.stringify([{
             "label": name.replaceAll(/[^A-Za-z0-9]/g, ''),
