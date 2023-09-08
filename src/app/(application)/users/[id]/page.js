@@ -58,7 +58,7 @@ const User = ({ params }) => {
         setReloadUser(!reloadUser)
         setTimeout(()=>{
           router.push('/users')
-        }, 500)
+        }, 1500)
       } else {
         setError('There was an error trying to delete the user, please try again or contact support')
       }
