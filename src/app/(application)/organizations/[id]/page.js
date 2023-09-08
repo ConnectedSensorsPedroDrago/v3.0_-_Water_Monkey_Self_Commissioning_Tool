@@ -18,6 +18,7 @@ import Modal from "@/src/components/modal/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
 import addUserToOrganization from "@/src/functions/addUserToOrganization"
 import updateOrganization from "@/src/functions/updateOrganization"
+import removeUserFromOrganization from "@/src/functions/removeUserFromOrganization"
 
 const Organization = ({ params }) => {
 
@@ -27,6 +28,7 @@ const Organization = ({ params }) => {
   const [ address, setAddress ] = useState()
   const [ orgSelected, setOrgSelected ] = useState()
   const [ userToAdd, setUserToAdd ] = useState()
+  // const [ userToRemove, setUserToRemove ] = useState()
   const [ load, setLoad ] = useState(false)
   const [ message, setMessage ] = useState('')
   const [ error, setError ] = useState('')
@@ -90,6 +92,19 @@ const Organization = ({ params }) => {
       if(data.message === "User assigned"){
         setReloadUser(!reloadUser)
         setSuccess("User successfully assigned to orgnization!")
+        location.reload()
+      }
+    })
+  }
+
+  const handleRemove = async(userToRemove) => {
+    setError('')
+    setSuccess('')
+    await removeUserFromOrganization(userToRemove, setLoad, orgSelected.label, setError)
+    .then(data => {
+      if(data.message === "User removed"){
+        setReloadUser(!reloadUser)
+        setSuccess("User successfully removed from orgnization!")
         location.reload()
       }
     })
@@ -179,7 +194,7 @@ const Organization = ({ params }) => {
                         <UserTable 
                           users={orgSelected.users} 
                           remove={()=>"Organization Removed"} 
-                          action={(id)=> router.push(`/users/${id}`)} 
+                          action={(id)=> handleRemove(id)} 
                           userId={orgSelected.id}
                         />
                       </div>

@@ -28,13 +28,16 @@ const Organizations = () => {
         :
         <div className="container-pages md:container-pages-scroll">
           <h1 className='title'>Organizations</h1>
-          <div className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full">
+          <div 
+            className="md:hidden flex flex-row justify-start items-center hover:scale-105 duration-500 cursor-pointer w-full"
+            onClick={()=> router.push('/organizations/new-organization')}  
+          >
             <Image
               src={AddOrganization}
               alt="Add Organization Button"
               className="scale-[25%] -ml-6"
             />
-            <p className="font-semibold text-sm hover:underline -ml-6">Add new Organization</p>
+            <p className="font-semibold text-sm -ml-6">Add new Organization</p>
           </div>
           <div className="flex flex-col md:flex-row w-full h-full mt-4 md:mt-8">
             <SideMenu 
