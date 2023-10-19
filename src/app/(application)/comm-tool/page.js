@@ -7,19 +7,22 @@ import WarningSign from "@/src/components/WarningSign/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
+import { useRouter } from "next/navigation"
 
 const CommToolHome = () => {
 
     const { user } = useContext(userContext)
+    const router = useRouter()
 
     const [code, setCode] = useState()
     const [org, setOrg] = useState()
 
     const onSubmit = () => {
-        console.log("Code: " + code + ' | Org: ' + org)    
+        console.log("Code: " + code + ' | Org: ' + org)
+        router.push('/comm-tool/step-2')
     }
 
-    console.log(user)
+    // console.log(user)
 
   return (
     <div className='container-pages h-fit'>
@@ -27,28 +30,30 @@ const CommToolHome = () => {
             title={"Step 1"} 
             back={'/home'} 
         />
-        <h1 className="text-[3.8rem] font-bold text-center text-purple">Scan the QR Code in your Water Monkey and enter the given code in the box below</h1>
-        <div className="flex justify-between w-full pt-[3rem]">
-            <div className="w-[45vw] flex flex-col justify-end">
+        <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Scan the QR Code in your <strong className="text-purple">Water Monkey</strong> and input it in the box below</h1>
+        <div className="flex justify-between w-full pt-[1rem] md:pt-[3rem]">
+            <div className="hidden md:w-[45vw] md:flex flex-col justify-end">
                 <Image 
                     src={Devices}
                     className="absolute bottom-0 w-[45vw]"
+                    alt="devices"
                 />
             </div>
-            <div className="w-[45vw] flex flex-col items-center justify-between">
+            <div className="w-full md:w-[45vw] flex flex-col items-center justify-between">
                 <WarningSign 
                     head={"WARNING!"} 
                     text={"Keep the provided magnet away from the Water Monkey until time of activation"}
                 />
-                <div className="mt-[2rem] w-full">
+                <div className="mt-[1rem] md:mt-[2rem] w-full">
                     <p className="font-bold text-dark-grey w-full text-center">Enter the code here</p>
                     <input 
                         type="text" 
-                        className="rounded border-[0.025rem] border-grey w-full h-[8rem] text-[5rem] text-grey text-center font-light"
-                        onChange={(e)=> setCode(e.target.value)}    
+                        className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[3rem] md:text-[5rem] text-grey text-center font-light"
+                        onChange={(e)=> setCode(e.target.value)}
+                        placeholder="CODE" 
                     />
                 </div>
-                <div className="mt-[2rem] w-full mb-[2rem]">
+                <div className="mt-[1rem] md:mt-[2rem] w-full mb-[2rem]">
                     <p className="font-bold text-dark-grey w-full text-center">Assign to an organization</p>
                     <select 
                         onChange={(e) => setOrg(e.target.value)}
@@ -71,7 +76,7 @@ const CommToolHome = () => {
                     className="w-full button-small text-[1rem] h-[2rem]"
                     onClick={()=> onSubmit()}
                 >
-                    Submit
+                    Submit and move to Step 2
                 </button>
             </div>
         </div>
