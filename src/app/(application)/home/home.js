@@ -5,6 +5,7 @@ import { useContext } from "react"
 import HomeOrganization from "@/src/components/homeOrganization/page"
 import Image from "next/image"
 import AddDevice from '@/public/addDevice.svg'
+import Link from "next/link"
 
 const Portfolio = () => {
 
@@ -18,10 +19,12 @@ const Portfolio = () => {
           :
             <div className="container-pages h-fit">
               <div className="w-[100px] h-[100px] fixed flex flex-col justify-around items-center z-10 bottom-8 right-8 hover:scale-125 duration-500 cursor-pointer">
-                <Image
-                  src={AddDevice}
-                  alt="Add Device Button"
-                />
+                <Link href='/comm-tool'>
+                  <Image
+                    src={AddDevice}
+                    alt="Add Device Button"
+                  />
+                </Link>
               </div>
               <div className="flex flex-row items-center justify-start w-full mt-6 mb-3 md:mb-6">
                 <p className="text-purple text-2xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey </p>
