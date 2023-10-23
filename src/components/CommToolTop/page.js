@@ -17,7 +17,6 @@ const CommToolTop = ({title, back}) => {
             </div>
         </Link>
         <p className='font-bold text-blue-hard text-[1.2rem]'>{title}</p>
-        {/* <div></div> */}
     </div>
   )
 }

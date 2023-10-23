@@ -24,6 +24,7 @@ const Support = () => {
                 width={35}
                 height={35}
                 className="mr-1 flex items-center justify-start"
+                alt="Mail"
               />
               <p className="text-2xl md:text-3xl font-semibold text-dark-grey mb-2">Email</p>
             </div>
@@ -39,6 +40,7 @@ const Support = () => {
                 width={35}
                 height={35}
                 className="mr-1"
+                alt="Phone"
               />
               <p className="text-2xl md:text-3xl font-semibold text-dark-grey mb-2">Phone</p>
             </div>

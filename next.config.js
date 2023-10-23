@@ -8,13 +8,13 @@ const nextConfig = {
          },
       ],
     },
-    "files.associations": {
-        "*.js": "javascriptreact",
-        ".env.development*": "env",
-        ".env.production*": "env",
-        ".env.local*": "env",
-        ".env.*": "properties",
-    },
+    // "files.associations": {
+    //     "*.js": "javascriptreact",
+    //     ".env.development*": "env",
+    //     ".env.production*": "env",
+    //     ".env.local*": "env",
+    //     ".env.*": "properties",
+    // },
 }
 
 module.exports = nextConfig

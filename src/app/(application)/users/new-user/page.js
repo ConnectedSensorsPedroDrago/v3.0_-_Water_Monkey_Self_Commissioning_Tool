@@ -142,7 +142,7 @@ const NewUser = () => {
                 {
                     role === "viewer" &&
                     <div className="flex flex-col justify-start items-start w-full md:w-[49%] md:mb-8 md:mt-2">
-                        <p className="font-semibold text-sm">Choose Organizations (for "Viewer" only)</p>
+                        <p className="font-semibold text-sm">Choose Organizations (for Viewer only)</p>
                         {
                             user.organizations.map(org =>
                                 <CheckBox element={org} setter={setOrganizations} set={organizations} key={org.id}/>
