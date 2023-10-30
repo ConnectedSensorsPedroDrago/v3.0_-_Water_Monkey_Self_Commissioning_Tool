@@ -7,25 +7,39 @@ import WarningSign from "@/src/components/WarningSign/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
+import assignWMToOrg from "@/src/functions/assignWMToOrg"
 import { useRouter } from "next/navigation"
+import Loader from "@/src/components/loader/page"
 
 const CommToolHome = () => {
 
     const { user } = useContext(userContext)
-    const router = useRouter()
-
     const [code, setCode] = useState()
     const [org, setOrg] = useState()
+    const [loader, setLoader] = useState(false)
+    const [error, setError] = useState('')
+    
+    const router = useRouter()
 
     const onSubmit = () => {
-        console.log("Code: " + code + ' | Org: ' + org)
-        router.push('/comm-tool/step-2')
+        setLoader(true)
+        assignWMToOrg(code, org)
+        .then((data)=> {
+            setLoader(false)
+            console.log(data)
+            if(data.status === 'ok'){
+                router.push(`/comm-tool/step-2/${data.monkey}`)
+            }else if(data.status === 'error'){
+                setError(data.message)
+            }
+        })
     }
-
-    // console.log(user)
 
   return (
     <div className='container-pages h-fit'>
+        {
+            loader && <Loader />
+        }
         <CommToolTop 
             title={"Step 1"} 
             back={'/home'} 
@@ -78,6 +92,10 @@ const CommToolHome = () => {
                 >
                     Submit and move to Step 2
                 </button>
+                {
+                    error &&
+                    <p className="error-message">{error}</p>
+                }
             </div>
         </div>
     </div>

@@ -68,7 +68,7 @@ const SignIn = () => {
                 trySignIn(user, password, e)
             }}>Sign In</button>
             <p className="auth-text">Forgot your password? <Link href='https://www.connectedwater.ca/accounts/password/reset/'><u className="hover:font-bold hover:text-blue">Reset it here</u></Link></p>
-            <p className="text-red font-semibold md:text-lg mt-4">{error}</p>
+            <p className="error-message">{error}</p>
         </div>
         {processing &&
           <div className="absolute flex flex-col items-center justify-around mb-20 opacity-50 w-screen h-screen bg-white bg-opacity-80">

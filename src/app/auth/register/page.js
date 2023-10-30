@@ -202,7 +202,7 @@ const Register = () => {
               createUserCheck()
             }}
           >Create User and Organization</button>
-          <p className="text-red font-semibold md:text-lg mb-20">{error}</p>
+          <p className="error-message">{error}</p>
           <hr className="border-[.25px] border-grey w-[240px] lg:w-[350px] mb-2 bg-grey"/>
           <p className="auth-text">Already registered? <Link href='/auth/signin'><u className="hover:font-bold hover:text-blue">Login here</u></Link></p>
         </>

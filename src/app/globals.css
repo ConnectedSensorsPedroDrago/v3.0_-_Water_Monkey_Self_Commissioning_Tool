@@ -43,4 +43,7 @@
   .font-outline-2 {
     -webkit-text-stroke: 0.45px white;
   }
+  .error-message {
+    @apply text-red font-semibold md:text-lg mt-4;
+  }
 }

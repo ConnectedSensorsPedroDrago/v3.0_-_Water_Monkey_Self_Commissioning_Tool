@@ -69,7 +69,7 @@ export const flowDetails = [
     {value: "None", displayValue: "None"}
 ]
 
-  export const roomDet = [
+export const roomDet = [
     {value: "Kitchen", displayValue: "Kitchen"},
     {value: "Bathroom(N)", displayValue: "Bathroom(N)"},
     {value: "Mechanical Room", displayValue: "Mechanical Room"},
@@ -117,4 +117,9 @@ export const flowDetails = [
     {value: "Elevator Pit", displayValue: "Elevator Pit"},
     {value: "Rain Water Storage", displayValue: "Rain Water Storage"},
     {value: "Residential Unit", displayValue: "Residential Unit"}
-  ]
+]
+
+export const unitOfCost = [
+    {value: "m3", displayValue: "m3"},
+    {value: "gallons", displayValue: "gallons"}
+]

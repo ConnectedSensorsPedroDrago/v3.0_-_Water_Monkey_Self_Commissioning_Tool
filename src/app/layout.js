@@ -23,9 +23,9 @@ export default async function RootLayout({ children  }) {
   return (
     <html lang="en">
       <UserProvider>
-        <body className={`${firasans.variable} font-sans`}>
-            {children}
-        </body>
+          <body className={`${firasans.variable} font-sans`}>
+              {children}
+          </body>
       </UserProvider>
     </html>
   )
