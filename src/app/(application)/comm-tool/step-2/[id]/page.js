@@ -63,13 +63,12 @@ const Step2 = ({ params }) => {
           properties.cost_unit && setCostUnit(properties.cost_unit)
           properties.meter_brand && setMeterBrand(properties.meter_brand)
           properties.meter_model && setMeterModel(properties.meter_model)
-          properties.low_side && setLowSideSize(properties.low_side_size)
-          properties.high_side && setHighSideSize(properties.high_side_size)
-          properties.flow && setFlow(properties.flow)
+          properties.low_side && setLowSideSize(properties.low_side)
+          properties.high_side && setHighSideSize(properties.high_side)
+          properties.flow_details && setFlow(properties.flow_details)
           properties.floor && setFloor(properties.floor)
           properties.unit && setUnit(properties.unit)
           properties.room_details && setRoomDetails(properties.room_details)
-          // properties.terms && setTerms(properties.terms)
         }
       })
       .then(()=> setLoader(false))
@@ -355,7 +354,7 @@ const Step2 = ({ params }) => {
             />
             <Select50PercentWithTitle 
               name={"Unit"} 
-              placeholder={unit !== undefined ? unit : ""} 
+              placeholder={costUnit !== undefined ? costUnit : ""} 
               type={"text"} 
               disabled={false} 
               setter={setCostUnit}
