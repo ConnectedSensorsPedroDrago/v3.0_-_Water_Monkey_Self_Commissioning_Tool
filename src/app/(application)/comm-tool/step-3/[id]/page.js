@@ -7,7 +7,7 @@ import InputFullPercentWithTitle from '@/src/components/InputFullPercentWithTitl
 import Link from 'next/link'
 import { useState } from 'react'
 
-const Step3 = () => {
+const Step3 = ({params}) => {
 
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -23,7 +23,7 @@ const Step3 = () => {
     <div className='container-pages h-fit'>
         <CommToolTop 
             title={"Step 3"}
-            back={'/comm-tool/step-2'}
+            back={`/comm-tool/step-2/${params.id}`}
         />
         <div>
             <div className='flex flex-row items-center mb-[2rem]'>

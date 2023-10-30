@@ -63,35 +63,13 @@ const Step2 = ({ params }) => {
           properties.cost_unit && setCostUnit(properties.cost_unit)
           properties.meter_brand && setMeterBrand(properties.meter_brand)
           properties.meter_model && setMeterModel(properties.meter_model)
-          properties.low_side_size && setLowSideSize(properties.low_side_size)
-          properties.high_side_size && setHighSideSize(properties.high_side_size)
+          properties.low_side && setLowSideSize(properties.low_side_size)
+          properties.high_side && setHighSideSize(properties.high_side_size)
           properties.flow && setFlow(properties.flow)
           properties.floor && setFloor(properties.floor)
           properties.unit && setUnit(properties.unit)
           properties.room_details && setRoomDetails(properties.room_details)
-          properties.terms && setTerms(properties.terms)
-          console.log({
-            country: country,
-            state: state,
-            city: city,
-            zip_code: zipCode,
-            address: address,
-            building_name: buildingName,
-            property_type: propertyType,
-            meter_type: meterType,
-            zone: zone,
-            cost_per_unit: costPerUnit,
-            cost_unit: costUnit,
-            room_details: roomDetails,
-            flow_details: flow,
-            floor: floor,
-            unit: unit,
-            meter_brand: meterBrand,
-            meter_model: meterModel,
-            low_side: lowSideSize,
-            high_side: highSideSize,
-            terms: terms
-          })
+          // properties.terms && setTerms(properties.terms)
         }
       })
       .then(()=> setLoader(false))
@@ -99,42 +77,166 @@ const Step2 = ({ params }) => {
 
   const onSubmit = async() => {
     let data = {
-        "_country": country,
-        "_state": state,
-        "_city": city,
-        "_zip_code": zipCode,
-        "_address": address,
-        "_building_name": buildingName,
-        "_property_type": propertyType,
-        "_meter_type": meterType,
-        "_zone": zone,
-        "_cost_per_unit": costPerUnit,
-        "_cost_unit": costUnit,
-        "_room_details": roomDetails,
-        "_flow_details": flow,
-        "_floor": floor,
-        "_unit": unit,
-        "_meter_brand": meterBrand,
-        "_meter_model": meterModel,
-        "_low_side": lowSideSize,
-        "_high_side": highSideSize,
-        "_terms": terms
-      }
-    if(terms){
-      setLoader(true)
-      await assignPropertiesToNewWM(data, params.id)
-        .then(data => {
-          console.log(data)
-          // if(data.status === "ok"){
-          //   router.push('/comm-tool/step-3')
-          // }else if(data.status === "error"){
-          //   setLoader(false)
-          //   setError(data.message)
-          // }
-        })
-      // alert(JSON.stringify(data))
+        "country": {
+          "key": "country",
+          "text": "Country",
+          "type": "text",
+          "value": country,
+          "description": "Country"
+        },
+        "state": {
+          "key": "state",
+          "text": "State",
+          "type": "text",
+          "value": state,
+          "description": "State"
+        },
+        "city": {
+          "key": "city",
+          "text": "City",
+          "type": "text",
+          "value": city,
+          "description": "City"
+        },
+        "zip_code": {
+          "key": "zip_code",
+          "text": "Zip Code",
+          "type": "text",
+          "value": zipCode,
+          "description": "Zip Code"
+        },
+        "address": {
+          "key": "address",
+          "text": "Address",
+          "type": "text",
+          "value": address,
+          "description": "Address"
+        },
+        "building_name": {
+          "key": "building_name",
+          "text": "Building Name",
+          "type": "text",
+          "value": buildingName,
+          "description": "Building Name"
+        },
+        "property_type": {
+          "key": "property_type",
+          "text": "Property Type",
+          "type": "text",
+          "value": propertyType,
+          "description": "Property Type"
+        },
+        "meter_type": {
+          "key": "meter_type",
+          "text": "Meter Type",
+          "type": "text",
+          "value": meterType,
+          "description": "Meter Type"
+        },
+        "zone": {
+          "key": "zone",
+          "text": "Zone",
+          "type": "number",
+          "value": zone,
+          "description": "Zone"
+        },
+        "cost_per_unit": {
+          "key": "cost_per_unit",
+          "text": "Cost Per Unit",
+          "type": "number",
+          "value": costPerUnit,
+          "description": "Cost Per Unit"
+        },
+        "cost_unit": {
+          "key": "cost_unit",
+          "text": "Unit Cost",
+          "type": "text",
+          "value": costUnit,
+          "description": "Unit Cost"
+        },
+        "room_details": {
+          "key": "room_details",
+          "text": "Room Details",
+          "type": "text",
+          "value": roomDetails,
+          "description": "Room Details"
+        },
+        "flow_details": {
+          "key": "flow_details",
+          "text": "Flow",
+          "type": "text",
+          "value": flow,
+          "description": "Flow"
+        },
+        "floor": {
+          "key": "floor",
+          "text": "Floor",
+          "type": "number",
+          "value": floor,
+          "description": "Floor"
+        },
+        "unit": {
+          "key": "unit",
+          "text": "Unit",
+          "type": "number",
+          "value": unit,
+          "description": "Unit"
+        },
+        "meter_brand": {
+          "key": "meter_brand",
+          "text": "Meter Brand",
+          "type": "text",
+          "value": meterBrand,
+          "description": "Meter Brand"
+        },
+        "meter_model": {
+          "key": "meter_model",
+          "text": "Meter Model",
+          "type": "text",
+          "value": meterModel,
+          "description": "Meter Model"
+        },
+        "low_side": {
+          "key": "low_side",
+          "text": "Low Side Size",
+          "type": "text",
+          "value": lowSideSize,
+          "description": "Low Side Size"
+        },
+        "high_side": {
+          "key": "high_side",
+          "text": "High Side Size",
+          "type": "text",
+          "value": highSideSize,
+          "description": "High Side Size"
+        },
+        "terms": {
+          "key": "terms",
+          "text": "Terms and Conditions and Monitoring Agreement accepted",
+          "type": "text",
+          "value": terms.toString(),
+          "description": "Terms and Conditions and Monitoring Agreement accepted"
+        }
+    }
+    if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || !highSideSize || !flow || !floor || !roomDetails){
+      setError("Please complete all the required fields")
     }else{
-      setError("Please accept the Terms and Conditions")
+      if(terms){
+        setLoader(true)
+        assignPropertiesToNewWM(data, params.id)
+          .then(data => {
+            console.log(data)
+            if(data.status === "ok"){
+              router.push(`/comm-tool/step-3/${params.id}`)
+            }else if(data.status === "error"){
+              setLoader(false)
+              setError(data.message)
+            }
+          })
+        setLoader(false)
+      }else{
+        setError("Please read and accept the Terms and Conditions and the Monitoring Agreement")
+      }
     }
   }
 
@@ -334,7 +436,6 @@ const Step2 = ({ params }) => {
         <div className="flex flex-row">
           <input 
             type="checkbox"
-            checked={terms === true ? true : false}
             className="cursor-pointer"
             onClick={()=> setTerms(!terms)}
           />

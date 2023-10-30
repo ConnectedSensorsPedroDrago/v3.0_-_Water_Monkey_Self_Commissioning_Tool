@@ -12,7 +12,6 @@ export const completeUser = async(setUser, session, setLoader) => {
             },
         })
         let data = await response.json()
-        console.log(data)
         userInfo = {
             name: session.user.name,
             email: session.user.email,
