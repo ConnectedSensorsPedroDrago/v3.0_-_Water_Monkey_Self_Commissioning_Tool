@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import requestWM from '@/src/functions/step2RequestWM'
 import Loader from '@/src/components/loader/page'
+import successTick from '@/public/successTick.svg'
 
 const Step3 = ({params}) => {
 
@@ -30,8 +31,11 @@ const Step3 = ({params}) => {
                 console.log(data)
                 setLoad(false)
                 if(data.status === "ok"){
+                    let commissionStage = JSON.parse(data.device.properties.commission_stage)
                     setMeterType(data.device.properties.meter_type)
-                    setCommStage(JSON.parse(data.device.properties.commission_stage))
+                    setCommStage(commissionStage)
+                    commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
+                    commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
                 }
                 if(data.status === "error"){
                     setError(data.message)
@@ -174,14 +178,27 @@ const Step3 = ({params}) => {
                     setter={setPicFirst}
                     disabled={commStage && commStage.first.date_time ? true : false}
                 />
-                {   commStage && !commStage.first.date_time &&
+                {   commStage && !commStage.first.date_time ?
                     <button 
                         className=" md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
                         onClick={()=> onSubmitFirst()}
                     >
                         Submit
                     </button>
+                    :
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3'>
+                        <div className='w-full flex items-center justify-start'>
+                            <Image 
+                                src={successTick}
+                                alt="Success Tick"
+                                className='scale-[75%]'
+                            />
+                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at: {dateFirst}</p>
+                        </div>
+                        <p className='text-grey font-light text-sm mt-[0.5rem]'>Please remember to take your second readings as close and accurate to 24 hours after these first readings.</p>
+                    </div>
                 }
+                
             </div>
             <div className='w-full flex flex-col md:ml-[1rem] md:mt-0 mt-[2rem]'>
                 <p className={`${commStage && !commStage.second.date_time && commStage.first.date_time ? `text-dark-grey` : `text-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter final meter readings</p>
@@ -216,13 +233,26 @@ const Step3 = ({params}) => {
                     setter={setPicSecond}
                     disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
                 />
-                {   commStage && !commStage.second.date_time && commStage.first.date_time &&
+                {   commStage && !commStage.second.date_time && commStage.first.date_time ?
                     <button 
                         className="md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
                         onClick={()=> onSubmitSecond()}
                     >
                         Submit
                     </button>
+                    :
+                    commStage && commStage.second.date_time &&
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3'>
+                        <div className='w-full flex items-center justify-start'>
+                            <Image 
+                                src={successTick}
+                                alt="Success Tick"
+                                className='scale-[75%]'
+                            />
+                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at: {dateSecond}</p>
+                        </div>
+                        <p className='text-grey font-light text-sm mt-[0.5rem]'>Readings completed! You will be contacted by one of our representatives once the calibration process is finished.</p>
+                    </div>
                 }
             </div>
         </div>
