@@ -60,6 +60,7 @@ const Step3 = ({params}) => {
                 body: JSON.stringify({
                     "properties": {
                         "commission_stage": JSON.stringify({
+                            "stage": "first reading",
                             "first": payload,
                             "second": commStage.second
                         })
@@ -92,6 +93,7 @@ const Step3 = ({params}) => {
                 body: JSON.stringify({
                     "properties": {
                         "commission_stage": JSON.stringify({
+                            "stage": "second reading",
                             "first": commStage.first,
                             "second": payload
                         })
