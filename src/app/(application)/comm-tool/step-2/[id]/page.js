@@ -12,7 +12,7 @@ import { countries, propType, metType, metBrand, sideSizes, flowDetails, roomDet
 import { useRouter } from "next/navigation"
 import assignPropertiesToNewWM from "@/src/functions/assignPropertiesToNewWM"
 import Loader from "@/src/components/loader/page"
-import step2RequestWM from "@/src/functions/step2RequestWM"
+import requestWM from "@/src/functions/step2RequestWM"
 
 const Step2 = ({ params }) => {
 
@@ -42,14 +42,12 @@ const Step2 = ({ params }) => {
   const router = useRouter()
   
   useEffect(()=> {
-    step2RequestWM(params.id)
+    requestWM(params.id)
       .then(data => {
-        console.log(data)
         if(data.status === "error"){
           setError(data.message)
         }else if(data.status === "ok"){
           let properties = data.device.properties
-          console.log(properties)
           properties.country && setCountry(properties.country)
           properties.state && setState(properties.state)
           properties.city && setCity(properties.city)
@@ -215,6 +213,13 @@ const Step2 = ({ params }) => {
           "type": "text",
           "value": terms.toString(),
           "description": "Terms and Conditions and Monitoring Agreement accepted"
+        },
+        "commission_stage": {
+          "key": "commission_stage",
+          "text": "Commissioning Process Stage",
+          "type": "json",
+          "value": JSON.stringify({first: {}, second: {}}),
+          "description": "Stage of the Commissioning Process"
         }
     }
     if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || !highSideSize || !flow || !floor || !roomDetails){
@@ -224,7 +229,6 @@ const Step2 = ({ params }) => {
         setLoader(true)
         assignPropertiesToNewWM(data, params.id)
           .then(data => {
-            console.log(data)
             if(data.status === "ok"){
               router.push(`/comm-tool/step-3/${params.id}`)
             }else if(data.status === "error"){

@@ -1,6 +1,6 @@
-export default async function step2RequestWM(id){
+export default async function requestWM(id){
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',

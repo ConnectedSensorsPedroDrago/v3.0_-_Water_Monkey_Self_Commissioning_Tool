@@ -5,7 +5,9 @@ import Image from 'next/image'
 import DownloadPDF from "@/public/downloadPDF.svg"
 import InputFullPercentWithTitle from '@/src/components/InputFullPercentWithTitle/page'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import requestWM from '@/src/functions/step2RequestWM'
+import Loader from '@/src/components/loader/page'
 
 const Step3 = ({params}) => {
 
@@ -13,18 +15,103 @@ const Step3 = ({params}) => {
     const [lowSideFirst, setLowSideFirst] = useState()
     const [highSideFirst, setHighSideFirst] = useState()
     const [picFirst, setPicFirst] = useState()
-
     const [dateSecond, setDateSecond] = useState()
     const [lowSideSecond, setLowSideSecond] = useState()
     const [highSideSecond, setHighSideSecond] = useState()
     const [picSecond, setPicSecond] = useState()
+    const [meterType, setMeterType] = useState()
+    const [load, setLoad] = useState(true)
+    const [error, setError] = useState()
+    const [commStage, setCommStage] = useState()
+    
+    useEffect(()=>{
+        requestWM(params.id)
+            .then(data => {
+                console.log(data)
+                setLoad(false)
+                if(data.status === "ok"){
+                    setMeterType(data.device.properties.meter_type)
+                    setCommStage(JSON.parse(data.device.properties.commission_stage))
+                }
+                if(data.status === "error"){
+                    setError(data.message)
+                }
+            })
+    }, [])
+
+    const onSubmitFirst = async() => {
+        let payload = meterType === "Single" ? 
+            {"date_time": dateFirst, "low": lowSideFirst}
+            : 
+            {"date_time": dateFirst, "low": lowSideFirst, "high": highSideFirst}
+        console.log(payload)
+        try{
+            console.log(params.id)
+            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                method: 'PATCH',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
+                },
+                body: JSON.stringify({
+                    "properties": {
+                        "commission_stage": JSON.parse({
+                            first: payload,
+                            second: commStage.second
+                        })
+                    }
+                })
+            })
+            let data = response.json()
+            console.log(data)
+        }catch(e){
+            setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+        }
+    }
+
+    const onSubmitSecond = async() => {
+        let payload = meterType === "Single" ? 
+            {"date_time": dateSecond, "low": lowSideSecond}
+            : 
+            {"date_time": dateSecond, "low": lowSideSecond, "high": highSideSecond}
+        console.log(payload)
+        try{
+            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                method: 'PATCH',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
+                },
+                body: JSON.stringify({
+                    "properties": {
+                        "commission_stage": JSON.parse({
+                            first: commStage.first,
+                            second: payload
+                        })
+                    }
+                })
+            })
+            let data = response.json()
+            console.log(data)
+        }catch(e){
+            setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+        }
+    }
 
   return (
     <div className='container-pages h-fit'>
+        {
+            load &&
+            <Loader />
+        }
         <CommToolTop 
             title={"Step 3"}
             back={`/comm-tool/step-2/${params.id}`}
         />
+        {
+            error &&
+            <p className='error-message'>{error}</p>
+        }
         <div>
             <div className='flex flex-row items-center mb-[2rem]'>
                 <Link 
@@ -55,17 +142,20 @@ const Step3 = ({params}) => {
                     setter={setDateFirst}
                 />
                 <InputFullPercentWithTitle 
-                    name={"Low Side Meter Reading"}
+                    name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
                     type={"number"}
                     placeholder={""}
                     setter={setLowSideFirst}
                 />
-                <InputFullPercentWithTitle 
-                    name={"High Side Meter Reading"}
-                    type={"number"}
-                    placeholder={""}
-                    setter={setLowSideSecond}
-                />
+                {
+                    meterType === "Compound" &&
+                    <InputFullPercentWithTitle 
+                        name={"High Side Meter Reading"}
+                        type={"number"}
+                        placeholder={""}
+                        setter={setHighSideSecond}
+                    />
+                }
                 <InputFullPercentWithTitle 
                     name={"Submit Meter Photo"}
                     type={"file"}
@@ -74,7 +164,7 @@ const Step3 = ({params}) => {
                 />
                 <button 
                     className=" md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
-                    onClick={()=> onSubmit()}
+                    onClick={()=> onSubmitFirst()}
                 >
                     Submit
                 </button>
@@ -89,19 +179,22 @@ const Step3 = ({params}) => {
                     disabled={true}
                 />
                 <InputFullPercentWithTitle 
-                    name={"Low Side Meter Reading"}
+                    name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
                     type={"number"}
                     placeholder={""}
                     setter={setLowSideSecond}
                     disabled={true}
                 />
-                <InputFullPercentWithTitle 
-                    name={"High Side Meter Reading"}
-                    type={"number"}
-                    placeholder={""}
-                    setter={setHighSideSecond}
-                    disabled={true}
-                />
+                {
+                    meterType === "Compound" &&
+                    <InputFullPercentWithTitle 
+                        name={"High Side Meter Reading"}
+                        type={"number"}
+                        placeholder={""}
+                        setter={setHighSideSecond}
+                        disabled={true}
+                    />
+                }
                 <InputFullPercentWithTitle 
                     name={"Submit Meter Photo"}
                     type={"file"}
@@ -111,7 +204,7 @@ const Step3 = ({params}) => {
                 />
                 <button 
                     className="hidden md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
-                    onClick={()=> onSubmit()}
+                    onClick={()=> onSubmitSecond()}
                 >
                     Submit
                 </button>

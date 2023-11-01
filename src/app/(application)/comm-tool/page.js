@@ -62,7 +62,7 @@ const CommToolHome = () => {
                     <p className="font-bold text-dark-grey w-full text-center">Enter the code here</p>
                     <input 
                         type="text" 
-                        className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[3rem] md:text-[5rem] text-grey text-center font-light"
+                        className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[2rem] md:text-[5rem] text-grey text-center font-light"
                         onChange={(e)=> setCode(e.target.value)}
                         placeholder="CODE" 
                     />

@@ -25,8 +25,10 @@ export const options = {
                     "client_id": process.env.UBIDOTS_CLIENT_ID,
                     "client_secret": process.env.UBIDOTS_CLIENT_SECRET
                 }
+                console.log(body)
 
                 let reqBody = [];
+                console.log(reqBody)
 
                 for(let property in body){
                     let encodedKey = encodeURIComponent(property);
@@ -39,14 +41,17 @@ export const options = {
                 console.log(reqBody)
 
                 try{
-                    let response = await fetch('https://industrial.api.ubidots.com/o/token/', {
+                    let response = await fetch('https://cs.api.ubidots.com/o/token/', {
                         method: 'POST',
                         headers:{
                             'Content-Type':'application/x-www-form-urlencoded',
                             'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
                         },
                         body: reqBody
+                        // body: new URLSearchParams(body)
                     })
+                    let data = await response.json()
+                    console.log(data)
                     if(response.ok){
                         try{
                             let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${credentials.user}`, {

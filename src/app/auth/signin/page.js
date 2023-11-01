@@ -32,7 +32,6 @@ const SignIn = () => {
                 }
                 if(ok && error === null){
                     router.push("/home")
-                    console.log(ok)
                 }
             })
             .then(()=>{
@@ -54,7 +53,6 @@ const SignIn = () => {
                 placeholder="Username" 
                 onChange={e => {
                 setUser(e.target.value)
-                console.log(user)
             }}/>
             <input 
                 className="input-base"
@@ -62,7 +60,6 @@ const SignIn = () => {
                 placeholder="Password" 
                 onChange={e => {
                 setPassword(e.target.value)
-                console.log(password)
             }}/>
             <button className="button-big mb-2" onClick={(e)=> {
                 trySignIn(user, password, e)
