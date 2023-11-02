@@ -12,7 +12,7 @@ const Portfolio = () => {
 
   const { user } = useContext(userContext)
   const [toCommission, setToCommission] = useState([])
-  console.log(user)
+
   const router = useRouter()
 
   useEffect(()=>{
@@ -20,7 +20,7 @@ const Portfolio = () => {
     user && user.devices.map(org => {
       console.log(org)
       org.monkeys !== undefined && org.monkeys.map(device => {
-        let commission_stage = device.properties.commission_stage !== undefined ? JSON.parse(device.properties.commission_stage) : undefined
+        let commission_stage = device.properties.commission_stage !== undefined ? device.properties.commission_stage : undefined
         device.properties.commission_stage = commission_stage
         if(commission_stage !== undefined && (commission_stage.stage === 'none' || commission_stage.stage === 'first reading' || commission_stage.stage === 'second reading')){
           toCommissionMonkeys.push(device)
@@ -29,8 +29,6 @@ const Portfolio = () => {
     })
     setToCommission(toCommissionMonkeys)
   },[])
-
-  console.log(toCommission)
 
   return (
     <div className="mb-32">

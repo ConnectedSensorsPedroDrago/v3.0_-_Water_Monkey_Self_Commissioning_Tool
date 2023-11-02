@@ -12,11 +12,12 @@ import { completeUser } from '@/src/functions/completeUser'
 
 const NavBar = ({session}) => {
 
-  const { setUser, user, setLoader, setPortfolio, reloadUser } = useContext(userContext)
+  const { setUser, user, setLoader, setPortfolio, reloadUser, setUserSession } = useContext(userContext)
 
   const [menu, setMenu] = useState(false)
 
   useEffect( ()=>{
+    setUserSession(session)
     completeUser(setUser, session, setLoader, user, setPortfolio)
   }, [reloadUser])
 

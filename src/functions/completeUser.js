@@ -40,11 +40,16 @@ export const completeUser = async(setUser, session, setLoader) => {
                     },
                 })
                 let data = await response.json()
+                data.results.length > 0 && data.results.forEach(device => {
+                    let commission_stage = device.properties.commission_stage ? JSON.parse(device.properties.commission_stage) : undefined
+                    device.properties.commission_stage = commission_stage
+                })
                 monkeys.push({
                     org_id: userInfo.organizations[i].id,
                     organization: userInfo.organizations[i].name,
                     monkeys: data.results.length > 0 ? data.results : undefined
                 })
+                
                 let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/?organization__label=${userInfo.organizations[i].label}`, {
                     method: 'GET',
                     headers:{
@@ -75,7 +80,8 @@ export const completeUser = async(setUser, session, setLoader) => {
                     }, 2000)
                 }
             }
-        }            
+        }
+        return {"status": "ok"}    
     }
 }
 

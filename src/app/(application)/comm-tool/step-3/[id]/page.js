@@ -5,12 +5,16 @@ import Image from 'next/image'
 import DownloadPDF from "@/public/downloadPDF.svg"
 import InputFullPercentWithTitle from '@/src/components/InputFullPercentWithTitle/page'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import requestWM from '@/src/functions/step2RequestWM'
 import Loader from '@/src/components/loader/page'
 import successTick from '@/public/successTick.svg'
+import { completeUser } from '@/src/functions/completeUser'
+import { userContext } from '@/src/context/userContext'
 
 const Step3 = ({params}) => {
+
+    const { setUser, user, setLoader, setPortfolio, userSession } = useContext(userContext)
 
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -72,8 +76,13 @@ const Step3 = ({params}) => {
             if(data.label === params.id){
                 setCommStage(JSON.parse(data.properties.commission_stage))
             }
-            setLoad(false)
-            console.log(data)
+            completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                .then(data => {
+                    console.log(data)
+                    if(data.status === 'ok'){
+                        setLoad(false)
+                    }
+                })
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
         }
@@ -107,14 +116,17 @@ const Step3 = ({params}) => {
             if(data.label === params.id){
                 setCommStage(JSON.parse(data.properties.commission_stage))
             }
-            console.log(data)
-            setLoad(false)
+            completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                .then(data => {
+                    console.log(data)
+                    if(data.status === 'ok'){
+                        setLoad(false)
+                    }
+                })
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
         }
     }
-
-    console.log(commStage)
 
   return (
     <div className='container-pages h-fit'>

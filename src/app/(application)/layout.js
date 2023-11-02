@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth'
 import { options } from '../api/auth/[...nextauth]/options'
 
 
-export default async function RootLayout({ children  }) {
+export default async function RootLayout({ children }) {
   const session = await getServerSession(options)
 
   return (
