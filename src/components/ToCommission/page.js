@@ -11,7 +11,7 @@ const ToCommission = ({device}) => {
     console.log(device)
 
   return (
-    <div className="hover:scale-[120%] duration-500 drop-shadow-2xl">
+    <div className="hover:scale-[120%] duration-500 drop-shadow-md">
          <Image 
             src={CloseSmall}
             alt="close"

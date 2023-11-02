@@ -11,6 +11,7 @@ import Loader from '@/src/components/loader/page'
 import successTick from '@/public/successTick.svg'
 import { completeUser } from '@/src/functions/completeUser'
 import { userContext } from '@/src/context/userContext'
+import YoutubeIcon from '@/public/youtubeIcon.svg'
 
 const Step3 = ({params}) => {
 
@@ -142,25 +143,33 @@ const Step3 = ({params}) => {
             error &&
             <p className='error-message'>{error}</p>
         }
-        <div>
-            <div className='flex flex-row items-center mb-[2rem]'>
-                <Link 
-                    className='flex flex-col items-center cursor-pointer hover:scale-105 duration-500'
-                    href={'@/public/pdf/Installation_Guide_Water_Monkey.pdf'}
-                    download="Water Monkey Installation Guide.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <Image
-                        alt={"Download PDF"}
-                        src={DownloadPDF}
-                        className='mr-[1rem] scale-50 md:scale-75'
+        <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Install your Water Monkey on site</h1>
+            <div className='flex flex-row justify-center items-center w-full'>
+                <div className='flex flex-row items-center mb-[2rem] w-full justify-center'>
+                    <Image 
+                        src={YoutubeIcon}
+                        alt="Youtube"
+                        className='scale-[75%] hover:scale-105 duration-500 cursor-pointer'
                     />
-                    {/* <p className='underline hover:font-bold text-[0.8rem] text-dark-grey'>Download</p> */}
-                </Link>
-                <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Download the On-site Installation Guide</h1>
+                    <h1 className="text-[1.25rem] lg:text-[1.25rem] font-normal text-center text-dark-grey">Watch the YouTube Installation Guide</h1>
+                </div>
+                <div className='flex flex-row items-center mb-[2rem] w-full justify-center'>
+                    <Link 
+                        className='flex flex-col items-center cursor-pointer hover:scale-125 duration-500'
+                        href={'@/public/pdf/Installation_Guide_Water_Monkey.pdf'}
+                        download="Water Monkey Installation Guide.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <Image
+                            alt={"Download PDF"}
+                            src={DownloadPDF}
+                            className='mr-[-1.5rem] scale-[35%] md:scale-[45%]'
+                        />
+                    </Link>
+                    <h1 className="text-[1.25rem] lg:text-[1.25rem] font-normal text-center text-dark-grey">Download the "On-site Installation Guide"</h1>
+                </div>
             </div>
-        </div>
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">After successful install...</h1>
         <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
             <div className='w-full flex flex-col'>
