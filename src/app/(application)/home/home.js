@@ -2,7 +2,6 @@
 
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import HomeOrganization from "@/src/components/homeOrganization/page"
 import Image from "next/image"
 import AddDevice from '@/public/addDevice.svg'
@@ -13,8 +12,6 @@ const Portfolio = () => {
 
   const { user } = useContext(userContext)
   const [toCommission, setToCommission] = useState([])
-
-  const router = useRouter()
 
   useEffect(()=>{
     let toCommissionMonkeys = []
