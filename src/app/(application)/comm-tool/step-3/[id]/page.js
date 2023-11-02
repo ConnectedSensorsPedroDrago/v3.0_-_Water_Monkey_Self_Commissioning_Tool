@@ -154,9 +154,9 @@ const Step3 = ({params}) => {
                     <Image
                         alt={"Download PDF"}
                         src={DownloadPDF}
-                        className='mr-[1rem] scale-75 md:scale-100'
+                        className='mr-[1rem] scale-50 md:scale-75'
                     />
-                    <p className='underline hover:font-bold text-[0.8rem] text-dark-grey'>Download</p>
+                    {/* <p className='underline hover:font-bold text-[0.8rem] text-dark-grey'>Download</p> */}
                 </Link>
                 <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Download the On-site Installation Guide</h1>
             </div>
