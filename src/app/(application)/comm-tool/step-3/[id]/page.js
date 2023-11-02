@@ -44,6 +44,7 @@ const Step3 = ({params}) => {
     }, [])
 
     const onSubmitFirst = async() => {
+        setLoad(true)
         let payload = meterType === "Single" ? 
             {"date_time": dateFirst, "low": lowSideFirst}
             : 
@@ -71,6 +72,7 @@ const Step3 = ({params}) => {
             if(data.label === params.id){
                 setCommStage(JSON.parse(data.properties.commission_stage))
             }
+            setLoad(false)
             console.log(data)
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
@@ -78,6 +80,7 @@ const Step3 = ({params}) => {
     }
 
     const onSubmitSecond = async() => {
+        setLoad(true)
         let payload = meterType === "Single" ? 
             {"date_time": dateSecond, "low": lowSideSecond}
             : 
@@ -105,6 +108,7 @@ const Step3 = ({params}) => {
                 setCommStage(JSON.parse(data.properties.commission_stage))
             }
             console.log(data)
+            setLoad(false)
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
         }

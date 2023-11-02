@@ -218,7 +218,7 @@ const Step2 = ({ params }) => {
           "key": "commission_stage",
           "text": "Commissioning Process Stage",
           "type": "json",
-          "value": JSON.stringify({first: {}, second: {}}),
+          "value": JSON.stringify({stage: "none", first: {}, second: {}}),
           "description": "Stage of the Commissioning Process"
         }
     }
@@ -227,7 +227,7 @@ const Step2 = ({ params }) => {
     }else{
       if(terms){
         setLoader(true)
-        assignPropertiesToNewWM(data, params.id)
+        assignPropertiesToNewWM(data, meterType === "Single" ? 1 : meterType === "Compound" ? 0 : undefined, params.id)
           .then(data => {
             if(data.status === "ok"){
               router.push(`/comm-tool/step-3/${params.id}`)
