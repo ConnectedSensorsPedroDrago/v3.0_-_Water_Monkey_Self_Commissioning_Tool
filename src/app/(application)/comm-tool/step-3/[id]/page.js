@@ -11,7 +11,7 @@ import Loader from '@/src/components/loader/page'
 import successTick from '@/public/successTick.svg'
 import { completeUser } from '@/src/functions/completeUser'
 import { userContext } from '@/src/context/userContext'
-import YoutubeIcon from '@/public/youtubeIcon.svg'
+import YouTubeVideo from '@/src/components/YouTubeVideo/page'
 
 const Step3 = ({params}) => {
 
@@ -33,7 +33,6 @@ const Step3 = ({params}) => {
     useEffect(()=>{
         requestWM(params.id)
             .then(data => {
-                console.log(data)
                 setLoad(false)
                 if(data.status === "ok"){
                     let commissionStage = JSON.parse(data.device.properties.commission_stage)
@@ -54,9 +53,7 @@ const Step3 = ({params}) => {
             {"date_time": dateFirst, "low": lowSideFirst}
             : 
             {"date_time": dateFirst, "low": lowSideFirst, "high": highSideFirst}
-        console.log(payload)
         try{
-            console.log(params.id)
             let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
                 method: 'PATCH',
                 headers:{
@@ -79,7 +76,6 @@ const Step3 = ({params}) => {
             }
             completeUser(setUser, userSession, setLoader, user, setPortfolio)
                 .then(data => {
-                    console.log(data)
                     if(data.status === 'ok'){
                         setLoad(false)
                     }
@@ -95,7 +91,6 @@ const Step3 = ({params}) => {
             {"date_time": dateSecond, "low": lowSideSecond}
             : 
             {"date_time": dateSecond, "low": lowSideSecond, "high": highSideSecond}
-        console.log(payload)
         try{
             let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
                 method: 'PATCH',
@@ -119,7 +114,6 @@ const Step3 = ({params}) => {
             }
             completeUser(setUser, userSession, setLoader, user, setPortfolio)
                 .then(data => {
-                    console.log(data)
                     if(data.status === 'ok'){
                         setLoad(false)
                     }
@@ -144,16 +138,15 @@ const Step3 = ({params}) => {
             <p className='error-message'>{error}</p>
         }
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Install your Water Monkey on site</h1>
-            <div className='flex flex-row justify-center items-center w-full'>
-                <div className='flex flex-row items-center mb-[2rem] w-full justify-center'>
-                    <Image 
-                        src={YoutubeIcon}
-                        alt="Youtube"
-                        className='scale-[75%] hover:scale-105 duration-500 cursor-pointer'
-                    />
-                    <h1 className="text-[1.25rem] lg:text-[1.25rem] font-normal text-center text-dark-grey">Watch the YouTube Installation Guide</h1>
+            <div className='flex flex-col md:flex-row justify-center items-center w-full mt-[1.5rem] md:mt-[1.5rem] mb-[2rem]'>
+                <div className='flex flex-col items-center w-full justify-center'>
+                    <h1 className="text-[1rem] lg:text-[1rem] font-bold text-center text-dark-grey mb-[0.5rem]">Watch the YouTube Installation Guide</h1>
+                    <YouTubeVideo 
+                        videoId="aHAi1LEUCRc" 
+                    />                   
                 </div>
-                <div className='flex flex-row items-center mb-[2rem] w-full justify-center'>
+                <div className='flex flex-col items-center w-full justify-center mt-[1rem] md:mt-[-3rem]'>
+                    <h1 className="text-[1rem] lg:text-[1rem] mb-[0.5rem] font-bold text-start md:text-center text-dark-grey">Download the "On-site Installation Guide"</h1>
                     <Link 
                         className='flex flex-col items-center cursor-pointer hover:scale-125 duration-500'
                         href={'@/public/pdf/Installation_Guide_Water_Monkey.pdf'}
@@ -161,13 +154,14 @@ const Step3 = ({params}) => {
                         target="_blank"
                         rel="noreferrer"
                     >
+                        
                         <Image
                             alt={"Download PDF"}
                             src={DownloadPDF}
-                            className='mr-[-1.5rem] scale-[35%] md:scale-[45%]'
+                            className='md:mr-[-1.5rem] md:scale-[100%]'
                         />
                     </Link>
-                    <h1 className="text-[1.25rem] lg:text-[1.25rem] font-normal text-center text-dark-grey">Download the "On-site Installation Guide"</h1>
+                    
                 </div>
             </div>
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">After successful install...</h1>
@@ -194,7 +188,7 @@ const Step3 = ({params}) => {
                         name={"High Side Meter Reading"}
                         type={"number"}
                         placeholder={commStage && commStage.first.high ? commStage.first.high : ""}
-                        setter={setHighSideSecond}
+                        setter={setHighSideFirst}
                         disabled={commStage && commStage.first.date_time ? true : false}
                     />
                 }

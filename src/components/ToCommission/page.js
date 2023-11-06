@@ -8,8 +8,6 @@ const ToCommission = ({device}) => {
     const router = useRouter()
     const [close, setClose] = useState(false)
 
-    console.log(device)
-
   return (
     <div className="hover:scale-[120%] duration-500 drop-shadow-md">
          <Image 
@@ -21,7 +19,7 @@ const ToCommission = ({device}) => {
         <div 
             key={device.id} 
             onClick={()=> router.push(`/comm-tool/step-3/${device.label}`)} 
-            className={`${close && "hidden"} ml-[0.5rem] w-[12rem] h-[12rem] rounded-md bg-blue-hard p-[0.75rem] flex flex-col justify-between items-center cursor-pointer`}
+            className={`${close && "hidden"} ml-[0.5rem] w-[12rem] h-[12rem] rounded-md bg-blue p-[0.75rem] flex flex-col justify-between items-center cursor-pointer`}
         >
             <p className="w-full text-center text-white font-thin text-[0.8rem] mt-2">Pending finish setting up</p>
             <p className="w-full text-center text-yellow font-semibold text-[1rem]">{device.properties.address}</p>
