@@ -17,6 +17,7 @@ const Step3 = ({params}) => {
 
     const { setUser, user, setLoader, setPortfolio, userSession } = useContext(userContext)
 
+    const [label, setLabel] = useState()
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
     const [highSideFirst, setHighSideFirst] = useState()
@@ -38,6 +39,7 @@ const Step3 = ({params}) => {
                     let commissionStage = JSON.parse(data.device.properties.commission_stage)
                     setMeterType(data.device.properties.meter_type)
                     setCommStage(commissionStage)
+                    setLabel(data.device.label)
                     commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
                     commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
                 }
@@ -49,77 +51,118 @@ const Step3 = ({params}) => {
 
     const onSubmitFirst = async() => {
         setLoad(true)
-        let payload = meterType === "Single" ? 
-            {"date_time": dateFirst, "low": lowSideFirst}
-            : 
-            {"date_time": dateFirst, "low": lowSideFirst, "high": highSideFirst}
+        
         try{
-            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                method: 'PATCH',
+            let payload = {"initial_meter_reading_primary": {"value": lowSideFirst}}
+            meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": lowSideFirst}, "initial_meter_reading_secondary": {"value": highSideFirst}})
+            let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
+                method: 'POST',
                 headers:{
                     'Content-Type':'application/json',
                     'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
                 },
-                body: JSON.stringify({
-                    "properties": {
-                        "commission_stage": JSON.stringify({
-                            "stage": "first reading",
-                            "first": payload,
-                            "second": commStage.second
-                        })
-                    }
-                })
+                body: JSON.stringify(payload)
             })
             let data = await response.json()
-            if(data.label === params.id){
-                setCommStage(JSON.parse(data.properties.commission_stage))
+            console.log(data)
+            if(!data.initial_meter_reading_primary){
+                setError("There was an error writting the first readings. Please try again or contact support.")
             }
-            completeUser(setUser, userSession, setLoader, user, setPortfolio)
-                .then(data => {
-                    if(data.status === 'ok'){
-                        setLoad(false)
-                    }
-                })
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+        }finally{
+            try{
+                let payload = meterType === "Single" ? 
+                    {"date_time": dateFirst, "low": lowSideFirst}
+                    : 
+                    {"date_time": dateFirst, "low": lowSideFirst, "high": highSideFirst}
+                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                    method: 'PATCH',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
+                    },
+                    body: JSON.stringify({
+                        "properties": {
+                            "commission_stage": JSON.stringify({
+                                "stage": "first reading",
+                                "first": payload,
+                                "second": commStage.second
+                            })
+                        }
+                    })
+                })
+                let data = await response.json()
+                if(data.label === params.id){
+                    setCommStage(JSON.parse(data.properties.commission_stage))
+                }
+                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                    .then(data => {
+                        if(data.status === 'ok'){
+                            setLoad(false)
+                        }
+                    })
+            }catch(e){
+                setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+            }
         }
     }
 
     const onSubmitSecond = async() => {
         setLoad(true)
-        let payload = meterType === "Single" ? 
-            {"date_time": dateSecond, "low": lowSideSecond}
-            : 
-            {"date_time": dateSecond, "low": lowSideSecond, "high": highSideSecond}
         try{
-            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                method: 'PATCH',
+            let payload = {"final_meter_reading_primary": {"value": lowSideSecond}}
+            meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": lowSideSecond}, "final_meter_reading_secondary": {"value": highSideSecond}})
+            let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
+                method: 'POST',
                 headers:{
                     'Content-Type':'application/json',
                     'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
                 },
-                body: JSON.stringify({
-                    "properties": {
-                        "commission_stage": JSON.stringify({
-                            "stage": "second reading",
-                            "first": commStage.first,
-                            "second": payload
-                        })
-                    }
-                })
+                body: JSON.stringify(payload)
             })
             let data = await response.json()
-            if(data.label === params.id){
-                setCommStage(JSON.parse(data.properties.commission_stage))
+            console.log(data)
+            if(!data.final_meter_reading_primary){
+                setError("There was an error writting the first readings. Please try again or contact support.")
             }
-            completeUser(setUser, userSession, setLoader, user, setPortfolio)
-                .then(data => {
-                    if(data.status === 'ok'){
-                        setLoad(false)
-                    }
-                })
         }catch(e){
             setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+        }finally{
+            try{
+                let payload = meterType === "Single" ? 
+                    {"date_time": dateSecond, "low": lowSideSecond}
+                    : 
+                    {"date_time": dateSecond, "low": lowSideSecond, "high": highSideSecond}
+                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                    method: 'PATCH',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
+                    },
+                    body: JSON.stringify({
+                        "properties": {
+                            "commission_stage": JSON.stringify({
+                                "stage": "second reading",
+                                "first": commStage.first,
+                                "second": payload
+                            })
+                        }
+                    })
+                })
+                let data = await response.json()
+                if(data.label === params.id){
+                    setCommStage(JSON.parse(data.properties.commission_stage))
+                }
+                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                    .then(data => {
+                        if(data.status === 'ok'){
+                            setLoad(false)
+                        }
+                    })
+            }catch(e){
+                setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
+            }
         }
     }
 

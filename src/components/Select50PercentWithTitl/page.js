@@ -1,10 +1,9 @@
 const Select50PercentWithTitle = ({name, setter, placeholder, type, disabled, elements}) => {
-  console.log(placeholder)
   return (
     <div className="flex flex-col justify-start w-full md:w-[49%]">
-        <p className="text-sm font-medium">{name}</p>
+        <p className={`${disabled === true && 'text-grey'} text-dark-grey text-sm font-medium`}>{name}</p>
         <select 
-          className={`cursor-pointer w-full input-small ${disabled === true && `disabled:text-dark-grey disabled: disabled:bg-white font-semibold`}`}
+          className={`${disabled === false && "cursor-pointer"} w-full input-small ${disabled === true && `text-dark-grey bg-white font-semibold`}`}
           onChange={(e)=> setter(e.target.value !== undefined ? e.target.value : undefined)} 
           placeholder={placeholder} 
           type={type ? type : "text"}

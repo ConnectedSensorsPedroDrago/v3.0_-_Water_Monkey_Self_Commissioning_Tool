@@ -7,7 +7,7 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
           onChange={(e)=> setter(e.target.value !== undefined ? e.target.value : undefined)} 
           placeholder={placeholder} 
           type={type ? type : "text"}
-          value={(!(placeholder.startsWith("Add")) && !(placeholder.startsWith("Repeat")) && !(type === "password") && !(name !== "Name") && !(name !== "Surname"))  ? placeholder : undefined}
+          value={((typeof(placeholder) === 'string') && !(placeholder.startsWith("Add")) && !(placeholder.startsWith("Repeat")) && !(type === "password") && !(name !== "Name") && !(name !== "Surname"))  ? placeholder : undefined}
           disabled={disabled}
         />
     </div>

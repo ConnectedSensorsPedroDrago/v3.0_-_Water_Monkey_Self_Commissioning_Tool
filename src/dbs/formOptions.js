@@ -121,5 +121,6 @@ export const roomDet = [
 
 export const unitOfCost = [
     {value: "m3", displayValue: "m3"},
-    {value: "gallons", displayValue: "gallons"}
+    {value: "gallons", displayValue: "gallons"},
+    {value: "liters", displayValue: "liters"}
 ]

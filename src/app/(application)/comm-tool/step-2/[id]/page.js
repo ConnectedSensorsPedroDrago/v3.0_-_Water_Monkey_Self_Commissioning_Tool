@@ -8,7 +8,7 @@ import Select50PercentWithTitle from "@/src/components/Select50PercentWithTitl/p
 import SelectFullPercentWithTitle from "@/src/components/SelectFullPercentWithTitl/page"
 import { useState, useEffect } from "react"
 import { State, City } from "country-state-city"
-import { countries, propType, metType, metBrand, sideSizes, flowDetails, roomDet, unitOfCost } from "@/src/dbs/formOptions"
+import { countries, propType, metType, metBrand, sideSizes, roomDet, unitOfCost } from "@/src/dbs/formOptions"
 import { useRouter } from "next/navigation"
 import assignPropertiesToNewWM from "@/src/functions/assignPropertiesToNewWM"
 import Loader from "@/src/components/loader/page"
@@ -26,16 +26,13 @@ const Step2 = ({ params }) => {
   const [zipCode, setZipCode] = useState()
   const [propertyType, setPropertyType] = useState()
   const [meterType, setMeterType] = useState()
-  const [zone, setZone] = useState()
   const [costPerUnit, setCostPerUnit] = useState()
   const [costUnit, setCostUnit] = useState()
   const [meterBrand, setMeterBrand] = useState()
   const [meterModel, setMeterModel] = useState()
   const [lowSideSize, setLowSideSize] = useState()
   const [highSideSize, setHighSideSize] = useState()
-  const [flow, setFlow] = useState()
   const [floor, setFloor] = useState()
-  const [unit, setUnit] = useState()
   const [roomDetails, setRoomDetails] = useState()
   const [terms, setTerms] = useState(false)
   
@@ -56,16 +53,13 @@ const Step2 = ({ params }) => {
           properties.building_name && setBuildingName(properties.building_name)
           properties.property_type && setPropertyType(properties.property_type)
           properties.meter_type && setMeterType(properties.meter_type)
-          properties.zone && setZone(properties.zone)
           properties.cost_per_unit && setCostPerUnit(properties.cost_per_unit)
           properties.cost_unit && setCostUnit(properties.cost_unit)
           properties.meter_brand && setMeterBrand(properties.meter_brand)
           properties.meter_model && setMeterModel(properties.meter_model)
           properties.low_side && setLowSideSize(properties.low_side)
           properties.high_side && setHighSideSize(properties.high_side)
-          properties.flow_details && setFlow(properties.flow_details)
           properties.floor && setFloor(properties.floor)
-          properties.unit && setUnit(properties.unit)
           properties.room_details && setRoomDetails(properties.room_details)
         }
       })
@@ -130,13 +124,6 @@ const Step2 = ({ params }) => {
           "value": meterType,
           "description": "Meter Type"
         },
-        "zone": {
-          "key": "zone",
-          "text": "Zone",
-          "type": "number",
-          "value": zone,
-          "description": "Zone"
-        },
         "cost_per_unit": {
           "key": "cost_per_unit",
           "text": "Cost Per Unit",
@@ -158,26 +145,12 @@ const Step2 = ({ params }) => {
           "value": roomDetails,
           "description": "Room Details"
         },
-        "flow_details": {
-          "key": "flow_details",
-          "text": "Flow",
-          "type": "text",
-          "value": flow,
-          "description": "Flow"
-        },
         "floor": {
           "key": "floor",
           "text": "Floor",
           "type": "number",
           "value": floor,
           "description": "Floor"
-        },
-        "unit": {
-          "key": "unit",
-          "text": "Unit",
-          "type": "number",
-          "value": unit,
-          "description": "Unit"
         },
         "meter_brand": {
           "key": "meter_brand",
@@ -222,7 +195,7 @@ const Step2 = ({ params }) => {
           "description": "Stage of the Commissioning Process"
         }
     }
-    if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || !highSideSize || !flow || !floor || !roomDetails){
+    if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && !highSideSize) && false) || !floor || !roomDetails){
       setError("Please complete all the required fields")
     }else{
       if(terms){
@@ -307,22 +280,20 @@ const Step2 = ({ params }) => {
               setter={setZipCode}
             />
           </div>
-          <div className="flex flex-row justify-between">
-            <Input50PercentWithTitle 
+          <InputFullPercentWithTitle 
               name={"Address"} 
               placeholder={address !== undefined ? address : ""} 
               type={"text"} 
               disabled={false} 
               setter={setAddress}
-            />
-            <Input50PercentWithTitle 
+          />
+          <InputFullPercentWithTitle 
               name={"Building Name"}
               placeholder={buildingName !== undefined ? buildingName : ""} 
               type={"text"} 
               disabled={false} 
               setter={setBuildingName}
-            />
-          </div>
+          />
           <SelectFullPercentWithTitle
             name={"Property Type"} 
             placeholder={propertyType !== undefined ? propertyType : ""} 
@@ -332,7 +303,7 @@ const Step2 = ({ params }) => {
             elements={propType}
           />
           <div className="flex flex-row justify-between">
-            <Select50PercentWithTitle 
+            <SelectFullPercentWithTitle 
               name={"Meter Type"} 
               placeholder={meterType !== undefined ? meterType : ""} 
               type={"text"} 
@@ -340,14 +311,9 @@ const Step2 = ({ params }) => {
               setter={setMeterType}
               elements={metType}
             />
-            <Input50PercentWithTitle 
-              name={"Zone (if applicable)"} 
-              placeholder={zone !== undefined ? zone : ""} 
-              type={"text"} 
-              disabled={false} 
-              setter={setZone}
-            />
           </div>
+        </div>
+        <div className="w-full md:ml-[0.5rem]">
           <div className="flex flex-row justify-between">
             <Input50PercentWithTitle 
               name={"Cost Per Unit"} 
@@ -365,8 +331,6 @@ const Step2 = ({ params }) => {
               elements={unitOfCost}
             />
           </div>
-        </div>
-        <div className="w-full md:ml-[0.5rem]">
           <SelectFullPercentWithTitle 
             name={"Room Details"} 
             placeholder={roomDetails !== undefined ? roomDetails : ""} 
@@ -375,28 +339,13 @@ const Step2 = ({ params }) => {
             setter={setRoomDetails}
             elements={roomDet}
           />
-          <SelectFullPercentWithTitle 
-            name={"Flow Details"} 
-            placeholder={flow !== undefined ? flow : ""} 
-            type={"text"} 
-            disabled={false} 
-            setter={setFlow}
-            elements={flowDetails}
-          />
           <div className="flex flex-row justify-between">
-            <Input50PercentWithTitle 
+            <InputFullPercentWithTitle 
               name={"Floor"} 
               placeholder={floor !== undefined ? floor : ""} 
               type={"number"} 
               disabled={false} 
               setter={setFloor}
-            />
-            <Input50PercentWithTitle 
-              name={"Unit (if applicable)"} 
-              placeholder={unit !== undefined ? unit : ""} 
-              type={"text"} 
-              disabled={false} 
-              setter={setUnit}
             />
           </div>
           <SelectFullPercentWithTitle 
@@ -424,10 +373,10 @@ const Step2 = ({ params }) => {
               elements={sideSizes}
             />
             <Select50PercentWithTitle 
-              name={"High Side Size"} 
+              name={meterType === "Single" ? "High Side Size (only in Compound meters)" : "High Side Size"} 
               placeholder={highSideSize !== undefined ? highSideSize : ""} 
               type={"text"} 
-              disabled={false} 
+              disabled={meterType === "Single" ? true : false} 
               setter={setHighSideSize}
               elements={sideSizes}
             />
