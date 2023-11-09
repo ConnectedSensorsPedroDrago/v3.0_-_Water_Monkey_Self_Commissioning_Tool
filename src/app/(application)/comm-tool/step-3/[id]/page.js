@@ -73,7 +73,6 @@ const Step3 = ({params}) => {
                 setError("No image was found")
                 return
             }
-            console.log(picFirst)
             const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst}.jpg`)
             uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
                 .then((snapshot)=> {
@@ -85,8 +84,8 @@ const Step3 = ({params}) => {
                         })
                         .then(async()=>{
                             try{
-                                let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst}}
-                                meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst}, "initial_meter_reading_secondary": {"value": newHighSideFirst}})
+                                let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}}
+                                meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}, "initial_meter_reading_secondary": {"value": newHighSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}})
                                 let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                                     method: 'POST',
                                     headers:{

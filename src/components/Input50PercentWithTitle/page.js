@@ -1,5 +1,4 @@
 const Input50PercentWithTitle = ({name, setter, placeholder, type, disabled}) => {
-  console.log(placeholder)
   return (
     <div className="flex flex-col justify-start w-full md:w-[49%]">
         <p className={`${disabled ? 'text-grey' : 'text-dark-grey'} text-sm font-medium`}>{name}</p>
