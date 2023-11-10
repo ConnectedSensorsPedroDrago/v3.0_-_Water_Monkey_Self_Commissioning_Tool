@@ -85,12 +85,26 @@ const User = ({ params }) => {
   const handleAddUserToOrg = async() => {
     setError('')
     setSuccess('')
-    await addUserToOrganization(userSelected.username, setLoad, orgToAdd, setError)
+    setLoad(true)
+    fetch('/api/users/add-user-to-org', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userToAdd: userSelected.username,
+        orgSelected: orgToAdd
+      })
+    })
+    .then(resp => resp.json())
     .then(data => {
-      if(data.message === "User assigned"){
+      if(data.status === "ok"){
         setReloadUser(!reloadUser)
         setSuccess("User successfully assigned to orgnization!")
+        setLoad(false)
         location.reload()
+      }else if(data.status === "error"){
+        setError(data.message)
       }
     })
   }
