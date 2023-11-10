@@ -16,7 +16,6 @@ import OrganizationsTable from "@/src/components/OrganizationsTable/page"
 import deleteUser from "@/src/functions/deleteUser"
 import updateUser from "@/src/functions/updateUser"
 import Modal from "@/src/components/modal/page"
-import addUserToOrganization from "@/src/functions/addUserToOrganization"
 
 const User = ({ params }) => {
 

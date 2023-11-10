@@ -16,7 +16,6 @@ import UserTable from "@/src/components/UserTable/page"
 import deleteOrganization from "@/src/functions/deleteOrganization"
 import Modal from "@/src/components/modal/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
-import addUserToOrganization from "@/src/functions/addUserToOrganization"
 import updateOrganization from "@/src/functions/updateOrganization"
 import removeUserFromOrganization from "@/src/functions/removeUserFromOrganization"
 
