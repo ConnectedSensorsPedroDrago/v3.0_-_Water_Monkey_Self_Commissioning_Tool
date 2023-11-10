@@ -23,7 +23,7 @@ export const completeUser = async(setUser, session, setLoader) => {
             role: data.organizations[0].role.label
         }
     } catch(e){
-        console.log("There was an error requesting the user: " + e)
+        return{"status": "error", "message": "There was an error requesting the user: " + e}
     } finally{
         let monkeys = []
         let usersMain = []

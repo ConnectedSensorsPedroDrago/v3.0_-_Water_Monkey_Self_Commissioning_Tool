@@ -10,7 +10,6 @@ import { useState, useEffect } from "react"
 import { State, City } from "country-state-city"
 import { countries, propType, metType, metBrand, sideSizes, roomDet, unitOfCost } from "@/src/dbs/formOptions"
 import { useRouter } from "next/navigation"
-import assignPropertiesToNewWM from "@/src/functions/assignPropertiesToNewWM"
 import Loader from "@/src/components/loader/page"
 import requestWM from "@/src/functions/step2RequestWM"
 
@@ -200,8 +199,20 @@ const Step2 = ({ params }) => {
     }else{
       if(terms){
         setLoader(true)
-        assignPropertiesToNewWM(data, meterType === "Single" ? 1 : meterType === "Compound" ? 0 : undefined, params.id)
+        fetch('/api/comm-tool/step-2-assign-properties-to-wm', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              props: data,
+              meterType: meterType === "Single" ? 1 : meterType === "Compound" ? 0 : undefined,
+              id: params.id
+            })
+        })
+          .then(resp => resp.json())
           .then(data => {
+            console.log(data)
             if(data.status === "ok"){
               router.push(`/comm-tool/step-3/${params.id}`)
             }else if(data.status === "error"){
@@ -209,7 +220,6 @@ const Step2 = ({ params }) => {
               setError(data.message)
             }
           })
-        setLoader(false)
       }else{
         setError("Please read and accept the Terms and Conditions and the Monitoring Agreement")
       }

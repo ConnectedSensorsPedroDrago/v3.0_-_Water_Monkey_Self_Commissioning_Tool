@@ -62,154 +62,133 @@ const Step3 = ({params}) => {
     }, [])
 
     const onSubmitFirst = async() => {
+        setError()
+        setLoad(true)
         let picURL
-        setError()
-        if(meterType === "Single" && lowSideFirst && dateFirst && lowSideFirstUnit && picFirst || meterType === "Compound" && lowSideFirst && highSideFirst && lowSideFirstUnit && highSideFirstUnit && dateFirst && picFirst){
-            setLoad(true)
-            let newLowSideFirst = lowSideFirstUnit === "m3" ? lowSideFirst : lowSideFirstUnit === "liters" ? Number(lowSideFirst)*0.001 : lowSideFirstUnit === "gallons" && Number(lowSideFirst)*0.00378541
-            let newHighSideFirst = highSideFirstUnit === "m3" ? highSideFirst : highSideFirstUnit === "liters" ? Number(highSideFirst)*0.001 : highSideFirstUnit === "gallons" && Number(highSideFirst)*0.00378541
-
-            if(picFirst === null){
-                setError("No image was found")
-                return
-            }
-            const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst}.jpg`)
-            uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
-                .then((snapshot)=> {
-                    console.log(snapshot)
-                    getDownloadURL(snapshot.ref)
-                        .then((url) =>{
-                            picURL = url.toString()
-                            console.log(picURL)
-                        })
-                        .then(async()=>{
-                            try{
-                                let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}}
-                                meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}, "initial_meter_reading_secondary": {"value": newHighSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}})
-                                let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
-                                    method: 'POST',
-                                    headers:{
-                                        'Content-Type':'application/json',
-                                        'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
-                                    },
-                                    body: JSON.stringify(payload)
-                                })
-                                let data = await response.json()
-                                console.log(data)
-                                if(!data.initial_meter_reading_primary){
-                                    setError("There was an error writting the first readings. Please try again or contact support.")
-                                }
-                            }catch(e){
-                                setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
-                            }finally{
-                                try{
-                                    let payload = meterType === "Single" ? 
-                                        {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "pic": picURL}
-                                        : 
-                                        {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "high": highSideFirst, "high_unit": highSideFirstUnit, "pic": picURL}
-                                    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                                        method: 'PATCH',
-                                        headers:{
-                                            'Content-Type':'application/json',
-                                            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
-                                        },
-                                        body: JSON.stringify({
-                                            "properties": {
-                                                "commission_stage": JSON.stringify({
-                                                    "stage": "first reading",
-                                                    "first": payload,
-                                                    "second": commStage.second
-                                                })
-                                            }
-                                        })
-                                    })
-                                    let data = await response.json()
-                                    if(data.label === params.id){
-                                        setCommStage(JSON.parse(data.properties.commission_stage))
-                                    }
-                                    completeUser(setUser, userSession, setLoader, user, setPortfolio)
-                                        .then(data => {
-                                            if(data.status === 'ok'){
-                                                setLoad(false)
-                                            }
-                                        })
-                                }catch(e){
-                                    setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
-                                }
-                            }
-                        })
-                })
-            
-            
-        }else{
-            setError("Please complete all the required fields to submit the first readings")
+        if(picFirst === null){
+            setError("No image was found")
+            return
         }
-    }
-
-    const onSubmitSecond = async() => {
-        setError()
-        if(meterType === "Single" && lowSideSecond && lowSideSecondUnit && dateSecond || meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond){
-            setLoad(true)
-            let newLowSideSecond = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(lowSideSecond)*0.00378541
-            let newHighSideSecond = highSideSecondUnit === "m3" ? highSideSecond : highSideSecondUnit === "liters" ? Number(highSideSecond)*0.001 : highSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541
-
-            try{
-                let payload = {"final_meter_reading_primary": {"value": newLowSideSecond}}
-                meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": newLowSideSecond}, "final_meter_reading_secondary": {"value": newHighSideSecond}})
-                let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
-                    method: 'POST',
-                    headers:{
-                        'Content-Type':'application/json',
-                        'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
-                    },
-                    body: JSON.stringify(payload)
-                })
-                let data = await response.json()
-                console.log(data)
-                if(!data.final_meter_reading_primary){
-                    setError("There was an error writting the first readings. Please try again or contact support.")
-                }
-            }catch(e){
-                setError("There was an error writting the first readings: " + e + ". Please try again or contact support.")
-            }finally{
-                try{
-                    let payload = meterType === "Single" ? 
-                        {"date_time": dateSecond, "low": newLowSideSecond}
-                        : 
-                        {"date_time": dateSecond, "low": newLowSideSecond, "high": newHighSideSecond}
-                    let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                        method: 'PATCH',
-                        headers:{
-                            'Content-Type':'application/json',
-                            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
-                        },
-                        body: JSON.stringify({
-                            "properties": {
-                                "commission_stage": JSON.stringify({
-                                    "stage": "second reading",
-                                    "first": commStage.first,
-                                    "second": payload
+        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst}.jpg`)
+        uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
+            .then((snapshot)=> {
+                console.log(snapshot)
+                getDownloadURL(snapshot.ref)
+                    .then((url) =>{
+                        picURL = url.toString()
+                        console.log(picURL)
+                    })
+                    .then(()=>{
+                        fetch('/api/comm-tool/step-3-first-readings', {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                meterType: meterType,
+                                lowSideFirst: lowSideFirst,
+                                dateFirst: dateFirst,
+                                lowSideFirstUnit: lowSideFirstUnit,
+                                picFirst: picFirst,
+                                highSideFirst: highSideFirst,
+                                highSideFirstUnit: highSideFirstUnit,
+                                org: org,
+                                params: params,
+                                user: user,
+                                commStage: commStage,
+                                picURL: picURL,
+                                setUser: setUser,
+                                userSession: userSession,
+                                setLoader: setLoader,
+                                setPortfolio: setPortfolio
+                            })
+                        })
+                        .then(data => data.json())
+                        .then(response => {
+                            console.log(response)
+                            if(response.status === "error"){
+                                setError(response.message)
+                                setLoad(false)
+                            }
+                            if(response.status === "ok"){
+                                setCommStage(JSON.parse(response.commission_stage))
+                                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                                .then(data => {
+                                    if(data.status === 'ok'){
+                                        setLoad(false)
+                                    }else if(data.status === "error"){
+                                        setError(data.message)
+                                    }
                                 })
                             }
                         })
                     })
-                    let data = await response.json()
-                    if(data.label === params.id){
-                        setCommStage(JSON.parse(data.properties.commission_stage))
-                    }
-                    completeUser(setUser, userSession, setLoader, user, setPortfolio)
-                        .then(data => {
-                            if(data.status === 'ok'){
+            })
+    }
+
+    const onSubmitSecond = async() => {
+        setError()
+        setLoad(true)
+        let picURL
+        if(picSecond === null){
+            setError("No image was found")
+            return
+        }
+        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond}.jpg`)
+        uploadBytes(imageRef, picSecond, {contentType: 'image/jpg'})
+            .then((snapshot)=> {
+                console.log(snapshot)
+                getDownloadURL(snapshot.ref)
+                    .then((url) =>{
+                        picURL = url.toString()
+                        console.log(picURL)
+                    })
+                    .then(()=>{
+                        fetch('/api/comm-tool/step-3-second-readings', {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                meterType: meterType,
+                                lowSideSecond: lowSideSecond,
+                                dateSecond: dateSecond,
+                                lowSideSecondUnit: lowSideSecondUnit,
+                                picSecond: picSecond,
+                                highSideSecond: highSideSecond,
+                                highSideSecondUnit: highSideSecondUnit,
+                                org: org,
+                                params: params,
+                                user: user,
+                                commStage: commStage,
+                                picURL: picURL,
+                                setUser: setUser,
+                                userSession: userSession,
+                                setLoader: setLoader,
+                                setPortfolio: setPortfolio
+                            })
+                        })
+                        .then(data => data.json())
+                        .then(response => {
+                            console.log(response)
+                            if(response.status === "error"){
+                                setError(response.message)
                                 setLoad(false)
                             }
+                            if(response.status === "ok"){
+                                setCommStage(JSON.parse(response.commission_stage))
+                                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                                .then(data => {
+                                    if(data.status === 'ok'){
+                                        setLoad(false)
+                                    }else if(data.status === "error"){
+                                        setError(data.message)
+                                    }
+                                })
+                            }
                         })
-                }catch(e){
-                    setError("There was an error writting the second readings: " + e + ". Please try again or contact support.")
-                }
-            }
-        }else{
-            setError("Please complete all the required fields to submit the second readings")
-        }
+                    })
+            })
     }
 
   return (
@@ -234,8 +213,8 @@ const Step3 = ({params}) => {
                     <h1 className="text-[1rem] lg:text-[1rem] mb-[0.5rem] font-bold text-start md:text-center text-dark-grey">Download the "On-site Installation Guide"</h1>
                     <Link 
                         className='flex flex-col items-center cursor-pointer hover:scale-125 duration-500'
-                        href={'@/public/pdf/Installation_Guide_Water_Monkey.pdf'}
-                        download="Water Monkey Installation Guide.pdf"
+                        href={'https://firebasestorage.googleapis.com/v0/b/wm-readings-storage.appspot.com/o/Installation%20Guide_Water%20Monkey.pdf?alt=media&token=cb7d9760-0a69-4a62-b875-0d129d332faf'}
+                        download={'https://firebasestorage.googleapis.com/v0/b/wm-readings-storage.appspot.com/o/Installation%20Guide_Water%20Monkey.pdf?alt=media&token=cb7d9760-0a69-4a62-b875-0d129d332faf'}
                         target="_blank"
                         rel="noreferrer"
                     >
@@ -252,11 +231,11 @@ const Step3 = ({params}) => {
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">After successful install...</h1>
         <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
             <div className='w-full flex flex-col'>
-                <p className={`${commStage && commStage.first.date_time ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
+                <p className={`${(commStage && (commStage.first.date_time !== undefined)) ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
                 <InputFullPercentWithTitle 
                     name={"Date and Time"}
                     type={"datetime-local"}
-                    placeholder={commStage && commStage.first.date_time ? commStage.first.date_time : ""}
+                    placeholder={(commStage && commStage.first.date_time) ? commStage.first.date_time : ""}
                     setter={setDateFirst}
                     disabled={commStage && commStage.first.date_time ? true : false}
                 />

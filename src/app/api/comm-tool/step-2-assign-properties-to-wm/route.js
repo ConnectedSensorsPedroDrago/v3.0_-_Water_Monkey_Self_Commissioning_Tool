@@ -1,6 +1,11 @@
 import { toTimestamp } from "@/src/functions/toTimestamp"
 
-export default async function assignPropertiesToNewWM(props, meterType, id){
+export async function POST(req){
+
+    const { props, meterType, id } = await req.json()
+
+    // console.log(props, meterType, id)
+
     let payload = {
         "properties": {
             "country": props.country.value,
@@ -37,9 +42,8 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
             })
         })
         let data = await response.json()
-        console.log(data)
         if(!data.properties){
-            return {"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}))
         }
         try{
             let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
@@ -78,18 +82,18 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
                         let data = await response.json()
                         console.log(data)
                         if(data.meter_type){
-                            return {"status": "ok"}
+                            return new Response(JSON.stringify({"status": "ok"}))
                         }else{
-                            return {"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}
+                            return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
                         }
                     }catch(e){
                         console.log("There was an error writing the meter type property" + e +  ". Please try again or contact support")
                     }
                 }else{
-                    return {"status": "ok"}
+                    return new Response(JSON.stringify({"status": "ok"}))
                 }
             }else{
-                return {"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}
+                return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}))
             }
         }catch(e){
             console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
