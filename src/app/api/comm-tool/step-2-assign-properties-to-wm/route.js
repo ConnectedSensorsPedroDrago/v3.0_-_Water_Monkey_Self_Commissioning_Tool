@@ -4,8 +4,6 @@ export async function POST(req){
 
     const { props, meterType, id } = await req.json()
 
-    // console.log(props, meterType, id)
-
     let payload = {
         "properties": {
             "country": props.country.value,
@@ -87,7 +85,8 @@ export async function POST(req){
                             return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
                         }
                     }catch(e){
-                        console.log("There was an error writing the meter type property" + e +  ". Please try again or contact support")
+                        // console.log("There was an error writing the meter type property" + e +  ". Please try again or contact support")
+                        return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property" + e +  ". Please try again or contact support"}))
                     }
                 }else{
                     return new Response(JSON.stringify({"status": "ok"}))
@@ -96,9 +95,11 @@ export async function POST(req){
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}))
             }
         }catch(e){
-            console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+            // console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+        // console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+        return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
     }
 }

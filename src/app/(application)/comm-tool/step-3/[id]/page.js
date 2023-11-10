@@ -9,7 +9,6 @@ import { useState, useEffect, useContext } from 'react'
 import requestWM from '@/src/functions/step2RequestWM'
 import Loader from '@/src/components/loader/page'
 import successTick from '@/public/successTick.svg'
-import { completeUser } from '@/src/functions/completeUser'
 import { userContext } from '@/src/context/userContext'
 import YouTubeVideo from '@/src/components/YouTubeVideo/page'
 import Input50PercentWithTitle from '@/src/components/Input50PercentWithTitle/page'
@@ -112,9 +111,20 @@ const Step3 = ({params}) => {
                             }
                             if(response.status === "ok"){
                                 setCommStage(JSON.parse(response.commission_stage))
-                                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                                fetch('/api/auth/complete-user', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        session: userSession,
+                                    })
+                                })
+                                .then(res => res.json())
                                 .then(data => {
                                     if(data.status === 'ok'){
+                                        console.log(data)
+                                        setUser(data.user_info)
                                         setLoad(false)
                                     }else if(data.status === "error"){
                                         setError(data.message)
@@ -177,9 +187,20 @@ const Step3 = ({params}) => {
                             }
                             if(response.status === "ok"){
                                 setCommStage(JSON.parse(response.commission_stage))
-                                completeUser(setUser, userSession, setLoader, user, setPortfolio)
+                                fetch('/api/auth/complete-user', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        session: userSession,
+                                    })
+                                })
+                                .then(res => res.json())
                                 .then(data => {
                                     if(data.status === 'ok'){
+                                        console.log(data)
+                                        setUser(data.user_info)
                                         setLoad(false)
                                     }else if(data.status === "error"){
                                         setError(data.message)

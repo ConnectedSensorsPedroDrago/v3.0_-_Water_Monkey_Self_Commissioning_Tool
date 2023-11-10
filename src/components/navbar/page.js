@@ -8,17 +8,30 @@ import Link from 'next/link'
 import NavBarMenu from '../navbarMenu/page'
 import { useState, useEffect, useContext } from 'react'
 import { userContext } from '@/src/context/userContext'
-import { completeUser } from '@/src/functions/completeUser'
 
 const NavBar = ({session}) => {
 
-  const { setUser, user, setLoader, setPortfolio, reloadUser, setUserSession } = useContext(userContext)
+  const { setUser, user, setLoader, reloadUser, setUserSession } = useContext(userContext)
 
   const [menu, setMenu] = useState(false)
 
   useEffect( ()=>{
     setUserSession(session)
-    completeUser(setUser, session, setLoader, user, setPortfolio)
+    fetch('/api/auth/complete-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        session: session,
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setUser(data.user_info)
+      setLoader(false)
+    })
   }, [reloadUser])
 
   return (

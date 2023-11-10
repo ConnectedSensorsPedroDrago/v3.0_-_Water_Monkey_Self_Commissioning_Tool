@@ -7,7 +7,6 @@ import WarningSign from "@/src/components/WarningSign/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
-import assignWMToOrg from "@/src/functions/assignWMToOrg"
 import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
 
@@ -17,22 +16,37 @@ const CommToolHome = () => {
     const [code, setCode] = useState()
     const [org, setOrg] = useState()
     const [loader, setLoader] = useState(false)
-    const [error, setError] = useState('')
+    const [error, setError] = useState()
     
     const router = useRouter()
 
     const onSubmit = () => {
         setLoader(true)
-        assignWMToOrg(code, org)
-        .then((data)=> {
+        setError()
+        if(code === undefined || org === undefined){
+            setError("Please add the code and choose an organization to assign the Water Monkey to.")
             setLoader(false)
-            console.log(data)
-            if(data.status === 'ok'){
-                router.push(`/comm-tool/step-2/${data.monkey}`)
-            }else if(data.status === 'error'){
-                setError(data.message)
-            }
-        })
+        }else{
+            fetch('/api/comm-tool/step-1-assign-wm-to-org', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code: code,
+                    org: org
+                })
+            })
+            .then(resp => resp.json())
+            .then((data)=> {
+                setLoader(false)
+                if(data.status === 'ok'){
+                    router.push(`/comm-tool/step-2/${data.monkey}`)
+                }else if(data.status === 'error'){
+                    setError(data.message)
+                }
+            })
+        }
     }
 
   return (
@@ -63,7 +77,7 @@ const CommToolHome = () => {
                     <input 
                         type="text" 
                         className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[2rem] md:text-[5rem] text-grey text-center font-light"
-                        onChange={(e)=> setCode(e.target.value)}
+                        onChange={e => setCode(e.target.value)}
                         placeholder="CODE" 
                     />
                 </div>
