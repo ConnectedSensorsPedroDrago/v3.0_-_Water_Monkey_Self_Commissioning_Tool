@@ -1,5 +1,5 @@
 export const getMonkeys = (user, setPortfolio) => {
-    let monkeys = []
+    
     console.log(user)
 
     let devices

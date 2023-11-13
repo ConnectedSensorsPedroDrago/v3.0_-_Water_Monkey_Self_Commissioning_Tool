@@ -11,7 +11,6 @@ import { State, City } from "country-state-city"
 import { countries, propType, metType, metBrand, sideSizes, roomDet, unitOfCost } from "@/src/dbs/formOptions"
 import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
-import requestWM from "@/src/functions/step2RequestWM"
 
 const Step2 = ({ params }) => {
 
@@ -38,7 +37,17 @@ const Step2 = ({ params }) => {
   const router = useRouter()
   
   useEffect(()=> {
-    requestWM(params.id)
+    // requestWM(params.id)
+    fetch('/api/devices/water-monkey/get-device', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: params.id
+      })
+    })
+      .then(res => res.json())
       .then(data => {
         if(data.status === "error"){
           setError(data.message)

@@ -7,7 +7,6 @@ import HighUsage from '@/public/monkeyAlerts/highUsage.svg'
 import Leak from '@/public/monkeyAlerts/Leak.svg'
 import LeakPercentage from '@/public/monkeyAlerts/leakPercentage.svg'
 import { useEffect, useState } from "react"
-import { getAlerts } from "@/src/functions/getAlerts"
 import Link from "next/link"
 
 const HomeMonkey = ({monkey}) => {
@@ -17,11 +16,24 @@ const HomeMonkey = ({monkey}) => {
 
     useEffect(()=>{
         monkey.properties.commission_stage !== undefined && setcommissionStage(monkey.properties.commission_stage)
-        // setcommissionStage(JSON.parse(monkey.properties.commission_stage))
-        getAlerts(monkey.label, setAlerts)
-    }, [])
 
-    console.log(commissionStage)
+        fetch('/api/devices/water-monkey/get-alerts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                device: monkey.label
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if(data.status === "ok"){
+                setAlerts(data.alerts)
+            }
+        })
+    }, [])
 
   return (
     <div className='w-full h-30 md:max-h30 flex flex-row items-center justify-between border-b-[0.5px] border-grey flex-wrap lg:p-1'>
