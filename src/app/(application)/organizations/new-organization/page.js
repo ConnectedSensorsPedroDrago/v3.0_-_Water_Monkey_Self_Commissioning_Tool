@@ -8,7 +8,6 @@ import SideMenu from "@/src/components/sideMenu/page"
 import Input50PercentWithTitle from "@/src/components/Input50PercentWithTitle/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
-import createOrganization from "@/src/functions/createOrganization"
 
 const NewOrganization = () => {
     
@@ -26,19 +25,35 @@ const NewOrganization = () => {
     const handleSubmit = async () => {
       setError('')
       setSuccess('')
+      setLoad(true)
        if(name.length < 1 || address.length < 1 || description.length < 1){
         setError("Please fill all the required fields")
        }else{
-        await createOrganization(name, address, description, setLoad, setError, user)
+        fetch('/api/organizations/create-organization', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,
+            address: address,
+            description: description,
+            user: user
+          })
+        })
+        .then(res => res.json())
         .then(data => {
           console.log(data)
-          if(data.message === "Org created"){
+          setLoad(false)
+          if(data.status === "ok"){
             setSuccess(`Organization ${name} successfully created! Redirecting you to it...`)
             setReloadUser(!reloadUser)
             setTimeout(()=>{
               router.push(`/organizations/${data.id}`)
-            }, 1500)
-          } else {}
+            }, 5000)
+          } else if(data.status === "error"){
+            setError(data.message)
+          }
         })
        }
     }

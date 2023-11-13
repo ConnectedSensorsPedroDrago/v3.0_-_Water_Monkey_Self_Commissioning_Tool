@@ -13,8 +13,6 @@ import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 import OrganizationsTable from "@/src/components/OrganizationsTable/page"
-import deleteUser from "@/src/functions/deleteUser"
-import updateUser from "@/src/functions/updateUser"
 import Modal from "@/src/components/modal/page"
 
 const User = ({ params }) => {
@@ -47,44 +45,69 @@ const User = ({ params }) => {
   }, [user.users])
 
   const handleDelete = async() => {
+    setLoad(true)
     setModal(false)
     setError('')
     setSuccess('')
-    await deleteUser(params.id, setLoad, setMessage, setReloadUser, reloadUser)
+    fetch('/api/users/delete-user', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: params.id
+      })
+    })
+    .then(res => res.json())
     .then(data => {
-      if(data.message === "user deleted"){
-        setSuccess('User successfully deleted, redirecting you to Users...')
+      setLoad(false)
+      if(data.status === "ok"){
         setReloadUser(!reloadUser)
+        setMessage('User successfully deleted, redirecting you to Users...')
+        setSuccess('User successfully deleted, redirecting you to Users...')
         setTimeout(()=>{
           router.push('/users')
-        }, 1500)
-      } else {
-        setError('There was an error trying to delete the user, please try again or contact support')
+        }, 5000)
+      } else if(data.status === "error") {
+        setError(data.message)
       }
     })
   }
 
   const handleUpdate = async() => {
+    setLoad(true)
     setError('')
     setSuccess('')
-    await updateUser(params.id, name, surname, setLoad)
+    fetch('/api/users/update-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: params.id,
+        firstName: name,
+        lastName: surname
+      })
+    })
+    .then(res => res.json())
     .then(data => {
-      if(data.data.firstName === name && data.data.lastName === surname){
+      setLoad(false)
+      if(data.status === "ok"){
         setSuccess('User updated successfully!')
         setReloadUser(!reloadUser)
         setTimeout(()=>{
           router.push(`/users/${params.id}`)
-        }, 1500)
+        }, 5000)
       }else{
-        setError('There was an error trying to update the user, please try again or contact support')
+        setError(data.message)
       }
     })
   }
 
   const handleAddUserToOrg = async() => {
+    setLoad(true)
     setError('')
     setSuccess('')
-    setLoad(true)
     fetch('/api/users/add-user-to-org', {
       method: 'POST',
       headers: {
@@ -97,10 +120,10 @@ const User = ({ params }) => {
     })
     .then(resp => resp.json())
     .then(data => {
+      setLoad(false)
       if(data.status === "ok"){
         setReloadUser(!reloadUser)
         setSuccess("User successfully assigned to orgnization!")
-        setLoad(false)
         location.reload()
       }else if(data.status === "error"){
         setError(data.message)

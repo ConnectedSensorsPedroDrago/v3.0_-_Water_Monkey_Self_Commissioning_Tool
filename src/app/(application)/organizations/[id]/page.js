@@ -51,18 +51,30 @@ const Organization = ({ params }) => {
 
   const handleDelete = async() => {
     setModal(false)
+    setLoad(true)
     setModalMessage("")
     setError('')
     setSuccess('')
-    await deleteOrganization(params.id, setMessage, setLoad, setReloadUser, setError, reloadUser)
+    fetch('/api/organizations/delete-organization', {
+      method: 'DELETE',
+      headers: {
+        'Conent-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        org: params.id
+      })
+    })
+    .then(res => res.json())
     .then(data => {
-      if(data.message === "Organization deleted"){
+      if(data.status === "ok"){
+        setLoad(false)
+        setReloadUser(!reloadUser)
         setSuccess('Organization successfully deleted, redirecting you to Users...')
         setTimeout(()=>{
           router.push('/organizations')
-        }, 500)
-      } else {
-        setError('There was an error trying to delete the organization, please try again or contact support')
+        }, 5000)
+      } else if(data.status === "error") {
+        setError(data.message)
       }
     })
   }
@@ -70,17 +82,30 @@ const Organization = ({ params }) => {
   const handleUpdate = async() => {
     setError('')
     setSuccess('')
-    await updateOrganization(params.id, address, description, setLoad)
+    setLoad(true)
+    // await updateOrganization(params.id, address, description, setLoad)
+    fetch('/api/organizations/update-organization', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          org: params.id,
+          address: address,
+          description: description
+        })
+    })
+    .then(res => res.json())
     .then(data => {
-      console.log(data)
-      if(data.data.description === description || data.data.properties.address === address){
+      setLoad(false)
+      if(data.status === "ok"){
         setSuccess('Organization updated successfully!')
         setReloadUser(!reloadUser)
         setTimeout(()=>{
           router.push(`/organizations/${params.id}`)
-        }, 2500)
-      }else{
-        setError('There was an error trying to update the organization, please try again or contact support')
+        }, 5000)
+      }else if(data.status === "error"){
+        setError(data.message)
       }
     })
   }
@@ -112,16 +137,30 @@ const Organization = ({ params }) => {
   }
 
   const handleRemove = async(userToRemove) => {
+    setLoad(true)
     setModal(false)
     setError('')
     setSuccess('')
     setModalMessage("")
-    await removeUserFromOrganization(userToRemove, setLoad, orgSelected.label, setError)
+    fetch('/api/organizations/remove-user-from-organization', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userToRemove: userToRemove,
+        orgSelected: orgSelected.label
+      })
+    })
+    .then(res => res.json())
     .then(data => {
-      if(data.message === "User removed"){
+      setLoad(false)
+      if(data.status === "ok"){
         setReloadUser(!reloadUser)
         setSuccess("User successfully removed from orgnization!")
         location.reload()
+      }else if(data.status === "error"){
+        setError(data.message)
       }
     })
   }

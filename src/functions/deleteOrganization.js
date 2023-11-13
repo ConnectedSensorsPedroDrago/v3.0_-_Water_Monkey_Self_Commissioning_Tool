@@ -10,13 +10,14 @@ export default async function deleteOrganization(org, setMessage, setLoad, setRe
             },
         })
         if(response.ok){
-            setReloadUser(!reloadUser)
-            setMessage('Organization successfully deleted, redirecting you to Users...')
-            setLoad(false)
-            return {message: "Organization deleted"}
+            // setReloadUser(!reloadUser)
+            // setMessage('Organization successfully deleted, redirecting you to Users...')
+            // setLoad(false)
+            return new Response(JSON.stringify({"status": "ok", "message": "Organization deleted"}))
         }
     }catch(e){
-        setLoad(false)
-        setError("There was an error deleting the organization: " + e + " . Please try again or contact support")
+        // setLoad(false)
+        console.log("There was an error deleting the organization: " + e + " . Please try again or contact support")
+        return new Response(JSON.stringify({"status": "error", "message": "There was an error deleting the organization: " + e + " . Please try again or contact support"}))
     }
 }

@@ -8,7 +8,6 @@ import SideMenu from "@/src/components/sideMenu/page"
 import Input50PercentWithTitle from "@/src/components/Input50PercentWithTitle/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
 import CheckBox from "@/src/components/CheckBox/page"
-import createUserWithOrgs from "@/src/functions/createUserWithOrgs"
 
 const NewUser = () => {
     
@@ -43,15 +42,34 @@ const NewUser = () => {
             console.log({username: username, email: email, name: name, lastName: lastName, password: password, repeatPassword: repeatPassword, role: role, organizations: organizations})
             setError('')
             setLoad(true)
-            await createUserWithOrgs(username, email, name, lastName, password, role, organizations, setError, setLoad, setUser)
+            // await createUserWithOrgs(username, email, name, lastName, password, role, organizations, setError, setLoad, setUser)
+            fetch('/api/users/create-user-with-orgs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    name: name,
+                    lastName:lastName,
+                    role: role,
+                    password: password,
+                    organizations: organizations
+                })
+            })
+            .then(res => res.json())
             .then(data => {
                 console.log(data)
+                setLoad(false)
                 setReloadUser(!reloadUser)
-                if(data.message === "User created"){
+                if(data.status === "ok"){
                     setSuccess(`User "${username}" successfully created! Redirecting you to the new user...`)
                     setTimeout(()=>{
                         router.push(`/users/${data.id}`)
-                    },1500)
+                    },5000)
+                }else if(data.status === "error"){
+                    setError(data.message)
                 }
             })
         }
