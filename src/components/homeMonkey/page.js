@@ -28,12 +28,11 @@ const HomeMonkey = ({monkey}) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             if(data.status === "ok"){
                 setAlerts(data.alerts)
             }
         })
-    }, [])
+    }, [monkey])
 
   return (
     <div className='w-full h-30 md:max-h30 flex flex-row items-center justify-between border-b-[0.5px] border-grey flex-wrap lg:p-1'>

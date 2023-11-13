@@ -42,7 +42,7 @@ const User = ({ params }) => {
     } else {
         setUserSelected("Not Found")
     }
-  }, [user.users])
+  }, [user.users, params])
 
   const handleDelete = async() => {
     setLoad(true)

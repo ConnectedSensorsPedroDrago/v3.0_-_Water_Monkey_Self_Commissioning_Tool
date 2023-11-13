@@ -37,7 +37,6 @@ const Step2 = ({ params }) => {
   const router = useRouter()
   
   useEffect(()=> {
-    // requestWM(params.id)
     fetch('/api/devices/water-monkey/get-device', {
       method: 'POST',
       headers: {
@@ -72,7 +71,7 @@ const Step2 = ({ params }) => {
         }
       })
       .then(()=> setLoader(false))
-  }, [])
+  },[params.id])
 
   const onSubmit = async() => {
     let data = {

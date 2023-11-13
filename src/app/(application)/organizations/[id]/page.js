@@ -13,11 +13,8 @@ import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 import UserTable from "@/src/components/UserTable/page"
-import deleteOrganization from "@/src/functions/deleteOrganization"
 import Modal from "@/src/components/modal/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
-import updateOrganization from "@/src/functions/updateOrganization"
-import removeUserFromOrganization from "@/src/functions/removeUserFromOrganization"
 
 const Organization = ({ params }) => {
 
@@ -47,7 +44,7 @@ const Organization = ({ params }) => {
     } else {
         setOrgSelected("Not Found")
     }
-  }, [user.users])
+  }, [user.users, params, user.organizations])
 
   const handleDelete = async() => {
     setModal(false)

@@ -145,6 +145,7 @@ const Register = () => {
           <Image
             src={loaderBig}
             className="mb-8"
+            alt="Loader"
           />        
           <p className="font-semibold text-2xl text-purple">User and organization created!<br/><br/>Redirecting you to sign in page</p>
         </div>

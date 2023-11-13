@@ -16,7 +16,6 @@ const Portfolio = () => {
   useEffect(()=>{
     let toCommissionMonkeys = []
     user && user.devices.map(org => {
-      console.log(org)
       org.monkeys !== undefined && org.monkeys.map(device => {
         let commission_stage = device.properties.commission_stage !== undefined ? device.properties.commission_stage : undefined
         device.properties.commission_stage = commission_stage
@@ -26,7 +25,7 @@ const Portfolio = () => {
       })
     })
     setToCommission(toCommissionMonkeys)
-  },[])
+  },[user])
 
   return (
     <div className="mb-32">

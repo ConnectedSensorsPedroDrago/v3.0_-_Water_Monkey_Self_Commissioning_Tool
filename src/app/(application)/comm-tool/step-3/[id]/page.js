@@ -6,7 +6,6 @@ import DownloadPDF from "@/public/downloadPDF.svg"
 import InputFullPercentWithTitle from '@/src/components/InputFullPercentWithTitle/page'
 import Link from 'next/link'
 import { useState, useEffect, useContext } from 'react'
-import requestWM from '@/src/functions/step2RequestWM'
 import Loader from '@/src/components/loader/page'
 import successTick from '@/public/successTick.svg'
 import { userContext } from '@/src/context/userContext'
@@ -21,7 +20,6 @@ const Step3 = ({params}) => {
 
     const { setUser, user, setLoader, setPortfolio, userSession } = useContext(userContext)
 
-    const [label, setLabel] = useState()
     const [org, setOrg] = useState()
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -41,16 +39,23 @@ const Step3 = ({params}) => {
     const [commStage, setCommStage] = useState()
     
     useEffect(()=>{
-        requestWM(params.id)
+        fetch('/api/devices/water-monkey/get-device', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: params.id
+            })
+        })
+            .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setLoad(false)
                 if(data.status === "ok"){
                     let commissionStage = JSON.parse(data.device.properties.commission_stage)
                     setMeterType(data.device.properties.meter_type)
                     setOrg(data.device.organization.name)
                     setCommStage(commissionStage)
-                    setLabel(data.device.label)
                     commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
                     commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
                 }
@@ -58,7 +63,7 @@ const Step3 = ({params}) => {
                     setError(data.message)
                 }
             })
-    }, [])
+    }, [params])
 
     const onSubmitFirst = async() => {
         setError()
@@ -231,7 +236,7 @@ const Step3 = ({params}) => {
                     />                   
                 </div>
                 <div className='flex flex-col items-center w-full justify-center mt-[1rem] md:mt-[-3rem]'>
-                    <h1 className="text-[1rem] lg:text-[1rem] mb-[0.5rem] font-bold text-start md:text-center text-dark-grey">Download the "On-site Installation Guide"</h1>
+                    <h1 className="text-[1rem] lg:text-[1rem] mb-[0.5rem] font-bold text-start md:text-center text-dark-grey">Download the On-site Installation Guide</h1>
                     <Link 
                         className='flex flex-col items-center cursor-pointer hover:scale-125 duration-500'
                         href={'https://firebasestorage.googleapis.com/v0/b/wm-readings-storage.appspot.com/o/Installation%20Guide_Water%20Monkey.pdf?alt=media&token=cb7d9760-0a69-4a62-b875-0d129d332faf'}
