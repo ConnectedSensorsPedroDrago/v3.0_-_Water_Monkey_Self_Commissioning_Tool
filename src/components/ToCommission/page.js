@@ -26,7 +26,7 @@ const ToCommission = ({device}) => {
             <p className="w-full text-center text-yellow font-semibold text-[0.8rem] mt-0">({device.organization.name})</p>
             <div>
                 <p className="w-full text-center text-white font-thin text-[0.75rem]">Status</p>
-                <p className="w-full text-center text-white font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending first meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending second meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Comissioning Failed, please try again"}</p>
+                <p className="w-full text-center text-white font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending first meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending second meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Comissioning failed, please try again"}</p>
             </div>
         </div>
     </div>

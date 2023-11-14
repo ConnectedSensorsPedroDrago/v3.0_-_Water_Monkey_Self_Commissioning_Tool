@@ -13,6 +13,9 @@
   .container-pages {
     @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 pb-8;
   }
+  .container-dashboard {
+    @apply flex flex-col justify-start items-center w-screen h-screen pt-36;
+  }
   .container-pages-scroll {
     @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 overflow-hidden;
   }
@@ -44,7 +47,7 @@
     -webkit-text-stroke: 0.45px white;
   }
   .error-message {
-    @apply text-red font-semibold md:text-lg mt-4;
+    @apply text-red font-semibold text-center md:text-lg mt-4;
   }
   .success-message {
     @apply text-green font-semibold text-center md:text-lg mt-4;
