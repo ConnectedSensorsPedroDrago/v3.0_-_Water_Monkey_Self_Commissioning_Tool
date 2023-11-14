@@ -5,7 +5,7 @@ import HomeMonkeyLogo from '@/public/homeMonkeyLogo.svg'
 import DeviceOffline from '@/public/monkeyAlerts/deviceOffline.svg'
 import HighUsage from '@/public/monkeyAlerts/highUsage.svg'
 import Leak from '@/public/monkeyAlerts/Leak.svg'
-import LeakPercentage from '@/public/monkeyAlerts/leakPercentage.svg'
+import LeakPercentage from '@/public/monkeyAlerts/LeakPercentage.svg'
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
