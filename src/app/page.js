@@ -2,13 +2,16 @@
 
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Header() {
 
   const router = useRouter()
-  setTimeout(()=>{
+  useEffect(()=>{
+    setTimeout(()=>{
     router.push("/home")
   },100)
+  }, [])
   
   return (
     <>
