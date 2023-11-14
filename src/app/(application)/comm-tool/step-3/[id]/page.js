@@ -15,6 +15,7 @@ import Select50PercentWithTitle from '@/src/components/Select50PercentWithTitl/p
 import { unitOfCost } from '@/src/dbs/formOptions'
 import { storage } from '@/src/firebase/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import ButtonSmall from '@/src/components/buttonSmall/page'
 
 const Step3 = ({params}) => {
 
@@ -37,6 +38,7 @@ const Step3 = ({params}) => {
     const [load, setLoad] = useState(true)
     const [error, setError] = useState()
     const [commStage, setCommStage] = useState()
+    const [success, setSuccess] = useState()
     
     useEffect(()=>{
         fetch('/api/devices/water-monkey/get-device', {
@@ -58,6 +60,7 @@ const Step3 = ({params}) => {
                     setCommStage(commissionStage)
                     commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
                     commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
+                    commissionStage.stage === 'failed' && setError("Commissioning failed, please try again")
                 }
                 if(data.status === "error"){
                     setError(data.message)
@@ -215,6 +218,36 @@ const Step3 = ({params}) => {
                         })
                     })
             })
+    }
+
+    const resetReadings = async() => {
+        setLoad(true)
+        setError()
+        setCommStage()
+        fetch('/api/comm-tool/step-3-reset-readings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: params.id
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if(data.status === 'ok'){
+                setLoad(false)
+                setSuccess('Readings resetted, reloading page...')
+                setTimeout(()=> {
+                    location.reload()
+                }, 2000)
+            }else if(data.status === "error"){
+                setLoad(false)
+                setError(data.message)
+            }
+
+        })
     }
 
   return (
@@ -409,7 +442,20 @@ const Step3 = ({params}) => {
         </div>
         {
             error &&
-            <p className='error-message'>{error}</p>
+            <p className='error-message mb-[1rem]'>{error}</p>
+        }
+        {
+            success &&
+            <p className="success-message">{success}</p>
+        }
+        {
+            commStage && commStage.stage === 'failed' &&
+            <ButtonSmall
+                text={"Reset readings"}
+                type={"purple"}
+                action={()=> resetReadings()}
+                className="mt-[1rem]"
+            />
         }
     </div>
   )

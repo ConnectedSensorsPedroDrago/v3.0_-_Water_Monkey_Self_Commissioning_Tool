@@ -46,4 +46,7 @@
   .error-message {
     @apply text-red font-semibold md:text-lg mt-4;
   }
+  .success-message {
+    @apply text-green font-semibold text-center md:text-lg mt-4;
+  }
 }
