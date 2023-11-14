@@ -31,7 +31,7 @@ const NavBar = ({session}) => {
       setUser(data.user_info)
       setLoader(false)
     })
-  }, [reloadUser])
+  }, [reloadUser, session])
 
   return (
     <>
