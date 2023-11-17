@@ -15,22 +15,21 @@ const NavBar = ({session}) => {
 
   const [menu, setMenu] = useState(false)
 
-  useEffect( ()=>{
+  console.log(session)
+
+  useEffect(()=>{
+   async function getSession(){
     setUserSession(session)
-    fetch('/api/auth/complete-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        session: session,
-      })
-    })
-    .then(res => res.json())
+    fetch(`/api/auth/complete-user?user=${session.user.name}&email=${session.user.email}`)
+    .then(res => 
+        res.json()
+    )
     .then(data => {
       setUser(data.user_info)
       setLoader(false)
     })
+   }
+   getSession()
   }, [reloadUser, session])
 
   return (

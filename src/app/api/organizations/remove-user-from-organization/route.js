@@ -26,3 +26,4 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "There was an error removing the user from the organization. Please try again or contact support"}))
     }
 }
+

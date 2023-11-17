@@ -5,6 +5,7 @@ import { options } from '../api/auth/[...nextauth]/options'
 
 
 export default async function RootLayout({ children }) {
+
   const session = await getServerSession(options)
 
   return (
@@ -12,6 +13,7 @@ export default async function RootLayout({ children }) {
             { session && 
                 <NavBar session={session}/> 
             }
+
                 {children}
     </>
   )

@@ -103,3 +103,4 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
     }
 }
+

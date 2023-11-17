@@ -1,6 +1,6 @@
-export async function POST(req){
+export async function GET(req){
 
-    const { id } = await req.json()
+    let id = req.nextUrl.searchParams.get("id")
 
     let comm_stage = JSON.stringify({stage: "none", first: {}, second: {}})
 
@@ -29,3 +29,4 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting the metrics" + e + ". Please try again."}))
     }
 }
+

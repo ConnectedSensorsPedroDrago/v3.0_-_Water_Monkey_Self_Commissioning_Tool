@@ -1,6 +1,7 @@
-export async function POST(req){
+export async function GET(req){
 
-    const { code, org } = await req.json()
+    let code = req.nextUrl.searchParams.get("code")
+    let org = req.nextUrl.searchParams.get("org")
 
     try{
         let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
@@ -11,7 +12,6 @@ export async function POST(req){
             }
         })
         let data = await response.json()
-        // console.log(data)
         if(data.results[0]){
             try{
                 let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${data.results[0].label}` , {
@@ -43,3 +43,4 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the WM from the QR Code. Please try again or contact support"}))
     }
 }
+

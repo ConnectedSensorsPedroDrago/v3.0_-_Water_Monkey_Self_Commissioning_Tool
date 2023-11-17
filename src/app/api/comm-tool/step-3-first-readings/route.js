@@ -60,3 +60,4 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "Please complete all the required fields to submit the first readings"}))
     }
 }
+

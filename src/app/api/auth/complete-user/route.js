@@ -1,11 +1,12 @@
-export async function POST(req){
+export async function GET(req, res){
 
-    const {session} = await req.json()
+    let user = req.nextUrl.searchParams.get("user")
+    let email = req.nextUrl.searchParams.get("email")
 
     let userInfo
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${session.user.name}?fields=organizations,id,firstName,lastName,mugshotUrl`, {
+        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}?fields=organizations,id,firstName,lastName,mugshotUrl`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -14,8 +15,8 @@ export async function POST(req){
         })
         let data = await response.json()
         userInfo = {
-            name: session.user.name,
-            email: session.user.email,
+            name: user,
+            email: email,
             id: data.id,
             photo: data.mugshotUrl ? data.mugshotUrl : undefined,
             fistName: data.firstName,
@@ -24,7 +25,8 @@ export async function POST(req){
             role: data.organizations[0].role.label
         }
     } catch(e){
-        return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the user: " + e}))
+        console.log("There was an error requesting the user: " + e)
+        return new NextResponse(JSON.stringify({"status": "error", "message": "There was an error requesting the user: " + e}))
     } finally{
         let monkeys = []
         let usersMain = []
@@ -79,4 +81,3 @@ export async function POST(req){
         }
     }
 }
-

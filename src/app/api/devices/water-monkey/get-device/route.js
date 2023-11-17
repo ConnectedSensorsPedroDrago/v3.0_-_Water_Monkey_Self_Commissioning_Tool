@@ -1,6 +1,6 @@
-export async function POST(req){
+export async function GET(req){
 
-    const { id } = await req.json()
+    let id = req.nextUrl.searchParams.get("id")
 
     try{
         let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
@@ -22,3 +22,4 @@ export async function POST(req){
     }
 
 }
+

@@ -17,15 +17,7 @@ const HomeMonkey = ({monkey}) => {
     useEffect(()=>{
         monkey.properties.commission_stage !== undefined && setcommissionStage(monkey.properties.commission_stage)
 
-        fetch('/api/devices/water-monkey/get-alerts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                device: monkey.label
-            })
-        })
+        fetch(`/api/devices/water-monkey/get-alerts?device=${monkey.label}`)
         .then(res => res.json())
         .then(data => {
             if(data.status === "ok"){

@@ -27,16 +27,7 @@ const CommToolHome = () => {
             setError("Please add the code and choose an organization to assign the Water Monkey to.")
             setLoader(false)
         }else{
-            fetch('/api/comm-tool/step-1-assign-wm-to-org', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    code: code,
-                    org: org
-                })
-            })
+            fetch(`/api/comm-tool/step-1-assign-wm-to-org?code=${code}&org=${org}`)
             .then(resp => resp.json())
             .then((data)=> {
                 setLoader(false)

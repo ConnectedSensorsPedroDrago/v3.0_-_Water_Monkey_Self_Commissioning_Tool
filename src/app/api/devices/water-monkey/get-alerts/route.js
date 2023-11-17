@@ -1,8 +1,9 @@
-export async function POST(req){
+export async function GET(req){
 
-    const { device } = await req.json()
+    let device = req.nextUrl.searchParams.get("device")
 
     let variables = {}
+
     try{
         let response = await fetch(`https://cs.ubidots.site/api/v2.0/variables/?label__in=device_offline_alert,leak_alert,leak_percentage_alert,high_usage_alert&fields=label,lastValue,device&device__label__in=${device}&page_size=50000`, {
             method: 'GET',
@@ -38,3 +39,4 @@ export async function POST(req){
     }
 
 }
+

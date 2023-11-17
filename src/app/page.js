@@ -3,6 +3,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import Loader from '../components/loader/page'
+import Portfolio from './(application)/home/home'
+import { useContext } from 'react'
+import { userContext } from '../context/userContext'
 
 export default function Header() {
 
@@ -13,6 +17,8 @@ export default function Header() {
   },100)
   }, [])
   
+const { loader } = useContext(userContext)
+
   return (
     <>
       <Head>
@@ -20,6 +26,14 @@ export default function Header() {
         <meta name="Connected Sensors | Water Monkey Self-Commissioning Tool" content="Connected Sensors | Water Monkey Self-Commissioning Tool"/>
         <link rel="icon" href="/public/favicon.ico"/>
       </Head>
+      <div className="w-full h-fit">
+        { loader ? 
+            <Loader />
+            :
+            <Portfolio />
+        }
+
+    </div>
     </>
   )
 }

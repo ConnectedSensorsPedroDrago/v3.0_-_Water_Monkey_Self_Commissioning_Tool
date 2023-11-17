@@ -41,15 +41,7 @@ const Step3 = ({params}) => {
     const [success, setSuccess] = useState()
     
     useEffect(()=>{
-        fetch('/api/devices/water-monkey/get-device', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: params.id
-            })
-        })
+        fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
             .then(res => res.json())
             .then(data => {
                 setLoad(false)
@@ -224,15 +216,7 @@ const Step3 = ({params}) => {
         setLoad(true)
         setError()
         setCommStage()
-        fetch('/api/comm-tool/step-3-reset-readings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: params.id
-            })
-        })
+        fetch(`/api/comm-tool/step-3-reset-readings?id=${params.id}`)
         .then(res => res.json())
         .then(data => {
             console.log(data)
