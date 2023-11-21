@@ -25,7 +25,6 @@ export async function GET(req){
                     })
                 })
                 let data1 = await response1.json()
-                console.log(data1)
                 if(data1.label === data.results[0].label && data1.organization.id === org){
                     return new Response(JSON.stringify({"status": "ok", "monkey": data1.label}))
                 }else{

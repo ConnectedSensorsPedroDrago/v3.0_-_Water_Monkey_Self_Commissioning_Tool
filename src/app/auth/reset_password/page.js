@@ -18,7 +18,6 @@ const ResetPassword = () => {
             <input className="input-base" type="text" placeholder="Enter your email" 
                 onChange={e => {
                         setEmail(e.target.value)
-                        console.log(email)
                     }
                 }
             />

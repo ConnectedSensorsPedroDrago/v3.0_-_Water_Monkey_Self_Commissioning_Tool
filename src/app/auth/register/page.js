@@ -25,18 +25,7 @@ const Register = () => {
 
   const createUserCheck = () => {
     if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
-      console.log({
-        user: user,
-        email: email,
-        password: password,
-        repeatPassword: repeatPassword,
-        name: name,
-        address: address,
-        description: description
-      })
-      //CREATE USER
       userCreation()
-      
     }else{
       setError('Please fill all the requested fields')
     }
@@ -57,7 +46,6 @@ const Register = () => {
           })
         })
         let data = await response.json()
-        console.log(data)
         if(response.ok){
           createOrganization()
         } else {
@@ -89,7 +77,6 @@ const Register = () => {
         })
         let data = await response.json()
         if(response.ok){
-          console.log(data)
           assignOrgToUser()
         } else {
           setProcessing(false)
@@ -116,8 +103,6 @@ const Register = () => {
         })
         let data = await response.json()
         if(response.ok){
-          console.log(data)
-          console.log('USER ASSIGNED TO ORG!!!')
           setCreated(true)
           setTimeout(()=>{
             router.push("/auth/signin")
@@ -161,15 +146,12 @@ const Register = () => {
                 <h2 className="mb-4 text-xl lg:text-4xl font-medium text-dark-grey">Create User</h2>
                 <input className="input-base" type="text" placeholder="Username" onChange={e => {
                     setUser(e.target.value)
-                    console.log(user)
                 }}/>
                 <input className="input-base" type="email" placeholder="Email" onChange={e => {
                     setEmail(e.target.value)
-                    console.log(email)
                 }}/>
                 <input className="input-base" type="password" placeholder="Password" onChange={e => {
                     setPassword(e.target.value)
-                    console.log(password)
                 }}/>
                 <input className="input-base" type="password" placeholder="Repeat Password" onChange={e => {
                     setRepeatPassword(e.target.value)
@@ -178,18 +160,15 @@ const Register = () => {
                     }else{
                       setError('')
                     }
-                    console.log(repeatPassword)
                 }}/>
             </div>
             <div className="lg:ml-6 md:ml-4 h-100 flex flex-col items-center md:items-start mt-4 md:mt-0 lg:mt-0">
                 <h2 className="mb-4 text-xl lg:text-4xl font-medium text-dark-grey">Create Organization</h2>
                 <input className="input-base" type="text" placeholder="Name" onChange={e => {
                     setName(e.target.value)
-                    console.log(name)
                 }}/>
                 <input className="input-base" type="text" placeholder="Address" onChange={e => {
                     setAddress(e.target.value)
-                    console.log(address)
                 }}/>
                 <textarea className="w-[240px] md:w-[350px] lg:w-[460px] border-grey border-[0.5px] p-2 lg:text-xl font-light mb-2 text-grey rounded h-[120px] md:text-lg text-sm resize-none" type="text" placeholder="Description" onChange={e => {
                     setDescription(e.target.value)

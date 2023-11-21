@@ -44,7 +44,7 @@ export const options = {
                         method: 'POST',
                         headers:{
                             'Content-Type':'application/x-www-form-urlencoded',
-                            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
+                            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                         },
                         body: reqBody
                         // body: new URLSearchParams(body)
@@ -57,7 +57,7 @@ export const options = {
                                 method: 'GET',
                                 headers:{
                                     'Content-Type':'application/json',
-                                    'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
+                                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                                 },
                             })
                             let data = await response.json()

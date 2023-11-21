@@ -64,6 +64,7 @@ const Step3 = ({params}) => {
         setError()
         setLoad(true)
         let picURL
+        let comm_stage
         if(picFirst === null){
             setError("No image was found")
             return
@@ -71,11 +72,9 @@ const Step3 = ({params}) => {
         const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst}.jpg`)
         uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
             .then((snapshot)=> {
-                console.log(snapshot)
                 getDownloadURL(snapshot.ref)
                     .then((url) =>{
                         picURL = url.toString()
-                        console.log(picURL)
                     })
                     .then(()=>{
                         fetch('/api/comm-tool/step-3-first-readings', {
@@ -104,26 +103,17 @@ const Step3 = ({params}) => {
                         })
                         .then(data => data.json())
                         .then(response => {
-                            console.log(response)
                             if(response.status === "error"){
                                 setError(response.message)
                                 setLoad(false)
                             }
                             if(response.status === "ok"){
-                                setCommStage(JSON.parse(response.commission_stage))
-                                fetch('/api/auth/complete-user', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        session: userSession,
-                                    })
-                                })
+                                comm_stage = JSON.parse(response.commission_stage)
+                                fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
                                 .then(res => res.json())
                                 .then(data => {
                                     if(data.status === 'ok'){
-                                        console.log(data)
+                                        setCommStage(comm_stage)
                                         setUser(data.user_info)
                                         setLoad(false)
                                     }else if(data.status === "error"){
@@ -140,6 +130,7 @@ const Step3 = ({params}) => {
         setError()
         setLoad(true)
         let picURL
+        let comm_stage
         if(picSecond === null){
             setError("No image was found")
             return
@@ -147,11 +138,9 @@ const Step3 = ({params}) => {
         const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond}.jpg`)
         uploadBytes(imageRef, picSecond, {contentType: 'image/jpg'})
             .then((snapshot)=> {
-                console.log(snapshot)
                 getDownloadURL(snapshot.ref)
                     .then((url) =>{
                         picURL = url.toString()
-                        console.log(picURL)
                     })
                     .then(()=>{
                         fetch('/api/comm-tool/step-3-second-readings', {
@@ -180,27 +169,18 @@ const Step3 = ({params}) => {
                         })
                         .then(data => data.json())
                         .then(response => {
-                            console.log(response)
                             if(response.status === "error"){
                                 setError(response.message)
                                 setLoad(false)
                             }
                             if(response.status === "ok"){
-                                setCommStage(JSON.parse(response.commission_stage))
-                                fetch('/api/auth/complete-user', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        session: userSession,
-                                    })
-                                })
+                                comm_stage = JSON.parse(response.commission_stage)
+                                fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
                                 .then(res => res.json())
                                 .then(data => {
                                     if(data.status === 'ok'){
-                                        console.log(data)
                                         setUser(data.user_info)
+                                        setCommStage(comm_stage)
                                         setLoad(false)
                                     }else if(data.status === "error"){
                                         setError(data.message)
@@ -219,7 +199,6 @@ const Step3 = ({params}) => {
         fetch(`/api/comm-tool/step-3-reset-readings?id=${params.id}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             if(data.status === 'ok'){
                 setLoad(false)
                 setSuccess('Readings resetted, reloading page...')

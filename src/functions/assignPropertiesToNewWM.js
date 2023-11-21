@@ -37,7 +37,6 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
             })
         })
         let data = await response.json()
-        console.log(data)
         if(!data.properties){
             return {"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}
         }
@@ -76,7 +75,6 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
                             })
                         })
                         let data = await response.json()
-                        console.log(data)
                         if(data.meter_type){
                             return {"status": "ok"}
                         }else{

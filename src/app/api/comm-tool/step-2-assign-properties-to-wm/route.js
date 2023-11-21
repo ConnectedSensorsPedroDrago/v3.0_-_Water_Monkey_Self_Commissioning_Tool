@@ -78,7 +78,6 @@ export async function POST(req){
                             })
                         })
                         let data = await response.json()
-                        console.log(data)
                         if(data.meter_type){
                             return new Response(JSON.stringify({"status": "ok"}))
                         }else{

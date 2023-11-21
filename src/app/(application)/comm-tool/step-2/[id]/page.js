@@ -212,7 +212,6 @@ const Step2 = ({ params }) => {
         })
           .then(resp => resp.json())
           .then(data => {
-            console.log(data)
             if(data.status === "ok"){
               router.push(`/comm-tool/step-3/${params.id}`)
             }else if(data.status === "error"){

@@ -2,8 +2,6 @@ export async function PATCH(req){
 
     const { org, address, description } = await req.json()
 
-    console.log(org, address, description)
-
     let reqBody = {}
     if(address){
         reqBody.properties = {address: address}
@@ -21,7 +19,6 @@ export async function PATCH(req){
             body: JSON.stringify(reqBody)
         })
         let data = await response.json()
-        console.log(data)
         if(data.id === org){
             return new Response(JSON.stringify({"status": "ok", "data": data}))
         }else{

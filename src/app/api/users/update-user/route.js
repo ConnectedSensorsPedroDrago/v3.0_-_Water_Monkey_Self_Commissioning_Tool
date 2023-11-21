@@ -16,7 +16,6 @@ export async function POST(req){
             })
         })
         let data = await response.json()
-        console.log(data)
         if(data.id === user){
             return new Response(JSON.stringify({"status": "ok", "data": data}))
         }else{

@@ -25,7 +25,6 @@ export async function POST(req){
             } else {
                 reqBody.push({label: organizations[0], role: role})
             }
-            console.log(reqBody)
             try{
                 let response = await fetch (`https://industrial.api.ubidots.com/api/v2.0/users/~${username}/_/assign_organizations/`, {
                     method: 'POST',

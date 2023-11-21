@@ -43,7 +43,6 @@ const NewOrganization = () => {
         })
         .then(res => res.json())
         .then(data => {
-          console.log(data)
           setLoad(false)
           if(data.status === "ok"){
             setSuccess(`Organization ${name} successfully created! Redirecting you to it...`)

@@ -13,7 +13,6 @@ export async function GET(req){
             },
         })
         let data = await response.json()
-        console.log(data)
         if(data.results[0]){
             data.results.forEach(variable => {
                 if(variable.label === "leak_percentage_alert"){

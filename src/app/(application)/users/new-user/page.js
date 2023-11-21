@@ -39,10 +39,8 @@ const NewUser = () => {
         }else if(username.length < 1 || name.length < 1 || lastName.length < 1 || password.length < 1 || repeatPassword.length < 1 || role.length < 1){
             setError("Please complete all the required information")
         }else{
-            console.log({username: username, email: email, name: name, lastName: lastName, password: password, repeatPassword: repeatPassword, role: role, organizations: organizations})
             setError('')
             setLoad(true)
-            // await createUserWithOrgs(username, email, name, lastName, password, role, organizations, setError, setLoad, setUser)
             fetch('/api/users/create-user-with-orgs', {
                 method: 'POST',
                 headers: {
@@ -60,7 +58,6 @@ const NewUser = () => {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setLoad(false)
                 setReloadUser(!reloadUser)
                 if(data.status === "ok"){

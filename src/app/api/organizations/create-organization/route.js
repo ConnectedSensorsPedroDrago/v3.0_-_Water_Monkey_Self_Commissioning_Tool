@@ -2,8 +2,6 @@ export async function POST(req){
 
     let { name, address, description, user } = await req.json()
 
-    console.log(name, address, description, user )
-
     let newOrgId
 
     try{

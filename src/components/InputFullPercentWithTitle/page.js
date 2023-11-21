@@ -7,7 +7,6 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
           onChange={(e)=> {
             if(type === 'file'){
               setter(e.target.files[0])
-              console.log(e.target.files[0])
             }else{
               setter(e.target.value !== undefined ? e.target.value : undefined)
             }
