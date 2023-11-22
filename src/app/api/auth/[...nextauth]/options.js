@@ -14,8 +14,7 @@ export const options = {
                 password: { label: "Password:", type: "password" }
             },
             async authorize(credentials){
-                console.log(credentials.user)
-                console.log(credentials.password)
+                
                 let body = {
                     "grant_type": "password",
                     "username": credentials.user,
@@ -24,10 +23,8 @@ export const options = {
                     "client_id": process.env.UBIDOTS_CLIENT_ID,
                     "client_secret": process.env.UBIDOTS_CLIENT_SECRET
                 }
-                console.log(body)
 
                 let reqBody = [];
-                console.log(reqBody)
 
                 for(let property in body){
                     let encodedKey = encodeURIComponent(property);
@@ -37,8 +34,6 @@ export const options = {
 
                 reqBody = reqBody.join("&")
 
-                console.log(reqBody)
-
                 try{
                     let response = await fetch('https://cs.api.ubidots.com/o/token/', {
                         method: 'POST',
@@ -47,7 +42,6 @@ export const options = {
                             'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                         },
                         body: reqBody
-                        // body: new URLSearchParams(body)
                     })
                     let data = await response.json()
                     console.log(data)

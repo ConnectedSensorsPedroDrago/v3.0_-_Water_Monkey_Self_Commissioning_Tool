@@ -4,12 +4,12 @@ export async function PATCH(req){
 
     let reqBody = {}
     if(address){
-        reqBody.properties = {address: address}
+        reqBody.properties = { address: address }
     }
     if(description){
         reqBody.description = description
     }
-    try {
+    try{
         let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/organizations/${org}`, {
             method: 'PATCH',
             headers: {
@@ -24,7 +24,7 @@ export async function PATCH(req){
         }else{
             return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the organization's details. Please try again or contact support"}))
         }
-    } catch (e) {
+    }catch(e){
         console.log("There was an error updating the organization's details: " + e + " . Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the organization's details: " + e + " . Please try again or contact support"}))
     }

@@ -9,7 +9,7 @@ import LeakPercentage from '@/public/monkeyAlerts/LeakPercentage.svg'
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
-const HomeMonkey = ({monkey}) => {
+const HomeMonkey = ({ monkey }) => {
 
     let [alerts, setAlerts] = useState({})
     let [commissionStage, setcommissionStage] = useState()

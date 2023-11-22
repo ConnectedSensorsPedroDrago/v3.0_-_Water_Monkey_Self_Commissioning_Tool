@@ -16,6 +16,8 @@ import { unitOfCost } from '@/src/dbs/formOptions'
 import { storage } from '@/src/firebase/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import ButtonSmall from '@/src/components/buttonSmall/page'
+import EditButton from '@/public/editButton.svg'
+import Success from '@/src/components/Success/page'
 
 const Step3 = ({params}) => {
 
@@ -38,7 +40,7 @@ const Step3 = ({params}) => {
     const [load, setLoad] = useState(true)
     const [error, setError] = useState()
     const [commStage, setCommStage] = useState()
-    const [success, setSuccess] = useState()
+    const [success, setSuccess] = useState(false)
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
@@ -182,6 +184,7 @@ const Step3 = ({params}) => {
                                         setUser(data.user_info)
                                         setCommStage(comm_stage)
                                         setLoad(false)
+                                        setSuccess(true)
                                     }else if(data.status === "error"){
                                         setError(data.message)
                                     }
@@ -219,6 +222,10 @@ const Step3 = ({params}) => {
             load &&
             <Loader />
         }
+        {
+            success &&
+            <Success setter={setSuccess}/>
+        }
         <CommToolTop 
             title={"Step 3"}
             back={`/comm-tool/step-2/${params.id}`}
@@ -253,7 +260,18 @@ const Step3 = ({params}) => {
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">After successful install...</h1>
         <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
             <div className='w-full flex flex-col'>
-                <p className={`${(commStage && (commStage.first.date_time !== undefined)) ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
+                <div className='flex flex-row items-center justify-between w-full'>
+                    <p className={`${(commStage && (commStage.first.date_time !== undefined)) ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
+                    {
+                        commStage && commStage.stage === "first reading" &&
+                        <Image
+                            src={EditButton}
+                            alt="Edit readings"
+                            className='fill-blue-hard scale-[80%] cursor-pointer'
+                            onClick={()=> setCommStage({"stage": "none", "first": {}, "second": {}})}
+                        />
+                    }
+                </div>
                 <InputFullPercentWithTitle 
                     name={"Date and Time"}
                     type={"datetime-local"}
@@ -328,7 +346,18 @@ const Step3 = ({params}) => {
                 
             </div>
             <div className='w-full flex flex-col md:ml-[1rem] md:mt-0 mt-[2rem]'>
-                <p className={`${commStage && !commStage.second.date_time && commStage.first.date_time ? `text-dark-grey` : `text-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter final meter readings</p>
+                <div className='flex flex-row items-center justify-between w-full'>
+                    <p className={`${commStage && !commStage.second.date_time && commStage.first.date_time ? `text-dark-grey` : `text-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter final meter readings</p>
+                    {
+                        commStage && commStage.stage === "second reading" &&
+                        <Image
+                            src={EditButton}
+                            alt="Edit readings"
+                            className='fill-blue-hard scale-[80%] cursor-pointer hover:fill-grey'
+                            onClick={()=> setCommStage({"stage": "first reading", "first": commStage.first, "second": {}})}
+                        />
+                    }
+                </div>
                 <InputFullPercentWithTitle 
                     name={"Date and Time"}
                     type={"datetime-local"}
