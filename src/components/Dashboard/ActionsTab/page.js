@@ -44,7 +44,7 @@ const ActionsTab = ({ alerts, unit }) => {
                     <div className="flex flex-row items-center justify-end h-[7rem]">
                         {
                             alerts.map(alert => 
-                                <SwitchSingleText value={alert}/>
+                                <SwitchSingleText key={alert.name} value={alert}/>
                             )
                         }
                     </div>

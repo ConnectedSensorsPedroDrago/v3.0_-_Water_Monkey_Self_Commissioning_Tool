@@ -6,6 +6,7 @@ import { wmDashbaordContext } from '@/src/context/wmDashboardContext'
 import Loader from "@/src/components/loader/page"
 import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
+import MainChart from "@/src/components/Dashboard/MainChart/page"
 
 const Dashboard = ({ params }) => {
 
@@ -64,6 +65,7 @@ const Dashboard = ({ params }) => {
             <AddressHeader 
               address={device.properties.address} 
             />
+            <MainChart/>
           </>
         }
       
