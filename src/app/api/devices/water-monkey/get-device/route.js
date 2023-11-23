@@ -1,16 +1,18 @@
 export async function GET(req){
 
     let id = req.nextUrl.searchParams.get("id")
+    console.log(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`)
 
     try{
-        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/${id}/`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
-                'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
             }
         })
         let data = await response.json()
+        console.log(data)
         if(data.properties){
             return new Response(JSON.stringify({"status": "ok", "device": data}))
         } else {

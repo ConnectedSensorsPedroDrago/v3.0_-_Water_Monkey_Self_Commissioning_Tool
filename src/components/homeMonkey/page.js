@@ -37,7 +37,7 @@ const HomeMonkey = ({ monkey }) => {
             <Link 
                 href={commissionStage && commissionStage.stage !== undefined && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? `/comm-tool/step-3/${monkey.label}` : `/dashboard/${monkey.id}`}
             >
-                <p className="text-dark-grey text-sm font-semibold md:font-normal lg:text-base mt-4 md:mt-0 text-center md:text-start hover:font-bold hover:text-blue-hard cursor-pointer">{monkey.properties.address}</p>
+                <p className="home-text home-text-hover">{monkey.properties.address}</p>
             </Link>
         </div>
         { commissionStage && commissionStage.stage !== undefined && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') 

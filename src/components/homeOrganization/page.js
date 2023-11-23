@@ -32,7 +32,7 @@ const HomeOrganization = ({org}) => {
                         <HomeMonkey monkey={monkey} key={monkey.id}/>
                     )
                     :
-                    <p className='w-full h-14 flex flex-row items-center justify-between border-b-[0.5px] border-grey'>You do not have any Water Monkeys in this organization</p>
+                    <p className='w-full h-14 flex flex-row items-center justify-between border-b-[0.5px] border-grey home-text'>You do not have any Water Monkeys in this organization</p>
                 }
             </div>
         }

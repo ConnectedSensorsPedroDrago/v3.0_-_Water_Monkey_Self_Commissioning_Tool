@@ -52,4 +52,16 @@
   .success-message {
     @apply text-green font-semibold text-center md:text-lg mt-4;
   }
+  .home-text {
+    @apply text-dark-grey text-sm font-semibold md:font-normal lg:text-base mt-4 md:mt-0 text-center md:text-start;
+  }
+  .home-text-hover {
+    @apply hover:font-bold hover:text-blue-hard cursor-pointer;
+  }
+  .text-modal {
+    @apply font-light text-dark-grey text-center text-sm mb-[1rem];
+  }
+  .section-dashboard {
+    @apply rounded w-full p-4 mt-4 bg-white drop-shadow-md;
+  }
 }
