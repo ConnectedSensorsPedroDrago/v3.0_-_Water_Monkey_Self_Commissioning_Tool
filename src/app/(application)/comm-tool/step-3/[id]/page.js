@@ -46,7 +46,6 @@ const Step3 = ({params}) => {
         fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setLoad(false)
                 if(data.status === "ok"){
                     let commissionStage = JSON.parse(data.device.properties.commission_stage)
