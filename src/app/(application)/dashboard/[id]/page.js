@@ -21,15 +21,14 @@ const Dashboard = ({ params }) => {
       fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         if(data.status === "ok"){
           setDevice(data.device)
           fetch(`/api/dashboard/water-monkey/get-last-values?device=${params.id}`)
           .then(resp => resp.json())
           .then(data => {
+            console.log(data)
             if(data.status === 'ok'){
               setLastValues(data.data)
-              console.log(data.data)
               setLoader(false)
             }else if(data.status === 'error'){
               setError(data.message)
@@ -65,7 +64,7 @@ const Dashboard = ({ params }) => {
             <AddressHeader 
               address={device.properties.address} 
             />
-            <MainChart/>
+            <MainChart data={lastValues}/>
           </>
         }
       

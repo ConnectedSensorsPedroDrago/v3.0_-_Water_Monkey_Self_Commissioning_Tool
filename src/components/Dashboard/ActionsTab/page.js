@@ -6,12 +6,9 @@ import SwitchDoubleText from "./SwitchDoubleText/page"
 import ExportDashboard from '@/public/Dashboard/WaterMonkey/ExportDashboard.svg'
 import ExportCSV from '@/public/Dashboard/WaterMonkey/ExportCSV.svg'
 import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
-
 import { useState } from "react"
 
 const ActionsTab = ({ alerts, unit }) => {
-
-    console.log(alerts)
 
     const [open, setOpen] = useState(false)
 
@@ -64,7 +61,7 @@ const ActionsTab = ({ alerts, unit }) => {
                                 alt="Export Dashboard"
                                 className='mr-2'
                             />
-                            <p className='text-blue-hard font-light text-sm'>Export Dashboard</p>
+                            <p className='text-blue-hard font-light text-sm hover:underline cursor-pointer'>Export Dashboard</p>
                         </div>
                         <div className='flex flex-row items-center mr-4'>
                             <Image 
@@ -72,7 +69,7 @@ const ActionsTab = ({ alerts, unit }) => {
                                 alt="Export CSV"
                                 className='mr-2'
                             />
-                            <p className='text-blue-hard font-light text-sm'>Export CSV Data</p>
+                            <p className='text-blue-hard font-light text-sm hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
                         <div className='flex flex-row items-center mr-4'>
                             <Image 
@@ -80,7 +77,7 @@ const ActionsTab = ({ alerts, unit }) => {
                                 alt="Ask For Help"
                                 className='mr-2'
                             />
-                            <p className='text-blue-hard font-light text-sm'>Ask For Help</p>
+                            <p className='text-blue-hard font-light text-sm hover:underline cursor-pointer'>Ask For Help</p>
                         </div>
                     </div>
                 </div>

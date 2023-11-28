@@ -4,8 +4,6 @@ import Image from 'next/image'
 
 const SwitchDoubleText = ({ value }) => {
 
-  console.log(value)
-
   return (
     <div className='flex flex-row items-center'>
         <p className='text-blue-hard font-light text-sm'>{value.value1}</p>
@@ -13,13 +11,13 @@ const SwitchDoubleText = ({ value }) => {
           <Image 
             src={SwitchOn}
             alt="Switch On"
-            className='m-2'
+            className='m-2 cursor-pointer'
           />
           :
           <Image 
             src={SwitchOnRight}
             alt="Switch Off"
-            className='m-2'
+            className='m-2 cursor-pointer'
           />
         }
         <p className='text-blue-hard font-light text-sm'>{value.value2}</p>
