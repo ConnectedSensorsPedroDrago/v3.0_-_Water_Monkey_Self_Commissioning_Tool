@@ -10,7 +10,6 @@ export const getAlerts = async(device, setAlerts) => {
             },
         })
         let data = await response.json()
-        console.log(data)
         data.results.forEach(variable => {
             if(variable.label === "leak_percentage_alert"){
                 variables.leak_percentage_alert = variable.lastValue.value ? variable.lastValue.value : undefined

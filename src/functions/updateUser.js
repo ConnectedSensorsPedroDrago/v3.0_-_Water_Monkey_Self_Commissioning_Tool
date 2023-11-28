@@ -14,7 +14,6 @@ export default async function updateUser(user, firstName, lastName, setLoad){
             })
         })
         let data = await response.json()
-        console.log(data)
         setLoad(false)
         return { data: data }
     } catch (e) {

@@ -1,6 +1,4 @@
 export const getMonkeys = (user, setPortfolio) => {
-    
-    console.log(user)
 
     let devices
 
@@ -20,8 +18,6 @@ export const getMonkeys = (user, setPortfolio) => {
             console.log("There was an error requesting the Water Monkey devices:" + e)
         }finally{
             setPortfolio(monkeys)
-            console.log(monkeys)
-
         }
     })
 

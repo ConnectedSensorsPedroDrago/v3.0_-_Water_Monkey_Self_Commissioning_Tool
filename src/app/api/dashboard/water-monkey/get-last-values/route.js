@@ -12,7 +12,6 @@ export async function GET(req){
             },
         })
         let data = await response.json()
-        console.log(data)
         if(data){
             return new Response(JSON.stringify({"status": "ok", "data": data}))
         }else{

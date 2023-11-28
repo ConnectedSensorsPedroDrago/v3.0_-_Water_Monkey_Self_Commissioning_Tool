@@ -1,5 +1,4 @@
 export default async function assignWMToOrg(code, org){
-    console.log("Code: " + code + ' | Org: ' + org)
     try{
         let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
             method: 'GET',
@@ -9,7 +8,6 @@ export default async function assignWMToOrg(code, org){
             }
         })
         let data = await response.json()
-        // console.log(data)
         if(data.results[0]){
             try{
                 let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${data.results[0].label}` , {
@@ -23,7 +21,6 @@ export default async function assignWMToOrg(code, org){
                     })
                 })
                 let data1 = await response1.json()
-                console.log(data1)
                 if(data1.label === data.results[0].label && data1.organization.id === org){
                     return {"status": "ok", "monkey": data1.label}
                 }else{
