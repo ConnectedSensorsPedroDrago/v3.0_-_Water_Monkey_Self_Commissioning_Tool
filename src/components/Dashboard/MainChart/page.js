@@ -1,6 +1,8 @@
 import Image from "next/image"
 import CompoundMeter from '@/public/Dashboard/WaterMonkey/CompoundMeter.svg'
-import Chart from 'react-apexcharts'
+// import Chart from 'react-apexcharts'
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const MainChart = ({ data }) => {
 

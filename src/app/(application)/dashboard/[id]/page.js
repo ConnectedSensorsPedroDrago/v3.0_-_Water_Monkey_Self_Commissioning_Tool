@@ -26,6 +26,7 @@ const Dashboard = ({ params }) => {
           fetch(`/api/dashboard/water-monkey/get-last-values?device=${params.id}`)
           .then(resp => resp.json())
           .then(data => {
+            console.log(data)
             if(data.status === 'ok'){
               setLastValues(data.data)
               setLoader(false)

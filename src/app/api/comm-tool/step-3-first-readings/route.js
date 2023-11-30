@@ -1,14 +1,20 @@
+import { toTimestamp } from "@/src/functions/toTimestamp"
+
 export async function POST(req){
 
     const { meterType, lowSideFirst, dateFirst, lowSideFirstUnit, picFirst, highSideFirst, highSideFirstUnit, picURL, params, commStage } = await req.json()
 
-    
+    let timestamp = toTimestamp(new Date(dateFirst))
+
     if(meterType === "Single" && lowSideFirst && dateFirst && lowSideFirstUnit && picFirst || meterType === "Compound" && lowSideFirst && highSideFirst && lowSideFirstUnit && highSideFirstUnit && dateFirst && picFirst){
             let newLowSideFirst = lowSideFirstUnit === "m3" ? lowSideFirst : lowSideFirstUnit === "liters" ? Number(lowSideFirst)*0.001 : lowSideFirstUnit === "gallons" && Number(lowSideFirst)*0.00378541
             let newHighSideFirst = highSideFirstUnit === "m3" ? highSideFirst : highSideFirstUnit === "liters" ? Number(highSideFirst)*0.001 : highSideFirstUnit === "gallons" && Number(highSideFirst)*0.00378541        
         try{
-            let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}}
-            meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}, "initial_meter_reading_secondary": {"value": newHighSideFirst, "context": {"pic": picURL, "date_time": dateFirst}}})
+            let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateFirst}}}
+            meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateFirst}}, "initial_meter_reading_secondary": {"value": newHighSideFirst, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateFirst}}})
+
+            console.log(payload)
+
             let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                 method: 'POST',
                 headers:{

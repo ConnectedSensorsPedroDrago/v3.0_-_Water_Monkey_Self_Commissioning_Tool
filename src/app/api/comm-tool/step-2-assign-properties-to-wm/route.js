@@ -84,7 +84,6 @@ export async function POST(req){
                             return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
                         }
                     }catch(e){
-                        // console.log("There was an error writing the meter type property" + e +  ". Please try again or contact support")
                         return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property" + e +  ". Please try again or contact support"}))
                     }
                 }else{

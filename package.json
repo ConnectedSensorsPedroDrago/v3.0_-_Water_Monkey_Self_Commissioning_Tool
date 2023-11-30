@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "apexcharts": "^3.44.0",
     "autoprefixer": "10.4.15",
     "country-state-city": "^3.2.1",
     "eslint": "8.47.0",

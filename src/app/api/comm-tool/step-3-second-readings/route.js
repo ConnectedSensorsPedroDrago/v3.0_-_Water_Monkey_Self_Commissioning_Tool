@@ -1,13 +1,18 @@
+import { toTimestamp } from "@/src/functions/toTimestamp"
+
 export async function POST(req){
 
     const { meterType, lowSideSecond, dateSecond, lowSideSecondUnit, picSecond, highSideSecond, highSideSecondUnit, picURL, params, commStage } = await req.json()
+
+    let timestamp = toTimestamp(new Date(dateSecond))
 
     if(meterType === "Single" && lowSideSecond && dateSecond && lowSideSecondUnit && picSecond || meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond && picSecond){
             let newLowSideSecond = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541
             let newHighSideSecond = highSideSecondUnit === "m3" ? highSideSecond : highSideSecondUnit === "liters" ? Number(highSideSecond)*0.001 : highSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541        
         try{
-            let payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "context": {"pic": picURL, "date_time": dateSecond}}}
-            meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "context": {"pic": picURL, "date_time": dateSecond}}, "final_meter_reading_secondary": {"value": newHighSideSecond, "context": {"pic": picURL, "date_time": dateFirst}}})
+            let payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateSecond}}}
+            meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateSecond}}, "final_meter_reading_secondary": {"value": newHighSideSecond, "timestamp": timestamp, "context": {"pic": picURL, "date_time": dateFirst}}})
+            console.log(payload)
             let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                 method: 'POST',
                 headers:{

@@ -55,7 +55,7 @@ const Step3 = ({params}) => {
                     setCommStage(commissionStage)
                     commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
                     commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
-                    commissionStage.stage === 'failed' && setError("Commissioning failed, please reset readings and try again")
+                    commissionStage.stage === 'failed' && setError(`Commissioning failed: ${commissionStage.message}. Please reset readings and try again`)
                 }
                 if(data.status === "error"){
                     setError(data.message)
