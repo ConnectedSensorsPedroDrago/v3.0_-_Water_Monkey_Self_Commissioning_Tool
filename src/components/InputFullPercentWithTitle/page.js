@@ -8,7 +8,7 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
             if(type === 'file'){
               setter(e.target.files[0])
             }else{
-              setter(e.target.value !== undefined ? e.target.value : undefined)
+              setter((type === 'datetime-local' && e.target.value !== undefined) ? e.target.value.replace('T', ' ').replace('-' , '/') : e.target.value !== undefined ? e.target.value : undefined)
             }
           }} 
           placeholder={placeholder} 
