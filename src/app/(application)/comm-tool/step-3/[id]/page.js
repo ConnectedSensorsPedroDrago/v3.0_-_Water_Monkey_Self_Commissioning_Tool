@@ -43,7 +43,7 @@ const Step3 = ({params}) => {
     const [success, setSuccess] = useState(false)
     
     useEffect(()=>{
-        fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
+        fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
             .then(res => res.json())
             .then(data => {
 
@@ -175,9 +175,8 @@ const Step3 = ({params}) => {
                             if(response.status === "error"){
                                 setError(response.message)
                                 setLoad(false)
-                            }
-                            if(response.status === "ok"){
-                                comm_stage = JSON.parse(response.commission_stage)
+                            }else if(response.status === "ok"){
+                                comm_stage = response.commission_stage
                                 fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
                                 .then(res => res.json())
                                 .then(data => {
@@ -386,7 +385,7 @@ const Step3 = ({params}) => {
                 {
                     meterType === "Compound" &&
                     <div className='flex flex-row justify-between items-center'>
-                        <InputFullPercentWithTitle 
+                        <Input50PercentWithTitle 
                             name={"High Side Meter Reading"}
                             type={"number"}
                             placeholder={commStage && commStage.second.high ? commStage.second.high : ""}

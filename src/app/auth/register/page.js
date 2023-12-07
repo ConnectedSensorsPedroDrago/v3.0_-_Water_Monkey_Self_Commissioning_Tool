@@ -25,8 +25,10 @@ const Register = () => {
 
   const createUserCheck = () => {
     if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+      console.log({user, email, password, repeatPassword, name, description})
       userCreation()
     }else{
+      setProcessing(false)
       setError('Please fill all the requested fields')
     }
   }
@@ -46,6 +48,8 @@ const Register = () => {
           })
         })
         let data = await response.json()
+        console.log(data)
+        console.log(response)
         if(response.ok){
           createOrganization()
         } else {
@@ -76,6 +80,8 @@ const Register = () => {
           })
         })
         let data = await response.json()
+        console.log(data)
+        console.log(response)
         if(response.ok){
           assignOrgToUser()
         } else {
@@ -102,6 +108,8 @@ const Register = () => {
           }])
         })
         let data = await response.json()
+        console.log(data)
+        console.log(response)
         if(response.ok){
           setCreated(true)
           setTimeout(()=>{

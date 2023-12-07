@@ -3,7 +3,7 @@ export async function GET(req){
     let id = req.nextUrl.searchParams.get("id")
 
     try{
-        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/${id}/`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',

@@ -10,26 +10,39 @@ import MainChart from "@/src/components/Dashboard/MainChart/page"
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport } = useContext(wmDashbaordContext)
+    const { timeRangeStart, timeRangeEnd, runReport, quickReport } = useContext(wmDashbaordContext)
     const [loader, setLoader] = useState(true)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
     const [error, setError] = useState()
 
     useEffect(()=>{
+      let label
       setError()
-      fetch(`/api/devices/water-monkey/get-device?id=${params.id}`)
+      fetch(`/api/dashboard/water-monkey/get-device?id=${params.id}`)
       .then(resp => resp.json())
       .then(data => {
+        console.log(data)
         if(data.status === "ok"){
           setDevice(data.device)
+          label = data.device.label
           fetch(`/api/dashboard/water-monkey/get-last-values?device=${params.id}`)
           .then(resp => resp.json())
           .then(data => {
-            console.log(data)
             if(data.status === 'ok'){
               setLastValues(data.data)
               setLoader(false)
+              // fetch(`/api/dashboard/water-monkey/get-device?device=${label}&start=${timeRangeStart}&end=${timeRangeEnd}&metric=liters${quickReport === 'day' ? '&quick=day' : quickReport === 'week' ? '&quick=week' : quickReport === 'month' ? '&quick=month' : quickReport === 'year' ? '&quick=year' : ''}`)
+              //   .then(res => res.json())
+              //   .then(data => {
+              //     console.log(data)
+              //     if(data.status === "error"){
+              //       setError(data.message)
+              //       setLoader(false)
+              //     }else if(data.status === 'ok'){
+              //       setLoader(false)
+              //     }
+              //   })
             }else if(data.status === 'error'){
               setError(data.message)
               setLoader(false)
@@ -71,6 +84,7 @@ const Dashboard = ({ params }) => {
 
         <p className="font-semibold text-xl md:text-3xl text-dark-grey">{timeRangeStart && timeRangeStart}</p>
         <p className="font-semibold text-xl md:text-3xl text-dark-grey">{timeRangeEnd && timeRangeEnd}</p>
+        <p className="font-semibold text-xl md:text-3xl text-dark-grey">{quickReport && quickReport}</p>
       </div>
     </>
     
