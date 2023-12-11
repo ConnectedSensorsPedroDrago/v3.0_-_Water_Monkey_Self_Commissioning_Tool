@@ -4,6 +4,8 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
 
   let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
+  console.log(timezone)
+
   return (
     <div className="flex flex-col justify-start w-full">
         <p className={`${disabled ? 'text-grey' : 'text-dark-grey'} text-sm font-medium`}>{name}</p>
