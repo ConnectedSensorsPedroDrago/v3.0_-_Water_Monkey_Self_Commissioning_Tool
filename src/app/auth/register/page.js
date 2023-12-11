@@ -48,8 +48,6 @@ const Register = () => {
           })
         })
         let data = await response.json()
-        console.log(data)
-        console.log(response)
         if(response.ok){
           createOrganization()
         } else {

@@ -1,6 +1,9 @@
 "use client"
 
 const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) => {
+
+  let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
   return (
     <div className="flex flex-col justify-start w-full">
         <p className={`${disabled ? 'text-grey' : 'text-dark-grey'} text-sm font-medium`}>{name}</p>
@@ -10,7 +13,7 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
             if(type === 'file'){
               setter(e.target.files[0])
             }else{
-              setter((type === 'datetime-local' && e.target.value !== undefined) ? e.target.value.replace('T', ' ').replaceAll('-' , '/') : e.target.value !== undefined ? e.target.value : undefined)
+              setter((type === 'datetime-local' && e.target.value !== undefined) ? new Date(e.target.value).toLocaleString('en-US', {timeZone: timezone}) : e.target.value !== undefined ? e.target.value : undefined)
             }
           }} 
           placeholder={placeholder} 

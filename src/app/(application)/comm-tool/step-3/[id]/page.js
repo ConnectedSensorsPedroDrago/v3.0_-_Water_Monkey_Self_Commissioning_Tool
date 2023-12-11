@@ -22,6 +22,8 @@ import { timeZones } from '@/src/dbs/formOptions'
 
 const Step3 = ({params}) => {
 
+    // let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
     const { setUser, user, setLoader, setPortfolio, userSession } = useContext(userContext)
 
     const [org, setOrg] = useState()
