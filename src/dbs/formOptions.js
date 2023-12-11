@@ -124,3 +124,27 @@ export const unitOfCost = [
     {value: "gallons", displayValue: "gallons"},
     {value: "liters", displayValue: "liters"}
 ]
+
+export const timeZones = [
+	{value: "UTC", displayValue: "UTC"},
+	{value: "Canada/Atlantic", displayValue: "Canada/Atlantic"},
+	{value: "Canada/Eastern", displayValue: "Canada/Eastern"},
+	{value: "Canada/Mountain", displayValue: "Canada/Mountain"},
+	{value: "Canada/Newfoundland", displayValue: "Canada/Newfoundland"},
+	{value: "Canada/Pacific", displayValue: "Canada/Pacific"},
+	{value: "Canada/Saskatchewan", displayValue: "Canada/Saskatchewan"},
+	{value: "Canada/Yukon", displayValue: "Canada/Yukon"},
+	{value: "US/Alaska", displayValue: "US/Alaska"},
+	{value: "US/Aleutian", displayValue: "US/Aleutian"},
+	{value: "US/Arizona", displayValue: "US/Arizona"},
+	{value: "US/Central", displayValue: "US/Central"},
+	{value: "US/East-Indiana", displayValue: "US/East-Indiana"},
+	{value: "US/Eastern", displayValue: "US/Eastern"},
+	{value: "US/Hawaii", displayValue: "US/Hawaii"},
+	{value: "US/Indiana-Starke", displayValue: "US/Indiana-Starke"},
+	{value: "US/Michigan", displayValue: "US/Michigan"},
+	{value: "US/Mountain", displayValue: "US/Mountain"},
+	{value: "US/Pacific", displayValue: "US/Pacific"},
+	{value: "US/Pacific-New", displayValue: "US/Pacific-New"},
+	{value: "US/Samoa", displayValue: "US/Samoa"}
+];

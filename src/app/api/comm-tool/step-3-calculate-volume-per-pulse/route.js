@@ -35,7 +35,6 @@ export async function POST(req){
                             body: JSON.stringify({
                                 "wu_s": {
                                     "value": 0,
-                                    // "timestamp": toTimestamp(commStage.first.date_time)
                                     "timestamp": JSONCommStage.first.date_time
                                 }
                             })

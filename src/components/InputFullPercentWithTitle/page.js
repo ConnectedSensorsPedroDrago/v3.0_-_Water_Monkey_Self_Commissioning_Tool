@@ -1,3 +1,5 @@
+"use client"
+
 const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) => {
   return (
     <div className="flex flex-col justify-start w-full">

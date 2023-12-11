@@ -18,6 +18,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import ButtonSmall from '@/src/components/buttonSmall/page'
 import EditButton from '@/public/editButton.svg'
 import Success from '@/src/components/Success/page'
+import { timeZones } from '@/src/dbs/formOptions'
 
 const Step3 = ({params}) => {
 
@@ -35,6 +36,8 @@ const Step3 = ({params}) => {
     const [lowSideSecondUnit, setLowSideSecondUnit] = useState()
     const [highSideSecond, setHighSideSecond] = useState()
     const [highSideSecondUnit, setHighSideSecondUnit] = useState()
+    const [timeZoneFirst, setTimeZoneFirst] = useState()
+    const [timeZoneSecond, setTimeZoneSecond] = useState()
     const [picSecond, setPicSecond] = useState()
     const [meterType, setMeterType] = useState()
     const [load, setLoad] = useState(true)
@@ -89,6 +92,7 @@ const Step3 = ({params}) => {
                                 meterType: meterType,
                                 lowSideFirst: lowSideFirst,
                                 dateFirst: dateFirst,
+                                timeZoneFirst: timeZoneFirst,
                                 lowSideFirstUnit: lowSideFirstUnit,
                                 picFirst: picFirst,
                                 highSideFirst: highSideFirst,
@@ -272,6 +276,7 @@ const Step3 = ({params}) => {
                         />
                     }
                 </div>
+                {/* <div className='flex flex-row justify-between items-center'> */}
                 <InputFullPercentWithTitle 
                     name={"Date and Time"}
                     type={"datetime-local"}
@@ -279,6 +284,14 @@ const Step3 = ({params}) => {
                     setter={setDateFirst}
                     disabled={commStage && commStage.first.date_time ? true : false}
                 />
+                {/* <Select50PercentWithTitle 
+                    name={"Timezone"}
+                    placeholder={"Choose Timezone"}
+                    setter={setTimeZoneFirst}
+                    elements={timeZones}
+                    disabled={commStage && commStage.first.date_time ? true : false}
+                /> */}
+                {/* </div> */}
                 <div className='flex flex-row justify-between items-center'>
                     <Input50PercentWithTitle 
                         name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
@@ -358,13 +371,22 @@ const Step3 = ({params}) => {
                         />
                     }
                 </div>
-                <InputFullPercentWithTitle 
-                    name={"Date and Time"}
-                    type={"datetime-local"}
-                    placeholder={commStage && commStage.second.date_time ? commStage.second.date_time : ""}
-                    setter={setDateSecond}
-                    disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
-                />
+                {/* <div className='flex flex-row justify-between items-center'> */}
+                    <InputFullPercentWithTitle 
+                        name={"Date and Time"}
+                        type={"datetime-local"}
+                        placeholder={commStage && commStage.second.date_time ? commStage.second.date_time : ""}
+                        setter={setDateSecond}
+                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                    />
+                    {/* <Select50PercentWithTitle 
+                        name={"Timezone"}
+                        placeholder={"Choose Timezone"}
+                        setter={setTimeZoneSecond}
+                        elements={timeZones}
+                        disabled={commStage && commStage.second.date_time ? true : false}
+                    /> */}
+                {/* </div> */}
                 <div className='flex flex-row justify-between items-center'>
                     <Input50PercentWithTitle 
                         name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
