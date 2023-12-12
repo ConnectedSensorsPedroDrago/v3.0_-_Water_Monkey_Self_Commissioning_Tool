@@ -38,8 +38,6 @@ const Step3 = ({params}) => {
     const [lowSideSecondUnit, setLowSideSecondUnit] = useState()
     const [highSideSecond, setHighSideSecond] = useState()
     const [highSideSecondUnit, setHighSideSecondUnit] = useState()
-    const [timeZoneFirst, setTimeZoneFirst] = useState()
-    const [timeZoneSecond, setTimeZoneSecond] = useState()
     const [picSecond, setPicSecond] = useState()
     const [meterType, setMeterType] = useState()
     const [load, setLoad] = useState(true)
@@ -49,24 +47,25 @@ const Step3 = ({params}) => {
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
-            .then(res => res.json())
-            .then(data => {
-
-                setLoad(false)
-                if(data.status === "ok"){
-                    let commissionStage = JSON.parse(data.device.properties.commission_stage)
-                    setMeterType(data.device.properties.meter_type)
-                    setOrg(data.device.organization.name)
-                    setCommStage(commissionStage)
-                    commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
-                    commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
-                    commissionStage.stage === 'failed' && setError(`Commissioning failed: ${commissionStage.message}. Please reset readings and try again`)
-                }
-                if(data.status === "error"){
-                    setError(data.message)
-                }
-            })
+        .then(res => res.json())
+        .then(data => {
+            
+            setLoad(false)
+            if(data.status === "ok"){
+                let commissionStage = JSON.parse(data.device.properties.commission_stage)
+                setMeterType(data.device.properties.meter_type)
+                setOrg(data.device.organization.name)
+                setCommStage(commissionStage)
+                commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
+                commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
+                commissionStage.stage === 'failed' && setError(`Commissioning failed: ${commissionStage.message}. Please reset readings and try again`)
+            }
+            if(data.status === "error"){
+                setError(data.message)
+            }
+        })
     }, [params])
+    console.log(commStage)
 
     const onSubmitFirst = async() => {
         setError()
@@ -77,7 +76,7 @@ const Step3 = ({params}) => {
             setError("No image was found")
             return
         }
-        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst}.jpg`)
+        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst.timestamp}.jpg`)
         uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
             .then((snapshot)=> {
                 getDownloadURL(snapshot.ref)
@@ -94,7 +93,6 @@ const Step3 = ({params}) => {
                                 meterType: meterType,
                                 lowSideFirst: lowSideFirst,
                                 dateFirst: dateFirst,
-                                timeZoneFirst: timeZoneFirst,
                                 lowSideFirstUnit: lowSideFirstUnit,
                                 picFirst: picFirst,
                                 highSideFirst: highSideFirst,
@@ -144,7 +142,7 @@ const Step3 = ({params}) => {
             setError("No image was found")
             return
         }
-        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond}.jpg`)
+        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond.timestamp}.jpg`)
         uploadBytes(imageRef, picSecond, {contentType: 'image/jpg'})
             .then((snapshot)=> {
                 getDownloadURL(snapshot.ref)
@@ -353,7 +351,10 @@ const Step3 = ({params}) => {
                                 alt="Success Tick"
                                 className='scale-[75%]'
                             />
-                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at: {dateFirst}</p>
+                            <div className='w-full flex flex-col justify-between'>
+                                <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                <p className='ml-[0.5rem] font-normal text-[1rem] text-dark-grey'>{dateFirst && new Date(dateFirst.utc_time).toLocaleString('en-US', {timeZone: dateFirst.timezone}) + ` (${dateFirst.timezone.replaceAll('_', ' ')} time)`}</p>
+                            </div>
                         </div>
                         <p className='text-grey font-light text-sm mt-[0.5rem]'>Please remember to take your second readings as close and accurate to 24 hours after these first readings.</p>
                     </div>
@@ -444,12 +445,17 @@ const Step3 = ({params}) => {
                     commStage && commStage.second.date_time &&
                     <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3'>
                         <div className='w-full flex items-center justify-start'>
+                            <div className='w-full flex items-center justify-start'>
                             <Image 
                                 src={successTick}
                                 alt="Success Tick"
                                 className='scale-[75%]'
                             />
-                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at: {dateSecond}</p>
+                            <div className='w-full flex flex-col justify-between'>
+                                <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                <p className='ml-[0.5rem] font-normal text-[1rem] text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
+                            </div>
+                        </div>
                         </div>
                         <p className='text-grey font-light text-sm mt-[0.5rem]'>Readings completed! You will be contacted by one of our representatives once the calibration process is finished.</p>
                     </div>
