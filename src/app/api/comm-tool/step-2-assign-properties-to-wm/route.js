@@ -66,9 +66,10 @@ export async function POST(req){
                             body: JSON.stringify({
                                 "cost_per_volume": {
                                     "timestamp": now,
-                                    "value": (props.cost_unit.value === "liters") ?  props.cost_per_unit.value : (props.cost_unit.value === "m3") ? (Number(props.cost_per_unit.value)/1000): (props.cost_unit.value === "gallons") && (Number(props.cost_per_unit.value)*3.785),
+                                    "value": (props.cost_unit.value === "liters") ?  Number(props.cost_per_unit.value)*0.001 : (props.cost_unit.value === "m3") ? Number(props.cost_per_unit.value) : (props.cost_unit.value === "gallons") && (Number(props.cost_per_unit.value)*0.00378541),
                                     "context": {
-                                        "metricUnit": props.cost_unit.value
+                                        "original_cost": props.cost_per_unit.value,
+                                        "original_unit": props.cost_unit.value
                                     }
                                 },
                                 "meter_type": {

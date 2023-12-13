@@ -18,11 +18,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import ButtonSmall from '@/src/components/buttonSmall/page'
 import EditButton from '@/public/editButton.svg'
 import Success from '@/src/components/Success/page'
-import { timeZones } from '@/src/dbs/formOptions'
 
 const Step3 = ({params}) => {
-
-    // let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     const { setUser, user, setLoader, setPortfolio, userSession } = useContext(userContext)
 
@@ -65,138 +62,141 @@ const Step3 = ({params}) => {
             }
         })
     }, [params])
-    console.log(commStage)
 
     const onSubmitFirst = async() => {
         setError()
-        setLoad(true)
         let picURL
         let comm_stage
         if(picFirst === null){
             setError("No image was found")
-            return
-        }
-        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst.timestamp}.jpg`)
-        uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
-            .then((snapshot)=> {
-                getDownloadURL(snapshot.ref)
-                    .then((url) =>{
-                        picURL = url.toString()
-                    })
-                    .then(()=>{
-                        fetch('/api/comm-tool/step-3-first-readings', {
-                            method: 'POST',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                meterType: meterType,
-                                lowSideFirst: lowSideFirst,
-                                dateFirst: dateFirst,
-                                lowSideFirstUnit: lowSideFirstUnit,
-                                picFirst: picFirst,
-                                highSideFirst: highSideFirst,
-                                highSideFirstUnit: highSideFirstUnit,
-                                org: org,
-                                params: params,
-                                user: user,
-                                commStage: commStage,
-                                picURL: picURL,
-                                setUser: setUser,
-                                userSession: userSession,
-                                setLoader: setLoader,
-                                setPortfolio: setPortfolio
+        }else if(!dateFirst || !lowSideFirst || !lowSideFirstUnit){
+            setError("Please complete all the required fields.")
+        }else{
+            setLoad(true)
+            const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst.timestamp}.jpg`)
+            uploadBytes(imageRef, picFirst, {contentType: 'image/jpg'})
+                .then((snapshot)=> {
+                    getDownloadURL(snapshot.ref)
+                        .then((url) =>{
+                            picURL = url.toString()
+                        })
+                        .then(()=>{
+                            fetch('/api/comm-tool/step-3-first-readings', {
+                                method: 'POST',
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    meterType: meterType,
+                                    lowSideFirst: lowSideFirst,
+                                    dateFirst: dateFirst,
+                                    lowSideFirstUnit: lowSideFirstUnit,
+                                    picFirst: picFirst,
+                                    highSideFirst: highSideFirst,
+                                    highSideFirstUnit: highSideFirstUnit,
+                                    org: org,
+                                    params: params,
+                                    user: user,
+                                    commStage: commStage,
+                                    picURL: picURL,
+                                    setUser: setUser,
+                                    userSession: userSession,
+                                    setLoader: setLoader,
+                                    setPortfolio: setPortfolio
+                                })
+                            })
+                            .then(data => data.json())
+                            .then(response => {
+                                if(response.status === "error"){
+                                    setError(response.message)
+                                    setLoad(false)
+                                }
+                                if(response.status === "ok"){
+                                    comm_stage = JSON.parse(response.commission_stage)
+                                    fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if(data.status === 'ok'){
+                                            setCommStage(comm_stage)
+                                            setUser(data.user_info)
+                                            setLoad(false)
+                                        }else if(data.status === "error"){
+                                            setError(data.message)
+                                        }
+                                    })
+                                }
                             })
                         })
-                        .then(data => data.json())
-                        .then(response => {
-                            if(response.status === "error"){
-                                setError(response.message)
-                                setLoad(false)
-                            }
-                            if(response.status === "ok"){
-                                comm_stage = JSON.parse(response.commission_stage)
-                                fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    if(data.status === 'ok'){
-                                        setCommStage(comm_stage)
-                                        setUser(data.user_info)
-                                        setLoad(false)
-                                    }else if(data.status === "error"){
-                                        setError(data.message)
-                                    }
-                                })
-                            }
-                        })
-                    })
-            })
+                })
+        }
     }
 
     const onSubmitSecond = async() => {
         setError()
-        setLoad(true)
         let picURL
         let comm_stage
         if(picSecond === null){
             setError("No image was found")
-            return
-        }
-        const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond.timestamp}.jpg`)
-        uploadBytes(imageRef, picSecond, {contentType: 'image/jpg'})
-            .then((snapshot)=> {
-                getDownloadURL(snapshot.ref)
-                    .then((url) =>{
-                        picURL = url.toString()
-                    })
-                    .then(()=>{
-                        fetch('/api/comm-tool/step-3-second-readings', {
-                            method: 'POST',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                meterType: meterType,
-                                lowSideSecond: lowSideSecond,
-                                dateSecond: dateSecond,
-                                lowSideSecondUnit: lowSideSecondUnit,
-                                picSecond: picSecond,
-                                highSideSecond: highSideSecond,
-                                highSideSecondUnit: highSideSecondUnit,
-                                org: org,
-                                params: params,
-                                user: user,
-                                commStage: commStage,
-                                picURL: picURL,
-                                setUser: setUser,
-                                userSession: userSession,
-                                setLoader: setLoader,
-                                setPortfolio: setPortfolio
+        }else if(!dateSecond || !lowSideSecond || !lowSideSecondUnit){
+            setError("Please complete all the required fields.")
+        }else{
+            setLoad(true)
+            const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond.timestamp}.jpg`)
+            uploadBytes(imageRef, picSecond, {contentType: 'image/jpg'})
+                .then((snapshot)=> {
+                    getDownloadURL(snapshot.ref)
+                        .then((url) =>{
+                            picURL = url.toString()
+                        })
+                        .then(()=>{
+                            fetch('/api/comm-tool/step-3-second-readings', {
+                                method: 'POST',
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    meterType: meterType,
+                                    lowSideSecond: lowSideSecond,
+                                    dateSecond: dateSecond,
+                                    lowSideSecondUnit: lowSideSecondUnit,
+                                    picSecond: picSecond,
+                                    highSideSecond: highSideSecond,
+                                    highSideSecondUnit: highSideSecondUnit,
+                                    org: org,
+                                    params: params,
+                                    user: user,
+                                    commStage: commStage,
+                                    picURL: picURL,
+                                    setUser: setUser,
+                                    userSession: userSession,
+                                    setLoader: setLoader,
+                                    setPortfolio: setPortfolio
+                                })
+                            })
+                            .then(data => data.json())
+                            .then(response => {
+                                if(response.status === "error"){
+                                    setError(response.message)
+                                    setLoad(false)
+                                }else if(response.status === "ok"){
+                                    comm_stage = response.commission_stage
+                                    fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if(data.status === 'ok'){
+                                            setUser(data.user_info)
+                                            setCommStage(comm_stage)
+                                            setLoad(false)
+                                            setSuccess(true)
+                                        }else if(data.status === "error"){
+                                            setError(data.message)
+                                        }
+                                    })
+                                }
                             })
                         })
-                        .then(data => data.json())
-                        .then(response => {
-                            if(response.status === "error"){
-                                setError(response.message)
-                                setLoad(false)
-                            }else if(response.status === "ok"){
-                                comm_stage = response.commission_stage
-                                fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    if(data.status === 'ok'){
-                                        setUser(data.user_info)
-                                        setCommStage(comm_stage)
-                                        setLoad(false)
-                                        setSuccess(true)
-                                    }else if(data.status === "error"){
-                                        setError(data.message)
-                                    }
-                                })
-                            }
-                        })
-                    })
-            })
+                })
+        }
     }
 
     const resetReadings = async() => {
@@ -352,8 +352,8 @@ const Step3 = ({params}) => {
                                 className='scale-[75%]'
                             />
                             <div className='w-full flex flex-col justify-between'>
-                                <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
-                                <p className='ml-[0.5rem] font-normal text-[1rem] text-dark-grey'>{dateFirst && new Date(dateFirst.utc_time).toLocaleString('en-US', {timeZone: dateFirst.timezone}) + ` (${dateFirst.timezone.replaceAll('_', ' ')} time)`}</p>
+                                <p className='w-full ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                <p className='w-fullxs ml-[0.5rem] font-normal text-[0.90rem] text-dark-grey'>{dateFirst && new Date(dateFirst.utc_time).toLocaleString('en-US', {timeZone: dateFirst.timezone}) + ` (${dateFirst.timezone.replaceAll('_', ' ')} time)`}</p>
                             </div>
                         </div>
                         <p className='text-grey font-light text-sm mt-[0.5rem]'>Please remember to take your second readings as close and accurate to 24 hours after these first readings.</p>
@@ -452,8 +452,8 @@ const Step3 = ({params}) => {
                                 className='scale-[75%]'
                             />
                             <div className='w-full flex flex-col justify-between'>
-                                <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
-                                <p className='ml-[0.5rem] font-normal text-[1rem] text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
+                                <p className='w-full ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                <p className='w-full ml-[0.5rem] font-normal text-[0.90rem] text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
                             </div>
                         </div>
                         </div>
