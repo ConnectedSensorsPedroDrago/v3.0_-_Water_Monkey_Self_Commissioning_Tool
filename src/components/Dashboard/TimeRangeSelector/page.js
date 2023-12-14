@@ -5,9 +5,8 @@ import { toTimestamp } from '@/src/functions/toTimestamp'
 
 const TimeRangeSelector = () => {
 
-    const { setTimeRangeStart, setTimeRangeEnd, runReport, setRunReport, setQuickReport } = useContext(wmDashbaordContext)
+    const { setTimeRangeStart, setTimeRangeEnd, runReport, setRunReport, setQuickReport, setLoader } = useContext(wmDashbaordContext)
     let now = new Date()
-
 
   return (
     <div className='bg-green w-full flex flex-row justify-between items-center p-2 rounded'>
@@ -22,6 +21,7 @@ const TimeRangeSelector = () => {
                             setTimeRangeStart(toTimestamp(now.getMonth()+1 + "/" + now.getDate() + "/" +  now.getFullYear() + " 00:00:00"))
                             setTimeRangeEnd(toTimestamp(now))
                             setQuickReport('day')
+                            setLoader(true)
                             setRunReport(!runReport)
                         }}
                     >
@@ -34,6 +34,7 @@ const TimeRangeSelector = () => {
                             setTimeRangeStart(toTimestamp(startDay.getMonth()+1 + "/" + startDay.getDate() + "/" + startDay.getFullYear() + " 00:00:00"))
                             setTimeRangeEnd(toTimestamp(now))
                             setQuickReport('week')
+                            setLoader(true)
                             setRunReport(!runReport)
                         }}
                     >
@@ -45,6 +46,7 @@ const TimeRangeSelector = () => {
                             setTimeRangeStart(toTimestamp(now.getMonth()+1 + "/1/" +  now.getFullYear() + " 00:00:00"))
                             setTimeRangeEnd(toTimestamp(now))
                             setQuickReport('month')
+                            setLoader(true)
                             setRunReport(!runReport)
                         }}
                     >
@@ -56,6 +58,7 @@ const TimeRangeSelector = () => {
                             setTimeRangeStart(toTimestamp("1/1/" +  now.getFullYear() + " 00:00:00"))
                             setTimeRangeEnd(toTimestamp(now))
                             setQuickReport('year')
+                            setLoader(true)
                             setRunReport(!runReport)
                         }}
                     >
@@ -80,6 +83,7 @@ const TimeRangeSelector = () => {
             <button 
                 className='ml-2 rounded border-[0.05rem] border-grey bg-white p-[0.25rem] text-sm text-dark-grey hover:text-white hover:bg-blue-hard'
                 onClick={()=> {
+                    setLoader(true)
                     setRunReport(!runReport)
                     setQuickReport()
                 }}

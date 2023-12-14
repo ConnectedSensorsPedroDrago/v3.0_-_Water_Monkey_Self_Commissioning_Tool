@@ -10,15 +10,16 @@ import MainChart from "@/src/components/Dashboard/MainChart/page"
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport, quickReport } = useContext(wmDashbaordContext)
-    const [loader, setLoader] = useState(true)
+    const { timeRangeStart, timeRangeEnd, runReport, quickReport, loader, setLoader } = useContext(wmDashbaordContext)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
     const [error, setError] = useState()
+    const [mainChartValues, setMainChartValues] = useState()
 
     useEffect(()=>{
       let label
       setError()
+      setMainChartValues()
       fetch(`/api/dashboard/water-monkey/get-device?id=${params.id}`)
       .then(resp => resp.json())
       .then(data => {
@@ -32,17 +33,31 @@ const Dashboard = ({ params }) => {
             if(data.status === 'ok'){
               setLastValues(data.data)
               setLoader(false)
-              // fetch(`/api/dashboard/water-monkey/get-device?device=${label}&start=${timeRangeStart}&end=${timeRangeEnd}&metric=liters${quickReport === 'day' ? '&quick=day' : quickReport === 'week' ? '&quick=week' : quickReport === 'month' ? '&quick=month' : quickReport === 'year' ? '&quick=year' : ''}`)
-              //   .then(res => res.json())
-              //   .then(data => {
-              //     console.log(data)
-              //     if(data.status === "error"){
-              //       setError(data.message)
-              //       setLoader(false)
-              //     }else if(data.status === 'ok'){
-              //       setLoader(false)
-              //     }
-              //   })
+              if(timeRangeStart && timeRangeEnd){
+                fetch(`/api/dashboard/water-monkey/get-report-data`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    "device": params.id,
+                    "start": timeRangeStart,
+                    "end": timeRangeEnd,
+                    "variables": device.variables
+                  })
+
+                })
+                .then(res => res.json())
+                .then(data => {
+                  console.log(data)
+                  if(data.status === "ok"){
+                    setMainChartValues(data.data)
+                  }else if(data.status === "error"){
+                    setError(data.message)
+                  }
+                
+                })
+              }
             }else if(data.status === 'error'){
               setError(data.message)
               setLoader(false)
@@ -77,14 +92,12 @@ const Dashboard = ({ params }) => {
             <AddressHeader 
               address={device.properties.address} 
             />
-            <MainChart data={lastValues}/>
+            {
+              mainChartValues &&
+              <MainChart mainChartValues={mainChartValues} lastValues={lastValues}/>
+            }
           </>
         }
-      
-
-        <p className="font-semibold text-xl md:text-3xl text-dark-grey">{timeRangeStart && timeRangeStart}</p>
-        <p className="font-semibold text-xl md:text-3xl text-dark-grey">{timeRangeEnd && timeRangeEnd}</p>
-        <p className="font-semibold text-xl md:text-3xl text-dark-grey">{quickReport && quickReport}</p>
       </div>
     </>
     
