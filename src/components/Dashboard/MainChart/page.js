@@ -5,8 +5,6 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const MainChart = ({ mainChartValues, lastValues }) => {
 
-    console.log(lastValues)
-
 	var donutChartConfig = {
         series: [ (mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100, 100 -((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100) ],
         labels: ['Leaked Water', 'Consumed Water'],

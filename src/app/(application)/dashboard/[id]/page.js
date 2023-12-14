@@ -7,10 +7,11 @@ import Loader from "@/src/components/loader/page"
 import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
+import { toTimestamp } from '@/src/functions/toTimestamp'
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport, quickReport, loader, setLoader } = useContext(wmDashbaordContext)
+    const { timeRangeStart, timeRangeEnd, runReport, quickReport, loader, setLoader,setTimeRangeStart, setTimeRangeEnd } = useContext(wmDashbaordContext)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
     const [error, setError] = useState()
@@ -32,7 +33,6 @@ const Dashboard = ({ params }) => {
           .then(data => {
             if(data.status === 'ok'){
               setLastValues(data.data)
-              setLoader(false)
               if(timeRangeStart && timeRangeEnd){
                 fetch(`/api/dashboard/water-monkey/get-report-data`, {
                   method: "POST",
@@ -49,14 +49,21 @@ const Dashboard = ({ params }) => {
                 })
                 .then(res => res.json())
                 .then(data => {
-                  console.log(data)
                   if(data.status === "ok"){
                     setMainChartValues(data.data)
                   }else if(data.status === "error"){
                     setError(data.message)
                   }
-                
                 })
+                .finally(()=> {
+                  setTimeRangeStart()
+                  setTimeRangeEnd()
+                  setLoader(false)
+                })
+              }else{
+                setTimeRangeStart()
+                setTimeRangeEnd()
+                setLoader(false)
               }
             }else if(data.status === 'error'){
               setError(data.message)
@@ -73,7 +80,7 @@ const Dashboard = ({ params }) => {
   return (
     <>
       {
-        loader &&
+        (loader) &&
         <Loader />
       }
       {
