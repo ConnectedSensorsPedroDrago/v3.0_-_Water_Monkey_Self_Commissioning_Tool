@@ -7,6 +7,8 @@ import Loader from "@/src/components/loader/page"
 import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
+import LowerChart from "@/src/components/Dashboard/LowerChartContainer/page"
+import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 
 const Dashboard = ({ params }) => {
 
@@ -103,13 +105,21 @@ const Dashboard = ({ params }) => {
             />
             {
               mainChartValues &&
-              <MainChart 
-                mainChartValues={mainChartValues} 
-                lastValues={lastValues} 
-                reportStart={reportStart} 
-                reportEnd={reportEnd} 
-                meterType={lastValues.meter_type.value}
-              />
+              <>
+                <MainChart 
+                  mainChartValues={mainChartValues} 
+                  lastValues={lastValues} 
+                  reportStart={reportStart} 
+                  reportEnd={reportEnd} 
+                  meterType={lastValues.meter_type.value}
+                />
+                <LowerChartContainer
+                  label={device.label}
+                  reportStart={reportStart} 
+                  reportEnd={reportEnd} 
+                  meterType={lastValues.meter_type.value}
+                />
+              </>
             }
           </>
         }
