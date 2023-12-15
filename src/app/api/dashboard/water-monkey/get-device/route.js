@@ -16,7 +16,7 @@ export async function GET(req){
         if(data.properties){
             device = data
             try{
-                let response1 = await fetch(data.variables, {
+                let response1 = await fetch(data.variables + '?page_size=1000', {
                     method: 'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -24,7 +24,6 @@ export async function GET(req){
                     }
                 })
                 let data1 = await response1.json()
-                // console.log(data1.results)
                 if(data1.results){
                     let variables = []
                     data1.results.forEach(variable => {
@@ -47,5 +46,4 @@ export async function GET(req){
         console.log("There was an error requesting the Water Monkey data: " + e + ". Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey data: " + e + ". Please try again or contact support"}))
     }
-
 }

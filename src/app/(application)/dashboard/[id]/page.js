@@ -7,15 +7,17 @@ import Loader from "@/src/components/loader/page"
 import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
-import { toTimestamp } from '@/src/functions/toTimestamp'
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport, quickReport, loader, setLoader,setTimeRangeStart, setTimeRangeEnd } = useContext(wmDashbaordContext)
+    const { timeRangeStart, timeRangeEnd, runReport, loader, setLoader,setTimeRangeStart, setTimeRangeEnd, error, setError } = useContext(wmDashbaordContext)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
-    const [error, setError] = useState()
     const [mainChartValues, setMainChartValues] = useState()
+    const [reportStart, setReportStart] = useState()
+    const [reportEnd, setReportEnd] = useState()
+
+    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     useEffect(()=>{
       let label
@@ -32,8 +34,11 @@ const Dashboard = ({ params }) => {
           .then(resp => resp.json())
           .then(data => {
             if(data.status === 'ok'){
+              console.log(data.data)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
+                setReportStart({timestamp: timeRangeStart, timezone: timezone})
+                setReportEnd({timestamp: timeRangeEnd, timezone: timezone})
                 fetch(`/api/dashboard/water-monkey/get-report-data`, {
                   method: "POST",
                   headers: {
@@ -83,10 +88,7 @@ const Dashboard = ({ params }) => {
         (loader) &&
         <Loader />
       }
-      {
-        error &&
-        <p className="error-message">{error}</p>
-      }
+      
       <div className='container-pages bg-grey-light'>
         <TimeRangeSelector />
         {
@@ -101,9 +103,19 @@ const Dashboard = ({ params }) => {
             />
             {
               mainChartValues &&
-              <MainChart mainChartValues={mainChartValues} lastValues={lastValues}/>
+              <MainChart 
+                mainChartValues={mainChartValues} 
+                lastValues={lastValues} 
+                reportStart={reportStart} 
+                reportEnd={reportEnd} 
+                meterType={lastValues.meter_type.value}
+              />
             }
           </>
+        }
+        {
+          error &&
+          <p className="error-message">{error}</p>
         }
       </div>
     </>

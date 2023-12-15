@@ -10,7 +10,8 @@ export const WMDashboardContextProvider = ({ children }) => {
     const [timeRangeEnd, setTimeRangeEnd] = useState()
     const [runReport, setRunReport] = useState(true)
     const [quickReport, setQuickReport] = useState()
-     const [loader, setLoader] = useState(true)
+    const [loader, setLoader] = useState(true)
+    const [error, setError] = useState()
 
     return(
         <wmDashbaordContext.Provider
@@ -24,7 +25,9 @@ export const WMDashboardContextProvider = ({ children }) => {
                 quickReport,
                 setQuickReport,
                 loader,
-                setLoader
+                setLoader,
+                error,
+                setError
             }}
         >
             { children }
