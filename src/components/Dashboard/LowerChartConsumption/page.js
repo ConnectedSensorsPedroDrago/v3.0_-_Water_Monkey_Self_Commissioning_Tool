@@ -1,4 +1,8 @@
+"use client"
+
+import { useState } from "react";
 import  { Chart, Line } from "react-chartjs-2"
+import { defaults } from "chart.js";
 import 'chartjs-adapter-date-fns';
 import zoomPlugin, { resetZoom } from 'chartjs-plugin-zoom';
 import {
@@ -14,103 +18,101 @@ import {
     Filler
 } from 'chart.js'
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    // ToolTip,
-    TimeScale,
-    Legend,
-    Filler,
-    zoomPlugin
-)
+const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDateNightStart, chartDateNightEnd, chartData, meterType }) => {
 
-const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDateNightStart, chartDateNightEnd, chartData }) => {
+    const [showLowerChart, setShowLowerChart] = useState(false)
 
-    console.log(chartWeekendsStart)
-    console.log(chartWeekendsEnd)
-    console.log(chartDateNightStart)
-    console.log(chartDateNightEnd)
-    console.log(chartData)
+    //Define font of charts
+    defaults.font.family = "Fira Sans"
 
-
-    let metric = 'liters'
-
-    // Weekend Highligther
-    const weekendHighlighter = {
-        id: 'weekendHighlighter',
+    //Weekend Highlighter
+    const weekend_highlighter = {
+        id: 'weekend_highlighter',
         beforeDatasetsDraw(chart, args, pluginOptions){
             const { ctx, chartArea: {top, bottom, left, right, width, height}, scales: {x, y} } = chart;
-            for(let i = 0; i < pluginOptions.startDate.length; i++){
-                const startDate = new Date(pluginOptions.startDate[i]).setHours(0, 0, 0, 0);
-                const endDate = new Date(pluginOptions.endDate[i]).setHours(23, 59, 59, 999);
-                ctx.fillStyle = 'rgba(255, 133, 0, 0.1)'
-                ctx.fillRect(x.getPixelForValue(startDate), top, x.getPixelForValue(endDate) - x.getPixelForValue(startDate), height)
+            if(pluginOptions.startDate != undefined){
+                for(let i = 0; i < pluginOptions.startDate.length; i++){
+                    const startDate = new Date(pluginOptions.startDate[i]).setHours(0, 0, 0, 0);
+                    const endDate = new Date(pluginOptions.endDate[i]).setHours(23, 59, 59, 999);
+                    ctx.fillStyle = 'rgba(255, 133, 0, 0.1)'
+                    ctx.fillRect(x.getPixelForValue(startDate), top, x.getPixelForValue(endDate) - x.getPixelForValue(startDate), height)
+                }
             }
         }
     }
 
     // Day/Night Highligther
-    const dayNightHighlighter = {
-        id: 'dayNightHighlighter',
+    const day_night_highlighter = {
+        id: 'day_night_highlighter',
         beforeDatasetsDraw(chart, args, pluginOptions){
             const { ctx, chartArea: {top, bottom, left, right, width, height}, scales: {x, y} } = chart;
-            for(let i = 0; i < pluginOptions.startDate.length; i++){
-                const startDate = new Date(pluginOptions.startDate[i]).setHours(23, 59, 59, 999);
-                const endDate = new Date(pluginOptions.endDate[i]).setHours(6, 0, 0, 0);
-                ctx.fillStyle = 'rgba(0, 43, 255, 0.1)'
-                ctx.fillRect(x.getPixelForValue(startDate), top, x.getPixelForValue(endDate) - x.getPixelForValue(startDate), height)
+            if(pluginOptions.startDate != undefined){
+                for(let i = 0; i < pluginOptions.startDate.length; i++){
+                    const startDate = new Date(pluginOptions.startDate[i]).setHours(23, 59, 59, 999);
+                    const endDate = new Date(pluginOptions.endDate[i]).setHours(6, 0, 0, 0);
+                    ctx.fillStyle = 'rgba(0, 43, 255, 0.1)'
+                    ctx.fillRect(x.getPixelForValue(startDate), top, x.getPixelForValue(endDate) - x.getPixelForValue(startDate), height)
+                }
             }
         }
     }
 
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        weekend_highlighter,
+        day_night_highlighter,
+        // ToolTip,
+        TimeScale,
+        Legend,
+        Filler,
+        zoomPlugin
+    )
+
+    let metric = 'liters'
+
+    // Weekend Highligther
+
     let data = {
-        // default:{
-        //     fonts: {
-        //         labels: 'Fira Sans'
-        //     }
-        // },
-        // data: {
-            datasets: [
-                {
-                    label: 'Previous Period Consumption',
-                    data: chartData.waterConsumptionShadow,
-                    tension: 0.2,
-                    backgroundColor: '#00935B',
-                    type: "line",
-                    borderWidth: 0.8,
-                    borderColor: '#00935B',
-                    xAxisID: "xAxes2"
-                },
-                {
-                    label: 'Grey Zone',
-                    data: chartData.greyAreaLpm,
-                    tension: 0.2,
-                    backgroundColor: '#838689',
-                    type: "line",
-                    fill: true,
-                },
-                {
-                    label: 'Leaked Water',
-                    data: chartData.leakedWaterLpm,
-                    tension: 0.2,
-                    backgroundColor: '#E8D12A',
-                    type: "line",
-                    fill: true,
-                },
-                {
-                    label: 'Consumed Water',
-                    data: chartData.waterConsumedLpm,
-                    tension: 0.2,
-                    backgroundColor: '#292561',
-                    type: "line",
-                    fill: true,
-                },
-            ]
-        // },
-        // plugins: [weekendHighlighter, dayNightHighlighter]
+        datasets: [
+            {
+                label: 'Previous Period Consumption',
+                data: chartData.waterConsumptionShadow,
+                tension: 0.2,
+                backgroundColor: '#00935B',
+                type: "line",
+                borderWidth: 0.8,
+                borderColor: '#00935B',
+                xAxisID: "xAxes2"
+            },
+            {
+                label: 'Grey Zone',
+                data: chartData.greyAreaLpm,
+                tension: 0.2,
+                backgroundColor: '#838689',
+                type: "line",
+                fill: true,
+            },
+            {
+                label: 'Leaked Water',
+                data: chartData.leakedWaterLpm,
+                tension: 0.2,
+                backgroundColor: '#E8D12A',
+                type: "line",
+                fill: true,
+            },
+            {
+                label: 'Consumed Water',
+                data: chartData.waterConsumedLpm,
+                tension: 0.2,
+                backgroundColor: '#292561',
+                type: "line",
+                fill: true,
+            },
+        ]
     }
 
     let options = {
@@ -201,11 +203,11 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
             }
         },
         plugins: {
-            weekendHighlighter: {
+            weekend_highlighter: {
                 startDate: chartWeekendsStart,
                 endDate: chartWeekendsEnd 
             },
-            dayNightHighlighter: {
+            day_night_highlighter: {
                 startDate: chartDateNightStart,
                 endDate: chartDateNightEnd 
             },
@@ -241,29 +243,88 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                 pan: {
                     enabled: true,
                     mode: 'x',
-                },
-                
+                }, 
             }
         }
     }
 
+    let data2 = {
+        datasets: [
+            {
+                label: 'High Flow Rate',
+                data: chartData.highFlowSideRate,
+                tension: 0.2,
+                backgroundColor: '#91298C',
+                type: "line",
+                fill: true,
+            },
+            {
+                label: 'Low Flow Rate',
+                data: chartData.lowFlowSideRate,
+                tension: 0.2,
+                backgroundColor: '#00935B',
+                type: "line",
+                fill: true,
+            },
+        ]
+    }
+
   return (
-    <div className='w-full h-[30rem] flex flex-col justify-start items-end'>
-        <div className='w-full flex flex-col justify-start items-end'>
-            <button 
-                className='wm-button-quick-report mb-[0.5rem]'
-                onClick={()=> {
-                    console.log('resetZoom()')
-                }}
-            >
-                Reset Zoom
-            </button>
+    <div className='w-full flex flex-col justify-start items-end p-[1rem]'>
+        <div className="w-full flex flex-row justify-between items-center">
+            <div className="flex flex-col items-start justify-between">
+                <p className="text-blue-hard font-semibold text-[1.5rem] text-start">Water Consumption Benchmarking</p>
+                <div className="flex flex-row items-center justify-between">
+                    <p className="text-blue-hard font-light">Last night average:</p>
+                    <p className="text-blue-hard font-semibold text-[1.2rem] ml-[0.5rem]">0 LPM</p>
+                </div>
+            </div>
+            <div className="flex flex-col items-end justify-between">
+                {   
+                    meterType === 0 &&
+                    <div className="flex flex-row items-center justify-end">
+                        <input 
+                            type="checkbox"
+                            onClick={()=> setShowLowerChart(!showLowerChart)}
+
+                        />
+                        <p className="text-blue-hard font-semibold text-[1rem] text-start ml-[0.5rem]">View High vs. Low Flow chart</p>
+                    </div>
+                }
+                <button 
+                    className='wm-button-quick-report mt-[1rem] mr-0'
+                    onClick={()=> {
+                        console.log('resetZoom()')
+                    }}
+                >
+                    Reset Zoom
+                </button>
+            </div>
         </div>
-        <Line 
-            data={data} 
-            options={options}
-            plugins={{weekendHighlighter, dayNightHighlighter}}
-        />
+        <div className='w-full flex flex-col justify-start items-end'>
+            
+        </div>
+        <div className="h-[30rem] w-full">
+            <Line 
+                data={data} 
+                options={options}
+                plugins={{weekend_highlighter, day_night_highlighter}}
+                default={{fonts: { labels: 'Fira Sans'}}}
+            />
+        </div>
+        {
+            showLowerChart && meterType === 0 &&
+            <div className="h-[30rem] w-full mt-[1rem]">
+                <p className="text-blue-hard font-semibold">High vs. Low Flow</p>
+                <Line 
+                    data={data2} 
+                    options={options}
+                    plugins={{weekend_highlighter, day_night_highlighter}}
+                    default={{fonts: { labels: 'Fira Sans'}}}
+                />
+            </div>
+        }
+        
     </div>
   )
 }

@@ -11,7 +11,7 @@
 
 @layer components {
   .container-pages {
-    @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 pb-8;
+    @apply flex flex-col justify-start items-center w-screen min-h-screen pt-36 pl-8  pr-8 pb-8;
   }
   .container-dashboard {
     @apply flex flex-col justify-start items-center w-screen h-screen pt-36;

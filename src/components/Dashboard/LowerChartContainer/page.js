@@ -78,7 +78,7 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
 
 
   return (
-    <div className='section-dashboard'>
+    <div className='section-dashboard z-0'>
         {
             load &&
             <div className='w-full flex flex-col justify-center items-center'>
@@ -96,13 +96,14 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
         {
             !error && !load &&
             <>
-                <div className='w-full h-[30rem] flex flex-col justify-start items-end'>
+                <div className='w-full flex flex-col justify-start items-end'>
                     <LowerChartConsumption 
                         chartWeekendsStart={chartWeekendsStart} 
                         chartWeekendsEnd={chartWeekendsEnd} 
                         chartDateNightStart={chartDateNightStart} 
                         chartDateNightEnd={chartDateNightEnd}
                         chartData={chartData}
+                        meterType={meterType}
                     />
                 </div>
             </>

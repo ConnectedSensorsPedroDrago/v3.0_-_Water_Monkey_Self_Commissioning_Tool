@@ -31,7 +31,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
 	};
 
   return (
-    <div className='section-dashboard flex flex-col'>
+    <div className='section-dashboard flex flex-col z-0'>
         <div className="flex flex-row items-center justify-between">
             <div className="flex items-center justify-center">
                     <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={350} height={350}/>

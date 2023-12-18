@@ -13,7 +13,7 @@ const ActionsTab = ({ alerts, unit }) => {
     const [open, setOpen] = useState(false)
 
   return (
-    <div className='section-dashboard'>
+    <div className='section-dashboard z-0'>
         <div className='w-full flex flex-row items-center justify-start'>
             <p className='text-blue-hard font-light'>Actions</p>
             {
