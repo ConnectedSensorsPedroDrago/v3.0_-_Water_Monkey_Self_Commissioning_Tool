@@ -6,7 +6,7 @@ const SwitchDoubleText = ({ value }) => {
 
   return (
     <div className='flex flex-row items-center'>
-        <p className='text-blue-hard font-light text-sm'>{value.value1}</p>
+        <p className='text-blue-hard font-light text-[0.75rem]'>{value.value1}</p>
         { value.value && value.value === 1 ?
           <Image 
             src={SwitchOn}
@@ -17,10 +17,10 @@ const SwitchDoubleText = ({ value }) => {
           <Image 
             src={SwitchOnRight}
             alt="Switch Off"
-            className='m-2 cursor-pointer'
+            className='m-2 cursor-pointer scale-75'
           />
         }
-        <p className='text-blue-hard font-light text-sm'>{value.value2}</p>
+        <p className='text-blue-hard font-light text-[0.75rem]'>{value.value2}</p>
     </div>
   )
 }

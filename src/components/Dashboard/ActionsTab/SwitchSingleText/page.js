@@ -5,21 +5,21 @@ import Image from 'next/image'
 const SwitchSingleText = ({ value }) => {
 
   return (
-    <div className='flex flex-row items-center w-[9.25rem]'>
+    <div className='flex flex-row items-center w-[8.25rem]'>
         { value.value.value && value.value.value === 1 ?
           <Image 
             src={SwitchOn}
             alt="Switch On"
-            className='m-2 cursor-pointer'
+            className='mr-[0.5rem] cursor-pointer scale-75'
           />
           :
           <Image 
             src={SwitchOff}
             alt="Switch Off"
-            className='m-2 cursor-pointer'
+            className='mr-[0.5rem] cursor-pointer scale-75'
           />
         }
-        <p className='text-blue-hard font-light text-sm'>{value.name}</p>
+        <p className='text-blue-hard font-light text-[0.75rem]'>{value.name}</p>
     </div>
   )
 }

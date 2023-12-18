@@ -65,6 +65,6 @@
     @apply rounded w-full p-4 mt-4 bg-white drop-shadow-md;
   }
   .wm-button-quick-report {
-    @apply rounded mr-[1rem] text-yellow text-sm font-semibold cursor-pointer h-[1.5rem] w-[6rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.075rem] hover:border-blue-hard;
+    @apply rounded mr-[1rem] text-yellow text-[0.75rem] font-semibold cursor-pointer h-[1.2rem] w-[4.5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.075rem] hover:border-blue-hard;
   }
 }

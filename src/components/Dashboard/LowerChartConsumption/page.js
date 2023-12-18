@@ -24,6 +24,8 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
 
     //Define font of charts
     defaults.font.family = "Fira Sans"
+    defaults.font.size = 9
+    defaults.font.weight = 200
 
     //Weekend Highlighter
     const weekend_highlighter = {
@@ -217,7 +219,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                     boxWidth: 12,
                     pointStyle: "circle",
                     useBorderRadius: true,
-                    borderRadius: 6,
+                    borderRadius: 4.5,
                 },
             },
             zoom: {
@@ -283,8 +285,8 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
             <div className="flex flex-col items-start justify-between">
                 <p className="text-blue-hard font-semibold text-[1.5rem] text-start">Water Consumption Benchmarking</p>
                 <div className="flex flex-row items-center justify-between">
-                    <p className="text-blue-hard font-light">Last night average:</p>
-                    <p className="text-blue-hard font-semibold text-[1.2rem] ml-[0.5rem]">0 LPM</p>
+                    <p className="text-blue-hard font-light text-[0.75rem]">Last night average:</p>
+                    <p className="text-blue-hard font-semibold text-[0.85rem] ml-[0.5rem]">0 LPM</p>
                 </div>
             </div>
             <div className="flex flex-col items-end justify-between">
@@ -296,7 +298,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                             onClick={()=> setShowLowerChart(!showLowerChart)}
 
                         />
-                        <p className="text-blue-hard font-semibold text-[1rem] text-start ml-[0.5rem]">View High vs. Low Flow chart</p>
+                        <p className="text-blue-hard font-semibold text-[0.75rem] text-start ml-[0.5rem]">View High vs. Low Flow chart</p>
                     </div>
                 }
                 <button 
@@ -312,7 +314,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
         <div className='w-full flex flex-col justify-start items-end'>
             
         </div>
-        <div className="h-[30rem] w-full">
+        <div className="h-[20rem] w-full">
             <Line 
                 data={data} 
                 options={options}
@@ -322,7 +324,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
         </div>
         {
             showLowerChart && meterType === 0 &&
-            <div className="h-[30rem] w-full mt-[1rem]">
+            <div className="h-[20rem] w-full mt-[1rem]">
                 <p className="text-blue-hard font-semibold">High vs. Low Flow</p>
                 <Line 
                     data={data2} 
