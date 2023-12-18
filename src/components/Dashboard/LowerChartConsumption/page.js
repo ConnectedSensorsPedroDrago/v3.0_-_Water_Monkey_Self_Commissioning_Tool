@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import  { Chart, Line } from "react-chartjs-2"
-import { defaults } from "chart.js";
 import 'chartjs-adapter-date-fns';
 import zoomPlugin, { resetZoom } from 'chartjs-plugin-zoom';
 import {
@@ -12,10 +11,11 @@ import {
     PointElement,
     LineElement,
     Title,
-    // ToolTip,
     TimeScale,
     Legend,
-    Filler
+    Filler,
+    Tooltip,
+    defaults
 } from 'chart.js'
 
 const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDateNightStart, chartDateNightEnd, chartData, meterType }) => {
@@ -65,7 +65,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
         Title,
         weekend_highlighter,
         day_night_highlighter,
-        // ToolTip,
+        Tooltip,
         TimeScale,
         Legend,
         Filler,
@@ -243,9 +243,17 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                 pan: {
                     enabled: true,
                     mode: 'x',
-                }, 
-            }
-        }
+                },
+            },
+            tooltip: {
+                enabled: true,
+                intersect: false,
+                mode: 'nearest',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                bodyColor: '#333333',
+                titleColor: '#333333',
+            },
+    }
     }
 
     let data2 = {

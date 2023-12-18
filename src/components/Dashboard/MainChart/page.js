@@ -43,7 +43,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 </div>
             </div>
 
-            <div className='flex flex-col w-[18rem] items-start justify-between'>
+            <div className='flex flex-col w-[19rem] items-start justify-between'>
                 <div className='mb-2'>
                     <p className="text-[2.5rem] text-dark-grey font-medium">Water Cost</p>
                     <hr className='mt-[-0.5rem] w-[18rem]'/>
@@ -62,7 +62,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 </div>
             </div>
 
-            <div className='flex flex-col w-[18rem] items-start justify-between'>
+            <div className='flex flex-col w-[19rem] items-start justify-between'>
                 <div className='mb-2'>
                     <p className="text-[2.5rem] text-dark-grey font-medium">Consumption</p>
                     <hr className='mt-[-0.5rem] w-[18rem]'/>
@@ -81,7 +81,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 </div>
             </div>
 
-            <div className='flex flex-col w-[18rem] items-start justify-between'>
+            <div className='flex flex-col w-[19rem] items-start justify-between'>
                 <div className='mb-2'>
                     <p className="text-[2.5rem] text-dark-grey font-medium">Insights</p>
                     <hr className='mt-[-0.5rem] w-[18rem]'/>
