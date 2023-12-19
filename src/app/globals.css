@@ -14,7 +14,7 @@
     @apply flex flex-col justify-start items-center w-screen min-h-screen pt-36 pl-8  pr-8 pb-8;
   }
   .container-dashboard {
-    @apply flex flex-col justify-start items-center w-screen h-screen pt-36;
+    @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-2 pr-2 md:pl-8 md:pr-8 pb-8;
   }
   .container-pages-scroll {
     @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 overflow-hidden;
@@ -65,6 +65,6 @@
     @apply rounded w-full p-4 mt-4 bg-white drop-shadow-md;
   }
   .wm-button-quick-report {
-    @apply rounded mr-[0.5rem] md:mr-[1rem] text-yellow text-[0.75rem] font-semibold cursor-pointer h-[1.2rem] w-[4.5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.075rem] hover:border-blue-hard;
+    @apply rounded md:mr-[1rem] text-yellow text-[0.75rem] font-semibold cursor-pointer h-[1.2rem] w-[4.5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.075rem] hover:border-blue-hard;
   }
 }

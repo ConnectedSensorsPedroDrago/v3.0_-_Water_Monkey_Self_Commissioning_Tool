@@ -13,7 +13,7 @@ const TimeRangeSelector = () => {
         <p className='text-white font-light text-[0.85rem] hidden lg:flex'>Choose Timerange</p>
         <div className='flex lg:flex-row flex-col'>
             <div className='flex flex-row items-center ml-2 flex-wrap'>
-                <div className='flex flex-row items-center'>
+                <div className='flex flex-row items-center w-full justify-around'>
                     <p className='text-white font-light mr-[1rem] text-[0.85rem] hidden md:flex'>Quick Report:</p>
                     <button 
                         className='wm-button-quick-report'
@@ -71,7 +71,7 @@ const TimeRangeSelector = () => {
                 <p className='mr-1 text-white font-light text-[0.85rem] hidden md:flex'>Start:</p>
                 <input 
                     type="datetime-local" 
-                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem]'
+                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] mr-[0.5rem] md:mr-0'
                     onChange={(e)=> setTimeRangeStart(toTimestamp(e.target.value))}
                 />
                 <p className='mr-1 text-white font-light text-[0.85rem] ml-[0.5rem] hidden md:flex'>End:</p>
@@ -82,7 +82,7 @@ const TimeRangeSelector = () => {
                 />
                 <button 
                 // className='ml-2 rounded border-[0.05rem] border-grey bg-white text-dark-grey hover:text-white hover:bg-blue-hard text-[0.75rem]'
-                className='wm-button-quick-report md:ml-[0.5rem] md:mr-0 md:mt-0 mt-[1rem]'
+                className='wm-button-quick-report md:ml-[0.5rem] md:mr-0 md:mt-0 ml-[1rem]'
                 onClick={()=> {
                     setLoader(true)
                     setRunReport(!runReport)

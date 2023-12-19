@@ -91,7 +91,7 @@ const Dashboard = ({ params }) => {
         <Loader />
       }
       
-      <div className='container-pages bg-grey-light z-0'>
+      <div className='container-dashboard bg-grey-light z-0'>
         <TimeRangeSelector />
         {
           device && lastValues &&
