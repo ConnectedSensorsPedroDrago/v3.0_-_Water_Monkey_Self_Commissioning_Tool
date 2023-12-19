@@ -14,7 +14,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
             type: 'donut',
 		},
 		responsive: [{
-			breakpoint: 580,
+			breakpoint: 380,
 			options: {
 				chart: {
 					width: 220
@@ -32,90 +32,91 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
 
   return (
     <div className='section-dashboard flex flex-col pr-[0.5rem]'>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-around lg:justify-around flex-wrap">
             <div className="flex items-center justify-center">
-                    <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={320} height={320}/>
-                <div className="fixed top-1 left-2">
-                    <div className="z-10 absolute w-[340px] h-[320px] flex flex-col justify-center items-center">
-                        <p className="text-yellow font-bold text-[5rem] mb-[-1.5rem]">{mainChartValues.leak_volume_per_update && mainChartValues.water_consumption_per_update ? ((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
+                    <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={300} height={300}/>
+                <div className="fixed top-2 left-2">
+                    <div className="z-10 absolute w-[320px] h-[320px] flex flex-col justify-center items-center">
+                        <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem]">{mainChartValues.leak_volume_per_update && mainChartValues.water_consumption_per_update ? ((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
                         <p className="text-yellow font-bold text-[1.5rem]">LEAK</p>
                     </div>
                 </div>
             </div>
 
-            <div className='flex flex-col w-[19rem] items-start justify-between ml-[3rem]'>
+            <div className='flex flex-col w-[17rem] items-center lg:items-start justify-between ml-[1rem] mt-[1rem] md:mt-0'>
                 <div className='mb-2'>
-                    <p className="text-[2rem] text-dark-grey font-medium">Water Cost</p>
-                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.07rem] border-none'/>
+                    <p className="text-[2rem] text-dark-grey font-medium w-full text-center lg:text-start">Water Cost</p>
+                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.05rem] border-none'/>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Cost</p>
-                    <p className="text-dark-grey font-thin text-[2rem] tracking-wider">{mainChartValues.water_cost_per_update ? "$ " + mainChartValues.water_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"} </p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Cost</p>
+                    <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">{mainChartValues.water_cost_per_update ? "$ " + mainChartValues.water_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"} </p>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Consumed Water Cost</p>
-                    <p className="text-blue-hard font-bold text-[2rem] tracking-wider">{mainChartValues.actual_cost_per_update ? "$ " + mainChartValues.actual_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"}</p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Consumed Water Cost</p>
+                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">{mainChartValues.actual_cost_per_update ? "$ " + mainChartValues.actual_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"}</p>
                 </div>
-                <div>
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Leaked Water Cost</p>
-                    <p className="text-yellow font-bold text-[2rem] tracking-wider">{mainChartValues.leak_cost_per_update ? "$ " + mainChartValues.leak_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"}</p>
+                <div className="flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Leaked Water Cost</p>
+                    <p className="text-yellow font-bold text-[1.75rem] tracking-wider">{mainChartValues.leak_cost_per_update ? "$ " + mainChartValues.leak_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "0 L"}</p>
                 </div>
             </div>
 
-            <div className='flex flex-col w-[19rem] items-start justify-between'>
+            <div className='flex flex-col w-[17rem] items-center lg:items-start justify-between ml-[1rem] mt-[1rem] md:mt-0'>
                 <div className='mb-2'>
-                    <p className="text-[2rem] text-dark-grey font-medium">Consumption</p>
-                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.07rem] border-none'/>
+                    <p className="text-[2rem] text-dark-grey font-medium w-full text-center lg:text-start">Consumption</p>
+                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.05rem] border-none'/>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Consumption</p>
-                    <p className="text-dark-grey font-thin text-[2rem] tracking-wider">{mainChartValues.water_consumption_per_update ? mainChartValues.water_consumption_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Consumption</p>
+                    <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">{mainChartValues.water_consumption_per_update ? mainChartValues.water_consumption_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Actual Water Consumed</p>
-                    <p className="text-blue-hard font-bold text-[2rem] tracking-wider">{mainChartValues.actual_consumption_per_update ? mainChartValues.actual_consumption_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Actual Water Consumed</p>
+                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">{mainChartValues.actual_consumption_per_update ? mainChartValues.actual_consumption_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
-                <div>
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Leaked Water</p>
-                    <p className="text-yellow font-bold text-[2rem] tracking-wider">{mainChartValues.leak_volume_per_update ? mainChartValues.leak_volume_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Leaked Water</p>
+                    <p className="text-yellow font-bold text-[1.75rem] tracking-wider">{mainChartValues.leak_volume_per_update ? mainChartValues.leak_volume_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
             </div>
 
-            <div className='flex flex-col w-[19rem] items-start justify-between'>
+            <div className='flex flex-col w-[17rem] items-center lg:items-start justify-between ml-[1rem] mt-[1rem] md:mt-0'>
                 <div className='mb-2'>
-                    <p className="text-[2rem] text-dark-grey font-medium">Insights</p>
-                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.07rem] border-none'/>
+                    <p className="text-[2rem] text-dark-grey font-medium w-full text-center lg:text-start">Insights</p>
+                    <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.05rem] border-none'/>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Daily Consumption</p>
-                    <p className="text-dark-grey font-thin text-[2rem] tracking-wider">{lastValues && lastValues.metric_weekly_average_volume.value ? lastValues.metric_weekly_average_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Daily Consumption</p>
+                    <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_average_volume.value ? lastValues.metric_weekly_average_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
-                <div className="mb-[0.5rem]">
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Max. Recorded Daily Consumption</p>
-                    <p className="text-blue-hard font-bold text-[2rem] tracking-wider">{lastValues && lastValues.metric_weekly_max_volume.value ? lastValues.metric_weekly_max_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Max. Recorded Daily Consumption</p>
+                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_max_volume.value ? lastValues.metric_weekly_max_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
-                <div>
-                    <p className="mb-[-0.5rem] text-dark-grey font-semibold text-[0.75rem]">Min. Recorded Daily Consumption</p>
-                    <p className="text-yellow font-bold text-[2rem] tracking-wider">{lastValues && lastValues.metric_weekly_min_volume.value ? lastValues.metric_weekly_min_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                <div className="flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Min. Recorded Daily Consumption</p>
+                    <p className="text-yellow font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_min_volume.value ? lastValues.metric_weekly_min_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
             </div>
             {
                 meterType === 0 ?
-                <div className="w-[432px] h-[318px] scale-[85%]">
+                <div className="w-[432px] h-[318px] scale-[100%] md:scale-[85%]">
                     <Image 
                         src={CompoundMeter}
                         alt="Compound Meter"
                         width={"432px"}
                         height={"318px"}
+                        className="w-[432px] h-[318px]"
                         // className="scale-[85%]"
                     />
                     <div className="fixed top-2 right-2">
-                        <div className="z-10  w-[205px] h-[142.5px] fixed flex flex-col justify-between right-[125px] top-[50px]">
-                            <div className="flex flex-row w-[215px] items-center justify-between right-[60px]">
+                        <div className="z-10  w-[205px] h-[142.5px] fixed flex flex-col justify-between right-[145px] top-[50px]">
+                            <div className="flex flex-row w-[225px] items-center justify-between right-[170px]">
                                 <p className="text-center w-[80px] font-semibold text-[2rem] text-red-shine">{lastValues.low_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                                 <p className="text-center w-[80px] font-semibold text-[2rem] text-yellow">{lastValues.high_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                             </div>
-                            <div className="fixed flex flex-row w-[219.5px] items-center justify-between right-[123px] top-[160px] ">
+                            <div className="fixed flex flex-row w-[221px] items-center justify-between right-[131px] top-[167.5px] ">
                                 <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
                                 <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
                             </div>
@@ -125,17 +126,18 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 </div>
                 :
                 meterType === 1 ?
-                <div>
+                <div className="w-[432px] h-[318px] scale-[85%] md:scale-[65%]">
                     <Image 
                         src={SingleMeter}
                         alt="Compound Meter"
                         width={"432px"}
                         height={"318px"}
+                        className="w-[432px] h-[318px]"
                         // className="scale-[85%]"
                     />
                     <div className="fixed top-2 right-2">
                         <div className="z-10  w-[200px] h-[142.5px] fixed flex flex-col justify-between right-[160px] top-[68px]">
-                            <div className="fixed flex flex-row w-[218px] items-center justify-between right-[70px] top-[186px]">
+                            <div className="fixed flex flex-row w-[218px] items-center justify-between right-[62px] top-[166px]">
                                 <p className="text-center w-[80px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
                             </div>
                         </div>
@@ -147,6 +149,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     alt="Compound Meter"
                     width={"432px"}
                     height={"318px"}
+                    className="w-[432px] h-[318px] scale-[85%]"
                 />
             }
         </div>

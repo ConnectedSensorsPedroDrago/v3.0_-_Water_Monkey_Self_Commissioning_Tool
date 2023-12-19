@@ -12,7 +12,7 @@ export async function POST(req){
     if(meterType === 'Single'){
         let wu_p_sum = 0
         try{
-            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${toTimestamp(JSONCommStage.first.date_time)}&end=${toTimestamp(JSONCommStage.second.date_time)}&page_size=4000`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${JSONCommStage.first.date_time.timestamp}&end=${JSONCommStage.second.date_time.timestamp}&page_size=4000`, {
                 headers: {
                     'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                 },
@@ -43,20 +43,20 @@ export async function POST(req){
                         if(data.wu_s){
                             return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse}}))
                         }else{
-                            return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s. Please try again or contact support"}))
+                            return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s calculating the volume per pulse. Please try again or contact support"}))
                         }
                     }catch(e){
-                        return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s: " + e + ". Please try again or contact support"}))
+                        return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s calculating the volume per pulse: " + e + ". Please try again or contact support"}))
                     }
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "Not enough pulses have gone through the low side, just " + wu_p_sum + ", we need at lest 100 . Please let more water flow and try again later."}))
                 }
 
             }else{
-                return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_p. Please try again or contact support"}))
+                return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_p calculating the volume per pulse"}))
             }
         }catch(e){
-            return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p information: " + e + ". Please try again or contact support"}))
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p information calculating the volume per pulse: " + e + ". Please try again or contact support"}))
         }
     }
 
@@ -67,9 +67,7 @@ export async function POST(req){
         let secondary_volume_per_pulse
         
         try{
-            console.log(JSONCommStage.first.date_time)
-            console.log(JSONCommStage.second.date_time)
-            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${toTimestamp(JSONCommStage.first.date_time)}&end=${toTimestamp(JSONCommStage.second.date_time)}&page_size=4000`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${JSONCommStage.first.date_time.timestamp}&end=${JSONCommStage.second.date_time.timestamp}&page_size=4000`, {
                 headers: {
                     'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                 },
@@ -88,10 +86,10 @@ export async function POST(req){
                 }
 
             }else{
-                return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_p. Please try again or contact support"}))
+                return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_p calculating the volume per pulse. Please try again or contact support"}))
             }
         }catch(e){
-            return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p information: " + e + ". Please try again or contact support"}))
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p information calculating the volume per pulse: " + e + ". Please try again or contact support"}))
         }finally{
             try{
                 let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_s/values?start=${toTimestamp(JSONCommStage.first.date_time)}&end=${toTimestamp(JSONCommStage.second.date_time)}&page_size=4000`, {
@@ -113,10 +111,10 @@ export async function POST(req){
                     }
 
                 }else{
-                    return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_s. Please try again or contact support"}))
+                    return new Response(JSON.stringify({"status": "error", "message": "There were no results found for wu_s calculating the volume per pulse. Please try again or contact support"}))
                 }
             }catch(e){
-                return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_s information: " + e + ". Please try again or contact support"}))
+                return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_s information calculating the volume per pulse: " + e + ". Please try again or contact support"}))
             }
         }
     }

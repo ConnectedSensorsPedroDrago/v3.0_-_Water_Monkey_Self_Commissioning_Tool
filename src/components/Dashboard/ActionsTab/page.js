@@ -35,10 +35,10 @@ const ActionsTab = ({ alerts, unit }) => {
         </div>
         {
             open &&
-            <div className="flex flex-row items-center justify-between">
-                <div className="h-[7rem] flex flex-col items-start justify-center pt-2">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-around flex-wrap">
+                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Enable/Disable Error Alerts</p>
-                    <div className="flex flex-row items-center justify-end h-[3rem]">
+                    <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem]">
                         {
                             alerts.map(alert => 
                                 <SwitchSingleText key={alert.name} value={alert}/>
@@ -46,16 +46,16 @@ const ActionsTab = ({ alerts, unit }) => {
                         }
                     </div>
                 </div>
-                <div className="h-[7rem] flex flex-col items-start justify-center pt-2">
+                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Choose Unit</p>
                     <div className="flex flex-row items-center justify-end h-[3rem]">
                         <SwitchDoubleText value={unit}/>
                     </div>
                 </div>
-                <div className="h-[7rem] flex flex-col items-start justify-center pt-2">
+                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Other Actions</p>
-                    <div className="flex flex-row items-center justify-end h-[3rem]">
-                        <div className='flex flex-row items-center mr-4'>
+                    <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem] flex-wrap">
+                        <div className='flex flex-row items-center md:mr-4 h-[2rem]'>
                             <Image 
                                 src={ExportDashboard}
                                 alt="Export Dashboard"
@@ -63,7 +63,7 @@ const ActionsTab = ({ alerts, unit }) => {
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export Dashboard</p>
                         </div>
-                        <div className='flex flex-row items-center mr-4'>
+                        <div className='flex flex-row items-center md:mr-4 h-[2rem]'>
                             <Image 
                                 src={ExportCSV}
                                 alt="Export CSV"
@@ -71,7 +71,7 @@ const ActionsTab = ({ alerts, unit }) => {
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
-                        <div className='flex flex-row items-center mr-4'>
+                        <div className='flex flex-row items-center md:mr-4 h-[2rem]'>
                             <Image 
                                 src={AskForHelp}
                                 alt="Ask For Help"
@@ -81,7 +81,7 @@ const ActionsTab = ({ alerts, unit }) => {
                         </div>
                     </div>
                 </div>
-                <div className="h-[7rem] flex flex-col items-start justify-center pt-2">
+                <div className="h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Level of Consumption</p>
                     <div className="flex flex-row items-center justify-end h-[3rem]">
                         <div className="flex flex-row items-center h-full">
