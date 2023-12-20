@@ -7,7 +7,6 @@ import Loader from "@/src/components/loader/page"
 import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
-import LowerChart from "@/src/components/Dashboard/LowerChartContainer/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 
 const Dashboard = ({ params }) => {
@@ -99,6 +98,7 @@ const Dashboard = ({ params }) => {
             <ActionsTab 
               alerts={[{name: "Device Offline", value: lastValues.device_offline_alert}, {name: "High Usage", value: lastValues.high_usage_alert}, {name: "Leak", value: lastValues.leak_alert}, {name: "Leak %", value: lastValues.leak_percentage_alert}]}
               unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit}}
+              unitOrCubic={{liters: {value: 1, value1: "lts", value2: "m3"}, cubic: {value: 1, value1: "g", value2: "ft3"}}}
             />
             <AddressHeader 
               address={device.properties.address} 

@@ -34,7 +34,7 @@ const Portfolio = () => {
             <p className='h-100 w-100 flex justify-center items-center text-8xl h-screen text-blue'>Please add a device</p>
           :
             <div className="container-pages h-fit">
-              <div className="fixed flex flex-row justify-start items-center z-10 bottom-8 left-[2rem] overflow-x-scroll w-full p-2">
+              <div className="fixed flex flex-row justify-start items-center z-10 bottom-0 left-[2rem] overflow-x-scroll w-full p-8">
                 {
                   toCommission &&
                   toCommission.map(device => 

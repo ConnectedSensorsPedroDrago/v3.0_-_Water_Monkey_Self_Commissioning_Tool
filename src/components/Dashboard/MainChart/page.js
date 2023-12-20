@@ -39,7 +39,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem]">{mainChartValues.leak_volume_per_update && mainChartValues.water_consumption_per_update ? ((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
                     <p className="text-yellow font-bold text-[1.5rem]">LEAK</p>
                 </div>
-            </div>
+            </div>  
             <div className='flex flex-col w-[17rem] items-center lg:items-start justify-between ml-[1rem] mt-[1rem] md:mt-0'>
                 <div className='mb-2'>
                     <p className="text-[2rem] text-dark-grey font-medium w-full text-center lg:text-start">Water Cost</p>

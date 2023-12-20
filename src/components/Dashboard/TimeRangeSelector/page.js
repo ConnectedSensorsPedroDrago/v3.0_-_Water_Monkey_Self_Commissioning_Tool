@@ -9,8 +9,7 @@ const TimeRangeSelector = () => {
     let now = new Date()
 
   return (
-    <div className='bg-green w-full flex flex-row justify-center lg:justify-between items-center p-2 rounded'>
-        <p className='text-white font-light text-[0.85rem] hidden lg:flex'>Choose Timerange</p>
+    <div className='bg-green w-full flex flex-row justify-center lg:justify-end items-center p-2 rounded'>
         <div className='flex lg:flex-row flex-col'>
             <div className='flex flex-row items-center ml-2 flex-wrap'>
                 <div className='flex flex-row items-center w-full justify-around'>
@@ -81,16 +80,15 @@ const TimeRangeSelector = () => {
                     onChange={(e)=> setTimeRangeEnd(toTimestamp(e.target.value))}
                 />
                 <button 
-                // className='ml-2 rounded border-[0.05rem] border-grey bg-white text-dark-grey hover:text-white hover:bg-blue-hard text-[0.75rem]'
                 className='wm-button-quick-report md:ml-[0.5rem] md:mr-0 md:mt-0 ml-[1rem]'
                 onClick={()=> {
                     setLoader(true)
                     setRunReport(!runReport)
                     setQuickReport()
                 }}
-            >
-                Run Report
-            </button>
+                >
+                    Run Report
+                </button>
             </div>
             
         </div>

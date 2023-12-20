@@ -24,7 +24,10 @@ module.exports = {
       "blue-hard": "#292561",
       "light-yellow": "#e8d12a24",
       "grey-light": "#ededed",
-      "red-shine": '#FF0000'
+      "red-shine": '#FF0000',
+      "gold": '#d4af37',
+      "gray-50": '#f9fafb',
+      'zinc-100': '#f4f4f5',
     },
   },
   

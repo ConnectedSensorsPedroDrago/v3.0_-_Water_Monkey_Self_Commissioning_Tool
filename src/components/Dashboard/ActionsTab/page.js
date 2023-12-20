@@ -8,7 +8,7 @@ import ExportCSV from '@/public/Dashboard/WaterMonkey/ExportCSV.svg'
 import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
 import { useState } from "react"
 
-const ActionsTab = ({ alerts, unit }) => {
+const ActionsTab = ({ alerts, unit, unitOrCubic }) => {
 
     const [open, setOpen] = useState(false)
 
@@ -48,10 +48,21 @@ const ActionsTab = ({ alerts, unit }) => {
                 </div>
                 <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Choose Unit</p>
+                    <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem] flex-wrap">
+                        <div className="flex flex-row items-center justify-end h-[3rem] md:mr-4">
+                            <SwitchDoubleText value={unit}/>
+                        </div>
+                        <div className="flex flex-row items-center justify-end h-[3rem]">
+                            <SwitchDoubleText value={unitOrCubic.liters}/>
+                        </div>
+                    </div>
+                </div>
+                {/* <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
+                    <p className="text-sm font-semibold text-blue-hard mb-4">Choose Unit</p>
                     <div className="flex flex-row items-center justify-end h-[3rem]">
                         <SwitchDoubleText value={unit}/>
                     </div>
-                </div>
+                </div> */}
                 <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Other Actions</p>
                     <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem] flex-wrap">
