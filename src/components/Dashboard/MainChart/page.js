@@ -85,15 +85,15 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 </div>
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Daily Consumption</p>
-                    <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_average_volume.value ? lastValues.metric_weekly_average_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                    <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_average_daily_l.value ? lastValues.metric_average_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Max. Recorded Daily Consumption</p>
-                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_max_volume.value ? lastValues.metric_weekly_max_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_max_daily_l.value ? lastValues.metric_max_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
                 <div className="flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Min. Recorded Daily Consumption</p>
-                    <p className="text-yellow font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_weekly_min_volume.value ? lastValues.metric_weekly_min_volume.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
+                    <p className="text-yellow font-bold text-[1.75rem] tracking-wider">{lastValues && lastValues.metric_min_daily_l.value ? lastValues.metric_min_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L"}</p>
                 </div>
             </div>
             {

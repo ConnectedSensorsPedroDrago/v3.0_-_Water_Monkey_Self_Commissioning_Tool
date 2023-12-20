@@ -7,7 +7,6 @@ export async function POST(req){
     if(!start || !end || start == "undefined" || end == "undefined" || start == null || end == null){
         return new Response(JSON.stringify({"status": "error", "message": "Please select a start and end date or a Quick Report option"}))
     }else{ 
-        console.log("variables.length:" + variables.length)
         if(variables.length < 9){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the aggregated variables: some variables were not found, only " + variables.length + " out of 9" }))
         }else{
