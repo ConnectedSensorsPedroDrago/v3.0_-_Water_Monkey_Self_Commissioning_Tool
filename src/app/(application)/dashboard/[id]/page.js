@@ -21,6 +21,7 @@ const Dashboard = ({ params }) => {
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     useEffect(()=>{
+      setLoader(true)
       let label
       setError()
       setMainChartValues()
