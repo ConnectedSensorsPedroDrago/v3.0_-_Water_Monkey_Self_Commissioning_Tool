@@ -36,8 +36,8 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
             <div className="flex items-center justify-center">
                 <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={300} height={300}/>
                 <div className="absolute z-10 w-[320px] h-[320px] flex flex-col justify-center items-center">
-                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem]">{mainChartValues.leak_volume_per_update && mainChartValues.water_consumption_per_update ? ((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
-                    <p className="text-yellow font-bold text-[1.5rem]">LEAK</p>
+                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem] font-outline">{mainChartValues.leak_volume_per_update && mainChartValues.water_consumption_per_update ? ((mainChartValues.leak_volume_per_update / mainChartValues.water_consumption_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
+                    <p className="text-yellow font-bold text-[1.5rem] font-outline">LEAK</p>
                 </div>
             </div>  
             <div className='flex flex-col w-[17rem] items-center lg:items-start justify-between ml-[1rem] mt-[1rem] md:mt-0'>

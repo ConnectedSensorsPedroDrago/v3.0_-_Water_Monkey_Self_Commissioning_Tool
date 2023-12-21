@@ -9,6 +9,12 @@
   box-sizing: border-box;
 }
 
+@layer base {
+  .font-outline {
+    -webkit-text-stroke: 0.25px #292561;
+  }
+}
+
 @layer components {
   .container-pages {
     @apply flex flex-col justify-start items-center w-screen min-h-screen pt-36 pl-8  pr-8 pb-8;
