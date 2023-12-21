@@ -232,8 +232,8 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                         if (!chart.options.commonUpdate) {
                             return;
                         }
-                        for (const k of Object.keys(Chart.instances)) {
-                            const c = Chart.instances[k];
+                        for (const k of Object.keys(ChartJS.instances)) {
+                            const c = ChartJS.instances[k];
                             if (c.id !== chart.id && c.options.plugins.zoom.pan && c.options.commonUpdate) {
                                 c.options.scales.x.min = Math.trunc(chart.scales.x.min);
                                 c.options.scales.x.max = Math.trunc(chart.scales.x.max);
@@ -279,6 +279,13 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
         ]
     }
 
+    const resetZoom = () => {
+        for (const k of Object.keys(ChartJS.instances)) {
+            const c = ChartJS.instances[k];
+            c.resetZoom()
+        }
+    }
+
   return (
     <div className='w-full flex flex-col justify-start items-end p-[1rem]'>
         <div className="w-full flex flex-row justify-between items-center">
@@ -286,7 +293,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                 <p className="text-blue-hard font-semibold text-[1.5rem] text-start">Water Consumption Benchmarking</p>
                 <div className="flex flex-row items-center justify-between">
                     <p className="text-blue-hard font-light text-[0.75rem]">Last night average:</p>
-                    <p className="text-blue-hard font-semibold text-[0.85rem] ml-[0.5rem]">0 LPM</p>
+                    <p className="text-blue-hard font-semibold text-[0.85rem] ml-[0.5rem]">{chartData.lastNightAvgLPM} LPM</p>
                 </div>
             </div>
             <div className="flex flex-col items-end justify-between">
@@ -304,7 +311,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                 <button 
                     className='wm-button-quick-report mt-[1rem] mr-0'
                     onClick={()=> {
-                        console.log('resetZoom()')
+                        resetZoom()
                     }}
                 >
                     Reset Zoom

@@ -375,12 +375,50 @@ export async function POST(req){
                                     }
                                 }catch(e){
                                     return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting your the high flow side flow rate: " + e + " Please try again or contact support"}))
-                                }finally{
+                                }
+                            }
+                            let now = new Date()
+                            let timestamp_start_avg
+                            let timestamp_end_avg
+
+                            if(now.getHours() > 12){
+                                timestamp_start_avg = toTimestamp(new Date(now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + ' ' + '00:00'))
+                                timestamp_end_avg = toTimestamp(new Date(now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + ' ' + '06:00'))
+                            } else {
+                                timestamp_start_avg = toTimestamp(new Date(now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + (now.getDate()-1 === 0 ? 28 : now.getDate()-1) + ' ' + '00:00'))
+                                timestamp_end_avg = toTimestamp(new Date(now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + (now.getDate()-1 === 0 ? 28 : now.getDate()-1) + ' ' + '06:00'))
+                            }
+
+                            let count = 0
+                            let sum = 0
+                            
+                            let inGallons = 'total_flow_rate_g'
+                            let inLiters = 'total_flow_rate'
+
+                            try{
+                                let response2 = await fetch(devicesURL + '/' + label + `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + timestamp_start_avg + '&end=' + timestamp_end_avg + '&page_size=20000', {
+                                    method: 'GET',
+                                    headers: {
+                                        'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+                                    }
+                                })
+                                let data2 = await response2.json()
+                                if(data2.results && data2.results[0]){
+                                    data2.results.forEach(value => {
+                                        count = count + 1
+                                        sum = sum + value.value
+                                    })
+                                    deviceData.lastNightAvgLPM = (sum /count).toFixed(2)
+                                    return new Response(JSON.stringify({"status": "ok", "data": deviceData}))
+                                }else{
+                                    deviceData.lastNightAvgLPM = (0).toFixed(2)
                                     return new Response(JSON.stringify({"status": "ok", "data": deviceData}))
                                 }
-                            }else{
+                            }catch(e){
+                                deviceData.lastNightAvgLPM = "There was an error getting the last night's average"
                                 return new Response(JSON.stringify({"status": "ok", "data": deviceData}))
                             }
+                            
                         }
                     }
                 }
