@@ -11,7 +11,7 @@
 
 @layer base {
   .font-outline {
-    -webkit-text-stroke: 0.25px #292561;
+    -webkit-text-stroke: 0.175px #292561;
   }
 }
 
