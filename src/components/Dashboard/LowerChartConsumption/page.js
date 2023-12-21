@@ -227,6 +227,13 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                     drag: {
                         enabled: true
                     },
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                    },
+                    pinch: {
+                        enabled: true
+                    },
                     mode: 'x',
                     onZoomComplete({chart}) {
                         if (!chart.options.commonUpdate) {

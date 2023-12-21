@@ -78,37 +78,43 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
 
 
   return (
-    <div className='section-dashboard z-0'>
-        {
-            load &&
-            <div className='w-full flex flex-col justify-center items-center'>
-                <Image 
-                    src={LoaderSmall}
-                    alt="Loader Small"
-                />
-                <p className='font-semibold text-dark-grey'>Loading charts...</p>
-            </div>
-        }
-        {
-            error &&
-            <p className='error-message'>{error}</p>
-        }
-        {
-            !error && !load &&
-            <>
-                <div className='w-full flex flex-col justify-start items-end'>
-                    <LowerChartConsumption 
-                        chartWeekendsStart={chartWeekendsStart} 
-                        chartWeekendsEnd={chartWeekendsEnd} 
-                        chartDateNightStart={chartDateNightStart} 
-                        chartDateNightEnd={chartDateNightEnd}
-                        chartData={chartData}
-                        meterType={meterType}
+    <>
+        <div className='section-dashboard'>
+            {
+                load &&
+                <div className='w-full flex flex-col justify-center items-center'>
+                    <Image 
+                        src={LoaderSmall}
+                        alt="Loader Small"
                     />
+                    <p className='font-semibold text-dark-grey'>Loading charts...</p>
                 </div>
-            </>
-        }
-    </div>
+            }
+            {
+                error &&
+                <p className='error-message'>{error}</p>
+            }
+            {
+                !error && !load &&
+                <>
+                    <div className='w-full flex flex-col justify-start items-end'>
+                        <LowerChartConsumption 
+                            chartWeekendsStart={chartWeekendsStart} 
+                            chartWeekendsEnd={chartWeekendsEnd} 
+                            chartDateNightStart={chartDateNightStart} 
+                            chartDateNightEnd={chartDateNightEnd}
+                            chartData={chartData}
+                            meterType={meterType}
+                        />
+                    </div>
+                </>
+            }
+        </div>
+        <div className='section-dashboard'>
+            <p className='text-blue-hard font-semibold text-[0.75rem]'>Disclaimer: All water leak activity and usage representations are based on an estimation and should not be taken as an accurate figure, but rather as a guided indicator related to this estimation.</p>
+        </div>
+    </>
+
   )
 }
 
