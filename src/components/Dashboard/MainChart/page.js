@@ -98,7 +98,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
             </div>
             {
                 meterType === 0 ?
-                <div className="w-[432px] h-[318px] scale-[85%]">
+                <div className="w-[432px] h-[318px] scale-[85%] flex flex-col justify-center items-center">
                     <Image 
                         src={CompoundMeter}
                         alt="Compound Meter"
@@ -106,19 +106,19 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                         height={"318px"}
                         className="w-[432px] h-[318px]"
                     />
-                    <div className="fixed top-2 right-2">
-                        <div className="z-10 w-[205px] h-[142.5px] fixed flex flex-col justify-between right-[23%] md:right-[145px] top-[20%] md:top-[50px]">
-                            <div className="flex flex-row w-[95%] md:w-[225px] items-center justify-between md:right-[170px]">
+                    {/* <div className="fixed top-2 right-2"> */}
+                        <div className="absolute self-center z-10 w-[432px] h-[318px] flex flex-col justify-around items-center pr-[11%] md:pr-[10%]">
+                            <div className="fixed flex flex-row w-[52%] items-center justify-between top-[20%] md:top-[15%]">
                                 <p className="text-center w-[80px] font-semibold text-[2rem] text-red-shine">{lastValues.low_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                                 <p className="text-center w-[80px] font-semibold text-[2rem] text-yellow">{lastValues.high_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                             </div>
-                            <div className="fixed flex flex-row w-[56.5%] md:w-[210px] items-center justify-between right-[27.5%] md:right-[131px] top-[52%] md:top-[167.5px] ">
+                            <div className="fixed flex flex-row w-[56%] md:w-[51.5%] items-center justify-between top-[52%]">
                                 <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
                                 <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
                             </div>
                         </div>
 
-                    </div>
+                    {/* </div> */}
                 </div>
                 :
                 meterType === 1 ?
