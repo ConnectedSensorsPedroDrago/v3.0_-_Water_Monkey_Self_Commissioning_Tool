@@ -19,6 +19,7 @@ const Dashboard = ({ params }) => {
     const [reportStart, setReportStart] = useState()
     const [reportEnd, setReportEnd] = useState()
     const [message, setMessage] = useState()
+    const [cubic, setCubic] = useState(false)
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -109,6 +110,10 @@ const Dashboard = ({ params }) => {
       })
     }
 
+    const handleCubic = () => {
+      setCubic(!cubic)
+    }
+
   return (
     <>
       {
@@ -128,7 +133,7 @@ const Dashboard = ({ params }) => {
             <ActionsTab 
               alerts={[{name: "Device Offline", value: lastValues.device_offline_alert}, {name: "High Usage", value: lastValues.high_usage_alert}, {name: "Leak", value: lastValues.leak_alert}, {name: "Leak %", value: lastValues.leak_percentage_alert}]}
               unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit.value, setter: setNewMetric}}
-              unitOrCubic={{liters: {value: 1, value1: "lts", value2: "m3"}, cubic: {value: 1, value1: "g", value2: "ft3"}}}
+              unitOrCubic={{liters: {value: cubic, value1: "L/G", value2: "m3/ft3", setter: handleCubic}, cubic: {value: 0, value1: "g", value2: "ft3", setter: handleCubic}}}
               device={device.label}
             />
             <AddressHeader 
@@ -144,6 +149,7 @@ const Dashboard = ({ params }) => {
                   reportEnd={reportEnd} 
                   meterType={lastValues.meter_type.value}
                   metric={metric}
+                  cubic={cubic}
                 />
                 <LowerChartContainer
                   label={device.label}

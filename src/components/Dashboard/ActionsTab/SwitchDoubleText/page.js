@@ -7,7 +7,7 @@ const SwitchDoubleText = ({ value, device }) => {
   return (
     <div className='flex flex-row items-center mr-[3rem]'>
         <p className='text-blue-hard font-light text-[0.75rem]'>{value.value1}</p>
-        { (value.value === 0) ?
+        { (value.value === 0 || !value.value) ?
           <Image 
             src={SwitchOn}
             alt="Switch On"
