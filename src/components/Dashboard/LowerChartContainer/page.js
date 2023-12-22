@@ -6,7 +6,7 @@ import LoaderSmall from '@/public/loaderSmall.svg'
 import Image from 'next/image'
 import LowerChartConsumption from '../LowerChartConsumption/page.js'
 
-const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
+const LowerChartContainer = ({label, reportStart, reportEnd, meterType, metric}) => {
 
     const [error, setError] = useState()
     const [chartData, setChartData] = useState()
@@ -26,7 +26,8 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
                 "label": label,
                 "date_start": reportStart.timestamp,
                 "date_end": reportEnd.timestamp,
-                "meter_type": meterType
+                "meter_type": meterType,
+                "report_metric": metric
             })
         })
         .then(res => res.json())
@@ -105,6 +106,7 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType}) => {
                             chartDateNightEnd={chartDateNightEnd}
                             chartData={chartData}
                             meterType={meterType}
+                            report_metric={metric}
                         />
                     </div>
                 </>

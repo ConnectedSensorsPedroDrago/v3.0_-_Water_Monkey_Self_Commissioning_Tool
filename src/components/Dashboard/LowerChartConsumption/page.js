@@ -18,7 +18,7 @@ import {
     defaults
 } from 'chart.js'
 
-const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDateNightStart, chartDateNightEnd, chartData, meterType }) => {
+const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDateNightStart, chartDateNightEnd, chartData, meterType, report_metric }) => {
 
     const [showLowerChart, setShowLowerChart] = useState(false)
 
@@ -74,7 +74,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
         zoomPlugin
     )
 
-    let metric = 'liters'
+    let metric = report_metric
 
     // Weekend Highligther
 
@@ -302,7 +302,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                     {/* <p className="text-blue-hard font-light text-[0.75rem]">Last night average:</p> */}
                     <p className="text-dark-grey font-semibold text-[0.75rem]">Last night average:</p>
                     {/* <p className="text-blue-hard font-semibold text-[0.85rem] ml-[0.5rem]">{chartData.lastNightAvgLPM} LPM</p> */}
-                    <p className="text-blue-hard font-bold text-[0.85rem] tracking-wider ml-[0.5rem]">{chartData.lastNightAvgLPM} LPM</p>
+                    <p className="text-blue-hard font-bold text-[0.85rem] tracking-wider ml-[0.5rem]">{metric === "liters" ? chartData.lastNightAvgLPM + " LPM" : chartData.lastNightAvgLPM + " GPM"}</p>
                 </div>
             </div>
             <div className="flex flex-col items-end justify-between">

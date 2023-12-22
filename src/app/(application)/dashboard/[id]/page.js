@@ -11,7 +11,7 @@ import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport, loader, setLoader,setTimeRangeStart, setTimeRangeEnd, error, setError } = useContext(wmDashbaordContext)
+    const { timeRangeStart, timeRangeEnd, runReport, setRunReport, loader, setLoader, setTimeRangeStart, setTimeRangeEnd, error, setError, setMetric, metric } = useContext(wmDashbaordContext)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
     const [mainChartValues, setMainChartValues] = useState()
@@ -36,6 +36,7 @@ const Dashboard = ({ params }) => {
           .then(resp => resp.json())
           .then(data => {
             if(data.status === 'ok'){
+              setMetric((data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 1) ? "gallons" : (data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 0) ? "liters" : "liters" )
               console.log(data.data)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
@@ -50,7 +51,7 @@ const Dashboard = ({ params }) => {
                     "device": params.id,
                     "start": timeRangeStart,
                     "end": timeRangeEnd,
-                    "variables": device.variables
+                    "variables": device.variables,
                   })
 
                 })
@@ -84,6 +85,25 @@ const Dashboard = ({ params }) => {
       
     }, [runReport])
 
+    const setNewMetric = (metric, id) => {
+      setLoader(true)
+      fetch(`/api/dashboard/water-monkey/actions/set_metric`, {
+        method: 'POST',
+        body: JSON.stringify({
+          metric: metric,
+          device: id
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "ok"){
+          setRunReport(!runReport)
+        }else{
+          setError(data.message)
+        }
+      })
+    }
+
   return (
     <>
       {
@@ -98,8 +118,9 @@ const Dashboard = ({ params }) => {
           <>
             <ActionsTab 
               alerts={[{name: "Device Offline", value: lastValues.device_offline_alert}, {name: "High Usage", value: lastValues.high_usage_alert}, {name: "Leak", value: lastValues.leak_alert}, {name: "Leak %", value: lastValues.leak_percentage_alert}]}
-              unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit}}
+              unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit.value, setter: setNewMetric}}
               unitOrCubic={{liters: {value: 1, value1: "lts", value2: "m3"}, cubic: {value: 1, value1: "g", value2: "ft3"}}}
+              device={device.label}
             />
             <AddressHeader 
               address={device.properties.address} 
@@ -113,12 +134,14 @@ const Dashboard = ({ params }) => {
                   reportStart={reportStart} 
                   reportEnd={reportEnd} 
                   meterType={lastValues.meter_type.value}
+                  metric={metric}
                 />
                 <LowerChartContainer
                   label={device.label}
                   reportStart={reportStart} 
                   reportEnd={reportEnd} 
                   meterType={lastValues.meter_type.value}
+                  metric={metric}
                 />
               </>
             }

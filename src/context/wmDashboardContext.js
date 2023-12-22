@@ -12,6 +12,8 @@ export const WMDashboardContextProvider = ({ children }) => {
     const [quickReport, setQuickReport] = useState()
     const [loader, setLoader] = useState(true)
     const [error, setError] = useState()
+    const [metric, setMetric] = useState()
+    const [reloadChart, setReloadChart] = useState(true)
 
     return(
         <wmDashbaordContext.Provider
@@ -27,7 +29,11 @@ export const WMDashboardContextProvider = ({ children }) => {
                 loader,
                 setLoader,
                 error,
-                setError
+                setError,
+                metric,
+                setMetric,
+                reloadChart,
+                setReloadChart
             }}
         >
             { children }
