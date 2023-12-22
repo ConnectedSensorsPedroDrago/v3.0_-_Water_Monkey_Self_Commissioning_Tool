@@ -8,6 +8,7 @@ import AddressHeader from "@/src/components/Dashboard/AddressHeader/page"
 import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
+import Message from "@/src/components/Message/page"
 
 const Dashboard = ({ params }) => {
 
@@ -17,6 +18,7 @@ const Dashboard = ({ params }) => {
     const [mainChartValues, setMainChartValues] = useState()
     const [reportStart, setReportStart] = useState()
     const [reportEnd, setReportEnd] = useState()
+    const [message, setMessage] = useState()
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -85,18 +87,21 @@ const Dashboard = ({ params }) => {
       
     }, [runReport])
 
-    const setNewMetric = (metric, id) => {
+    const setNewMetric = (newMetric, id) => {
+      setTimeRangeStart(reportStart.timestamp)
+      setTimeRangeEnd(reportEnd.timestamp)
       setLoader(true)
       fetch(`/api/dashboard/water-monkey/actions/set_metric`, {
         method: 'POST',
         body: JSON.stringify({
-          metric: metric,
+          metric: newMetric,
           device: id
         })
       })
       .then(res => res.json())
       .then(data => {
         if(data.status === "ok"){
+          setMessage(`Metric successfully changed to ${newMetric === 0 ? "liters" : "gallons"}`)
           setRunReport(!runReport)
         }else{
           setError(data.message)
@@ -112,6 +117,10 @@ const Dashboard = ({ params }) => {
       }
       
       <div className='container-dashboard bg-grey-light z-0'>
+        { 
+          message && !loader &&
+          <Message message={message} setMessage={setMessage}/>
+        }
         <TimeRangeSelector />
         {
           device && lastValues &&
