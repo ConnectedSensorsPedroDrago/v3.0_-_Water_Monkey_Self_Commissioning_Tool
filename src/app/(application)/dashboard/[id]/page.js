@@ -88,8 +88,8 @@ const Dashboard = ({ params }) => {
     }, [runReport])
 
     const setNewMetric = (newMetric, id) => {
-      setTimeRangeStart(reportStart.timestamp)
-      setTimeRangeEnd(reportEnd.timestamp)
+      setTimeRangeStart(reportStart && reportStart.timestamp ? reportStart.timestamp : '')
+      setTimeRangeEnd(reportEnd && reportEnd.timestamp ? reportEnd.timestamp : '')
       setLoader(true)
       fetch(`/api/dashboard/water-monkey/actions/set_metric`, {
         method: 'POST',
