@@ -11,7 +11,7 @@ const Message = ({message, setMessage}) => {
   return (
     <>
     {   message &&
-        <div className="fixed z-100 flex flex-col items-start justify-center top-[8%] h-contain w-[20rem] bg-white drop-shadow-md rounded p-4 border-gold border-[0.015rem]">
+        <div className="fixed z-100 flex flex-col items-start justify-center top-[8%] h-contain w-[20rem] bg-white drop-shadow-md rounded p-4 border-gold border-[0.015rem] z-[200]">
             <div className="w-full flex flex-row justify-between items-start border-b-[0.05rem] border-b-blue-hard">
                 <p className="text-blue-hard font-semibold text-[0.75rem]">Message</p>
                 <Image 
