@@ -1,6 +1,6 @@
 export async function POST(req){
     const { device, metric } = await req.json()
-    console.log({ device, metric })
+
     try{
         let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${device}/`, {
             method: "POST",
@@ -13,7 +13,6 @@ export async function POST(req){
             })
         })
         let data = await response.json()
-        console.log(data)
         if(data.volume_measurement_unit){
             return new Response(JSON.stringify({"status": "ok"}))
         }else{

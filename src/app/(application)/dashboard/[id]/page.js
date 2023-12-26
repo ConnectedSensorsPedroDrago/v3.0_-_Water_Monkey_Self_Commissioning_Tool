@@ -9,6 +9,7 @@ import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 import Message from "@/src/components/Message/page"
+import { set } from "date-fns"
 
 const Dashboard = ({ params }) => {
 
@@ -20,6 +21,11 @@ const Dashboard = ({ params }) => {
     const [reportEnd, setReportEnd] = useState()
     const [message, setMessage] = useState()
     const [cubic, setCubic] = useState(false)
+    const [deviceOfflineAlert, setDeviceOfflineAlert] = useState()
+    const [highUsageAlert, setHighUsageAlert] = useState()
+    const [leakAlert, setLeakAlert] = useState()
+    const [leakPercentageAlert, setLeakPercentageAlert] = useState()
+
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -40,6 +46,10 @@ const Dashboard = ({ params }) => {
           .then(data => {
             if(data.status === 'ok'){
               setMetric((data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 1) ? "gallons" : (data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 0) ? "liters" : "liters" )
+              setDeviceOfflineAlert((data.data.device_offline_alert && data.data.device_offline_alert.value) ? data.data.device_offline_alert.value : undefined)
+              setHighUsageAlert((data.data.high_usage_alert && data.data.high_usage_alert.value) ? data.data.high_usage_alert.value : undefined)
+              setLeakAlert((data.data.leak_alert && data.data.leak_alert.value) ? data.data.leak_alert.value : undefined)
+              setLeakPercentageAlert((data.data.leak_percentage_alert && data.data.leak_percentage_alert.value) ? data.data.leak_alert.value : undefined)
               console.log(data.data)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
@@ -114,6 +124,98 @@ const Dashboard = ({ params }) => {
       setCubic(!cubic)
     }
 
+    const handleDeviceOfflineAlert = (device, prev_status) => {
+      console.log(device, prev_status)
+      fetch('/api/dashboard/water-monkey/actions/alerts/device_offline', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          device: device,
+          prev_status: deviceOfflineAlert
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "ok"){
+          setDeviceOfflineAlert(data.data.value)
+          setMessage("The Device Offline alert status has been successfuly changed.")
+        }else if(data.status === "error"){
+          setMessage(data.message)
+        }
+      })
+    }
+
+    const handleHighUsageAlert = (device, prev_status) => {
+      console.log(device, prev_status)
+      fetch('/api/dashboard/water-monkey/actions/alerts/high_usage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          device: device,
+          prev_status: highUsageAlert
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "ok"){
+          setHighUsageAlert(data.data.value)
+          setMessage("The High Usage alert status has been successfuly changed.")
+        }else if(data.status === "error"){
+          setMessage(data.message)
+        }
+      })
+    }
+
+    const handleLeakAlert = (device, prev_status) => {
+      console.log(device, prev_status)
+      fetch('/api/dashboard/water-monkey/actions/alerts/leak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          device: device,
+          prev_status: leakAlert
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "ok"){
+          setLeakAlert(data.data.value)
+          setMessage("The Leak alert status has been successfuly changed.")
+        }else if(data.status === "error"){
+          setMessage(data.message)
+        }
+      })
+    }
+
+    const handleLeakPercentageAlert = (device, prev_status) => {
+            console.log(device, prev_status)
+      fetch('/api/dashboard/water-monkey/actions/alerts/leak_percentage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          device: device,
+          prev_status: leakPercentageAlert
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "ok"){
+          setLeakPercentageAlert(data.data.value)
+          setMessage("The Leak Percentage alert status has been successfuly changed.")
+        }else if(data.status === "error"){
+          setMessage(data.message)
+        }
+      })
+    }
+
   return (
     <>
       {
@@ -131,7 +233,7 @@ const Dashboard = ({ params }) => {
           device && lastValues &&
           <>
             <ActionsTab 
-              alerts={[{name: "Device Offline", value: lastValues.device_offline_alert}, {name: "High Usage", value: lastValues.high_usage_alert}, {name: "Leak", value: lastValues.leak_alert}, {name: "Leak %", value: lastValues.leak_percentage_alert}]}
+              alerts={[{name: "Device Offline", value: deviceOfflineAlert, setter: handleDeviceOfflineAlert, label: device.label}, {name: "High Usage", value: highUsageAlert, setter: handleHighUsageAlert, label: device.label}, {name: "Leak", value: leakAlert, setter: handleLeakAlert, label: device.label}, {name: "Leak %", value: leakPercentageAlert, setter: handleLeakPercentageAlert, label: device.label}]}
               unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit.value, setter: setNewMetric}}
               unitOrCubic={{liters: {value: cubic, value1: "L/G", value2: "m3/ft3", setter: handleCubic}, cubic: {value: 0, value1: "g", value2: "ft3", setter: handleCubic}}}
               device={device.label}
