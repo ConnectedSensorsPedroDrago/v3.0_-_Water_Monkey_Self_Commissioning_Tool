@@ -5,7 +5,7 @@ import Image from 'next/image'
 const SwitchDoubleText = ({ value, device }) => {
 
   return (
-    <div className='flex flex-row items-center mr-[3rem]'>
+    <div className='flex flex-row items-center md:mr-[3rem]'>
         <p className='text-blue-hard font-light text-[0.75rem]'>{value.value1}</p>
         { (value.value === 0 || !value.value) ?
           <Image 

@@ -38,9 +38,9 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
         {
             open &&
             <div className="flex flex-col md:flex-row items-start justify-around flex-wrap">
-                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
-                    <p className="text-sm font-semibold text-blue-hard mb-4">Enable/Disable Error Alerts</p>
-                    <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem]">
+                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">
+                    <p className="text-sm font-semibold text-blue-hard mb-4 w-full text-center md:text-start">Enable/Disable Error Alerts</p>
+                    <div className="flex flex-row items-center justify-around md:justify-end md:h-[3rem] flex-wrap w-full md:w-fit">
                         {
                             alerts.map(alert => 
                                 <SwitchSingleText key={alert.name} value={alert}/>
@@ -48,9 +48,9 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                         }
                     </div>
                 </div>
-                <div className="md:h-[7rem] flex flex-col flex-wrap items-start justify-center pt-2 mt-[1rem] md:mt-0">
-                    <p className="text-sm font-semibold text-blue-hard mb-4">Choose Unit</p>
-                    <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem] flex-wrap">
+                <div className="md:h-[7rem] flex flex-col flex-wrap items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">
+                    <p className="text-sm font-semibold text-blue-hard mb-4 w-full text-center md:text-start">Choose Unit</p>
+                    <div className="flex flex-row items-center justify-around md:justify-end md:h-[3rem] flex-wrap w-full md:w-fit">
                         <div className="flex flex-row items-center justify-end h-[3rem] md:mr-4">
                             <SwitchDoubleText value={unit} device={device}/>
                         </div>
@@ -59,10 +59,10 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                         </div>
                     </div>
                 </div>
-                <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
-                    <p className="text-sm font-semibold text-blue-hard mb-4">Other Actions</p>
-                    <div className="flex flex-col md:flex-row items-start md:items-center justify-end md:h-[3rem] flex-wrap">
-                        <div className='flex flex-row items-center md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                <div className="md:h-[7rem] flex flex-col flex-wrap items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">
+                    <p className="text-sm font-semibold text-blue-hard mb-4 w-full text-center md:text-start">Other Actions</p>
+                    <div className="flex flex-row items-start md:items-center justify-around md:justify-end md:h-[3rem] flex-wrap w-full md:w-fit">
+                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
                             <Image 
                                 src={ExportDashboard}
                                 alt="Export Dashboard"
@@ -70,7 +70,7 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export Dashboard</p>
                         </div>
-                        <div className='flex flex-row items-center md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
                             <Image 
                                 src={ExportCSV}
                                 alt="Export CSV"
@@ -78,7 +78,7 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
-                        <div className='flex flex-row items-center md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
                             <Image 
                                 src={AskForHelp}
                                 alt="Ask For Help"
@@ -88,10 +88,10 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                         </div>
                     </div>
                 </div>
-                <div className="h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
-                    <p className="text-sm font-semibold text-blue-hard mb-4">Level of Consumption</p>
-                    <div className="flex flex-row items-center justify-end h-[3rem]">
-                        <div className="flex flex-row items-center h-full">
+                <div className="h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">
+                    <p className="text-sm font-semibold text-blue-hard mb-4 w-full text-center md:text-start">Level of Consumption</p>
+                    <div className="flex flex-row items-center justify-end h-[3rem] w-full md:w-fit">
+                        <div className="flex flex-row items-center justify-center md:justify-start h-full w-full md:w-fit">
                             <p className="text-blue-hard font-light text-[0.75rem]">Number of units:</p>
                             <input 
                                 type="number" 
