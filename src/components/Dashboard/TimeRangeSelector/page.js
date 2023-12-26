@@ -9,10 +9,10 @@ const TimeRangeSelector = () => {
     let now = new Date()
 
   return (
-    <div className='bg-green w-full flex flex-row justify-center lg:justify-end items-center p-2 rounded'>
+    <div className='bg-green w-full flex flex-row justify-center lg:justify-end items-center p-2 rounded sticky md:static top-2 md:top-4 md:initial z-20 md:z-auto'>
         <div className='flex lg:flex-row flex-col'>
-            <div className='flex flex-row items-center ml-2 flex-wrap'>
-                <div className='flex flex-row items-center w-full justify-around'>
+            <div className='flex flex-row items-center ml-2 flex-wrap '>
+                <div className='flex flex-row items-center w-[100%] md:w-full justify-around'>
                     <p className='text-white font-light mr-[1rem] text-[0.85rem] hidden md:flex'>Quick Report:</p>
                     <button 
                         className='wm-button-quick-report'

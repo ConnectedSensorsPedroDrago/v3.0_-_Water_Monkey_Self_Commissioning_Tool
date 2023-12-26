@@ -33,7 +33,7 @@ const NavBar = ({session}) => {
   return (
     <>
       { user &&
-        <div className="bg-white h-28 w-screen drop-shadow-md p-6 flex flex-row justify-between items-center absolute z-100">
+        <div className="bg-white h-28 w-screen drop-shadow-md p-6 flex flex-row justify-between items-center absolute z-40">
             <Link href='/home'>
               <Image
                   src={Logo}

@@ -4,10 +4,8 @@ import Image from 'next/image'
 
 const SwitchSingleText = ({ value }) => {
 
-  console.log(value)
-
   return (
-    <div className='flex flex-row items-center w-[8.25rem]' key={value.name}>
+    <div className='flex flex-row items-center w-[8.25rem] mt-2 mb-2 md:mt-0 md:mb-0' key={value.name}>
         { (value.value && value.value === 1) ?
           <Image 
             src={SwitchOn}

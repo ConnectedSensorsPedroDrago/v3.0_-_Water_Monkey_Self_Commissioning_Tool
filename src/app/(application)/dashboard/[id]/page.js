@@ -26,6 +26,7 @@ const Dashboard = ({ params }) => {
     const [leakAlert, setLeakAlert] = useState()
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
 
+    console.log(mainChartValues)
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -37,7 +38,6 @@ const Dashboard = ({ params }) => {
       fetch(`/api/dashboard/water-monkey/get-device?id=${params.id}`)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         if(data.status === "ok"){
           setDevice(data.device)
           label = data.device.label
@@ -50,7 +50,6 @@ const Dashboard = ({ params }) => {
               setHighUsageAlert((data.data.high_usage_alert && data.data.high_usage_alert.value) ? data.data.high_usage_alert.value : undefined)
               setLeakAlert((data.data.leak_alert && data.data.leak_alert.value) ? data.data.leak_alert.value : undefined)
               setLeakPercentageAlert((data.data.leak_percentage_alert && data.data.leak_percentage_alert.value) ? data.data.leak_alert.value : undefined)
-              console.log(data.data)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
                 setReportStart({timestamp: timeRangeStart, timezone: timezone})
@@ -237,6 +236,9 @@ const Dashboard = ({ params }) => {
               unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit.value, setter: setNewMetric}}
               unitOrCubic={{liters: {value: cubic, value1: "L/G", value2: "m3/ft3", setter: handleCubic}, cubic: {value: 0, value1: "g", value2: "ft3", setter: handleCubic}}}
               device={device.label}
+              consumption={mainChartValues && {liters: mainChartValues.water_consumption_per_update, gallons: mainChartValues.water_consumption_per_update}}
+              days={reportEnd && reportStart && (Number(reportEnd.timestamp) - Number(reportStart.timestamp))/86400000}
+              metric={metric}
             />
             <AddressHeader 
               address={device.properties.address} 

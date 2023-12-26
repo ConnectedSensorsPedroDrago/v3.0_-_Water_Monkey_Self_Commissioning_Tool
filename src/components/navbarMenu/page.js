@@ -10,7 +10,7 @@ const NavBarMenu = ({ setMenu, user }) => {
 
   return (
     <div 
-        className='flex flex-col w-[160px] bg-white rounded p-5 absolute -ml-20 md:-ml-24 mt-0.5'
+        className='flex flex-col w-[160px] bg-white rounded p-5 absolute -ml-20 md:-ml-24 mt-0.5 z-[40]'
         onMouseEnter={()=> {
             setMenu(true)
         }}
