@@ -37,7 +37,7 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
         </div>
         {
             open &&
-            <div className="flex flex-row items-start md:items-center justify-around flex-wrap">
+            <div className="flex flex-col md:flex-row items-start justify-around flex-wrap">
                 <div className="md:h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0">
                     <p className="text-sm font-semibold text-blue-hard mb-4">Enable/Disable Error Alerts</p>
                     <div className="flex flex-col md:flex-row items-center justify-end md:h-[3rem]">
