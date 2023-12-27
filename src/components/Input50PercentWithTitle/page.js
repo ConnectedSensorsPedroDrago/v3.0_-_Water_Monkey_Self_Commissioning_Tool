@@ -5,7 +5,7 @@ const Input50PercentWithTitle = ({name, setter, placeholder, type, disabled}) =>
     <div className="flex flex-col justify-start w-full md:w-[49%]">
         <p className={`${disabled ? 'text-grey' : 'text-dark-grey'} text-sm font-medium`}>{name}</p>
         <input 
-          className={`w-full input-small ${disabled === true && `disabled:text-grey disabled: disabled:bg-white font-semibold`}`}
+          className={`w-full input-date-reset input-small ${disabled === true && `disabled:text-grey disabled: disabled:bg-white font-semibold`}`}
           onChange={(e)=> setter((type === 'datetime-local' && e.target.value !== undefined) ? e.target.value.replace('T', ' ').replace('-' , '/') : e.target.value !== undefined ? e.target.value : undefined)} 
           placeholder={placeholder} 
           type={type ? type : "text"}
