@@ -80,7 +80,6 @@ const Organization = ({ params }) => {
     setError('')
     setSuccess('')
     setLoad(true)
-    // await updateOrganization(params.id, address, description, setLoad)
     fetch('/api/organizations/update-organization', {
       method: 'PATCH',
       headers: {

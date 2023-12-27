@@ -3,7 +3,7 @@
 const ButtonSmall = ({text, type, action}) => {
   return (
     <button 
-        className={type === "purple" ? `w-1/2 md:w-[140px] lg:w-[200px] button-small` : `w-1/2 md:w-[140px] lg:w-[200px] button-small-delete md:ml-0`}
+        className={type === "purple" ? `w-1/2 md:w-[140px] lg:w-[200px] button-small` : type === "blue" ? `w-1/2 md:w-[140px] lg:w-[200px] button-small-blue md:ml-0` : `w-1/2 md:w-[140px] lg:w-[200px] button-small-delete md:ml-0`}
         onClick={()=> action()}
     >
         {text}

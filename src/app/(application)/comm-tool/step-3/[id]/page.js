@@ -284,14 +284,6 @@ const Step3 = ({params}) => {
                     setter={setDateFirst}
                     disabled={commStage && commStage.first.date_time ? true : false}
                 />
-                {/* <Select50PercentWithTitle 
-                    name={"Timezone"}
-                    placeholder={"Choose Timezone"}
-                    setter={setTimeZoneFirst}
-                    elements={timeZones}
-                    disabled={commStage && commStage.first.date_time ? true : false}
-                /> */}
-                {/* </div> */}
                 <div className='flex flex-row justify-between items-center'>
                     <Input50PercentWithTitle 
                         name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}

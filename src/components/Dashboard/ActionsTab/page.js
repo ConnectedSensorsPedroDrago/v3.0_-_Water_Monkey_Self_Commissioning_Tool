@@ -7,8 +7,9 @@ import ExportDashboard from '@/public/Dashboard/WaterMonkey/ExportDashboard.svg'
 import ExportCSV from '@/public/Dashboard/WaterMonkey/ExportCSV.svg'
 import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
 import { useState } from "react"
+import Link from "next/link"
 
-const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric }) => {
+const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric, setCsvModal }) => {
 
     const [open, setOpen] = useState(false)
     const [units, setUnits] = useState()
@@ -70,7 +71,10 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export Dashboard</p>
                         </div>
-                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                        <div 
+                            className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'
+                            onClick={()=> setCsvModal(true)}
+                        >
                             <Image 
                                 src={ExportCSV}
                                 alt="Export CSV"
@@ -78,14 +82,18 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
-                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
-                            <Image 
-                                src={AskForHelp}
-                                alt="Ask For Help"
-                                className='mr-[0.5rem]'
-                            />
-                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Ask For Help</p>
-                        </div>
+                        <Link
+                            href='/support'
+                        >
+                            <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                                <Image 
+                                    src={AskForHelp}
+                                    alt="Ask For Help"
+                                    className='mr-[0.5rem]'
+                                />
+                                <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Ask For Help</p>
+                            </div>
+                        </Link>
                     </div>
                 </div>
                 <div className="h-[7rem] flex flex-col items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">

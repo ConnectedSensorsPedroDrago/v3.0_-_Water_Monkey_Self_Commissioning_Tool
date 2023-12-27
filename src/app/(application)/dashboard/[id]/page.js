@@ -10,6 +10,7 @@ import MainChart from "@/src/components/Dashboard/MainChart/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 import Message from "@/src/components/Message/page"
 import { set } from "date-fns"
+import CSVModal from "@/src/components/CSVModal/page"
 
 const Dashboard = ({ params }) => {
 
@@ -25,6 +26,7 @@ const Dashboard = ({ params }) => {
     const [highUsageAlert, setHighUsageAlert] = useState()
     const [leakAlert, setLeakAlert] = useState()
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
+    const [csvModal, setCsvModal] = useState(false)
 
     console.log(mainChartValues)
 
@@ -218,10 +220,13 @@ const Dashboard = ({ params }) => {
   return (
     <>
       {
-        (loader) &&
+        loader &&
         <Loader />
       }
-      
+      {
+        csvModal && device &&
+        <CSVModal device={device.id} setCsvModal={setCsvModal} setLoader={setLoader}/>
+      }
       <div className='container-dashboard bg-grey-light z-0'>
         { 
           message && !loader &&
@@ -239,6 +244,7 @@ const Dashboard = ({ params }) => {
               consumption={mainChartValues && {liters: mainChartValues.water_consumption_per_update, gallons: mainChartValues.water_consumption_per_update}}
               days={reportEnd && reportStart && (Number(reportEnd.timestamp) - Number(reportStart.timestamp))/86400000}
               metric={metric}
+              setCsvModal={setCsvModal}
             />
             <AddressHeader 
               address={device.properties.address} 

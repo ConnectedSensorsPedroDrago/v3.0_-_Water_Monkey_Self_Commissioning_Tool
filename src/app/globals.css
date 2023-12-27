@@ -40,6 +40,9 @@
   .button-small {
     @apply w-[120px] md:w-[140px] lg:w-[200px] bg-purple rounded md:h-8 text-white font-light hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
   }
+  .button-small-blue {
+    @apply w-[120px] md:w-[140px] lg:w-[200px] bg-blue-hard rounded md:h-8 text-white font-light hover:border-blue-hard hover:border-[0.5px] hover:bg-white hover:text-blue-hard hover:font-bold h-8 text-sm cursor-pointer;
+  }
   .button-small-delete {
     @apply w-[120px] md:w-[140px] lg:w-[200px] bg-white rounded md:h-8 text-purple border-purple font-light hover:border-white border-[0.5px] hover:bg-purple hover:text-white hover:font-bold h-8 text-sm cursor-pointer;
   }
