@@ -28,8 +28,6 @@ const Dashboard = ({ params }) => {
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
     const [csvModal, setCsvModal] = useState(false)
 
-    console.log(mainChartValues)
-
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     useEffect(()=>{
@@ -261,13 +259,16 @@ const Dashboard = ({ params }) => {
                   metric={metric}
                   cubic={cubic}
                 />
-                <LowerChartContainer
-                  label={device.label}
-                  reportStart={reportStart} 
-                  reportEnd={reportEnd} 
-                  meterType={lastValues.meter_type.value}
-                  metric={metric}
-                />
+                {/* {  */}
+                  {/* (window.innerWidth > 480 && window.innerHeight > 480) && */}
+                  <LowerChartContainer
+                    label={device.label}
+                    reportStart={reportStart} 
+                    reportEnd={reportEnd} 
+                    meterType={lastValues.meter_type.value}
+                    metric={metric}
+                  />
+                {/* } */}
               </>
             }
           </>

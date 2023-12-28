@@ -51,11 +51,11 @@ const CSVModal = ({setCsvModal, device, setLoader}) => {
 
   return (
     <div className="fixed top-0 w-full h-full flex flex-col justify-center items-center z-30">
-        <div className=" flex flex-col items-center justify-center w-full md:w-[40rem] h-full md:h-fit bg-white rounded shadow-md p-4 border-gold border-[0.05rem]">
+        <div className=" flex flex-col items-center justify-center w-full md:w-[40rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-gold border-[0.05rem]">
             <div className="w-full flex flex-row items-end justify-end">
                 <Image
                     src={closeSmallDark}
-                    className="hover:scale-125 cursor-pointer"
+                    className="md:hover:scale-125 cursor-pointer scale-[300%] md:scale-100"
                     onClick={()=>{
                         setCsvModal(false)
                     }}
@@ -83,7 +83,9 @@ const CSVModal = ({setCsvModal, device, setLoader}) => {
                     elements={timeZones}
                     setter={setTimezone}
                />
-                <ButtonSmall text="Request CSV" type="blue" action={handleSubmit}/>
+               <div className="mt-[1rem] w-full h-fit flex justify-center items-center">
+                <ButtonSmall text="Request CSV" type="blue" action={handleSubmit} />
+               </div>
                 {
                     error &&
                     <p className="error-message">{error}</p>
