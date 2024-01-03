@@ -8,18 +8,17 @@ export async function POST(req){
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
             },
             body: JSON.stringify({
                     "id": device,
-                    "emails": email,
+                    "emails": [email],
                     "timezone": timezone,
-                    "start": toTimestamp(start),
-                    "end": toTimestamp(end)
+                    "start": start.timestamp,
+                    "end": end.timestamp
                 })
         })
         let data = await response.json()
-        console.log(data)
         if(data.status === "Ok"){
             return new Response(JSON.stringify({"status": "ok", "message": "Report requested, you should receive the report shortly."})) 
         }else{

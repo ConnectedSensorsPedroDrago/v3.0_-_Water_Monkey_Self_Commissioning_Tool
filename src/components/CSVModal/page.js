@@ -35,6 +35,7 @@ const CSVModal = ({setCsvModal, device, setLoader}) => {
             })
             .then(res => res.json())
             .then(data => {
+                console.log(data)
                 if(data.status === "ok"){
                     setLoader(false)
                     setSuccess(data.message)
