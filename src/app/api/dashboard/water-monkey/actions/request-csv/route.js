@@ -1,5 +1,3 @@
-import { toTimestamp } from "@/src/functions/toTimestamp"
-
 export async function POST(req){
     const {device, email, start, end, timezone} = await req.json()
     
