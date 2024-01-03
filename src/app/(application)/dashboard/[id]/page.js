@@ -9,12 +9,11 @@ import ActionsTab from "@/src/components/Dashboard/ActionsTab/page"
 import MainChart from "@/src/components/Dashboard/MainChart/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 import Message from "@/src/components/Message/page"
-import { set } from "date-fns"
 import CSVModal from "@/src/components/CSVModal/page"
 
 const Dashboard = ({ params }) => {
 
-    const { timeRangeStart, timeRangeEnd, runReport, setRunReport, loader, setLoader, setTimeRangeStart, setTimeRangeEnd, error, setError, setMetric, metric } = useContext(wmDashbaordContext)
+    const { timeRangeStart, timeRangeEnd, runReport, setRunReport, loader, setLoader, setTimeRangeStart, setTimeRangeEnd, error, setError, setMetric, metric, exportDashbaord } = useContext(wmDashbaordContext)
     const [lastValues, setLastValues] = useState()
     const [device, setDevice] = useState()
     const [mainChartValues, setMainChartValues] = useState()
@@ -124,7 +123,6 @@ const Dashboard = ({ params }) => {
     }
 
     const handleDeviceOfflineAlert = (device, prev_status) => {
-      console.log(device, prev_status)
       fetch('/api/dashboard/water-monkey/actions/alerts/device_offline', {
         method: 'POST',
         headers: {
@@ -147,7 +145,6 @@ const Dashboard = ({ params }) => {
     }
 
     const handleHighUsageAlert = (device, prev_status) => {
-      console.log(device, prev_status)
       fetch('/api/dashboard/water-monkey/actions/alerts/high_usage', {
         method: 'POST',
         headers: {
@@ -170,7 +167,6 @@ const Dashboard = ({ params }) => {
     }
 
     const handleLeakAlert = (device, prev_status) => {
-      console.log(device, prev_status)
       fetch('/api/dashboard/water-monkey/actions/alerts/leak', {
         method: 'POST',
         headers: {
@@ -243,13 +239,14 @@ const Dashboard = ({ params }) => {
               days={reportEnd && reportStart && (Number(reportEnd.timestamp) - Number(reportStart.timestamp))/86400000}
               metric={metric}
               setCsvModal={setCsvModal}
+              exportDashbaord={exportDashbaord}
             />
             <AddressHeader 
               address={device.properties.address} 
             />
             {
               mainChartValues &&
-              <>
+              <div className="print-dashboard flex flex-col w-full h-full">
                 <MainChart 
                   mainChartValues={mainChartValues} 
                   lastValues={lastValues} 
@@ -269,7 +266,7 @@ const Dashboard = ({ params }) => {
                     metric={metric}
                   />
                 {/* } */}
-              </>
+              </div>
             }
           </>
         }

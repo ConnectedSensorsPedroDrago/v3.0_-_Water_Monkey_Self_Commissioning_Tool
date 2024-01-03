@@ -9,7 +9,7 @@ import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
 import { useState } from "react"
 import Link from "next/link"
 
-const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric, setCsvModal }) => {
+const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric, setCsvModal, exportDashbaord }) => {
 
     const [open, setOpen] = useState(false)
     const [units, setUnits] = useState()
@@ -63,7 +63,10 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                 <div className="md:h-[7rem] flex flex-col flex-wrap items-start justify-center pt-2 mt-[1rem] md:mt-0 w-full md:w-fit">
                     <p className="text-sm font-semibold text-blue-hard mb-4 w-full text-center md:text-start">Other Actions</p>
                     <div className="flex flex-row items-start md:items-center justify-around md:justify-end md:h-[3rem] flex-wrap w-full md:w-fit">
-                        <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
+                        <div 
+                            className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'
+                            onClick={()=> exportDashbaord()}
+                        >
                             <Image 
                                 src={ExportDashboard}
                                 alt="Export Dashboard"

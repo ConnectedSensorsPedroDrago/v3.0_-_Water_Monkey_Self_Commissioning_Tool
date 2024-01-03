@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useState } from "react";
+import html2canvas from "html2canvas";
 
 export const wmDashbaordContext = createContext()
 
@@ -14,6 +15,28 @@ export const WMDashboardContextProvider = ({ children }) => {
     const [error, setError] = useState()
     const [metric, setMetric] = useState()
     const [reloadChart, setReloadChart] = useState(true)
+
+    const exportDashbaord = () => {
+      let dashboard = document.querySelector('.print-dashboard')
+      console.log(dashboard)
+      const options = {
+        ignoreElements: element => {
+            const elementClass = element.className
+            if(elementClass === "print"){
+                return true;
+            }
+            return false;
+        }
+      }
+      html2canvas(dashboard, options)
+          .then(canvas => {
+              console.log(canvas)
+              let link = document.createElement('a');
+              link.download = `Water Monkey Report - Connected Sensors`
+              link.href = canvas.toDataURL()
+              link.click();
+      });
+    }
 
     return(
         <wmDashbaordContext.Provider
@@ -33,7 +56,8 @@ export const WMDashboardContextProvider = ({ children }) => {
                 metric,
                 setMetric,
                 reloadChart,
-                setReloadChart
+                setReloadChart,
+                exportDashbaord
             }}
         >
             { children }
