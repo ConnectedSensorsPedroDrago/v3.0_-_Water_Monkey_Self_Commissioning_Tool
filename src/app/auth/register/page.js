@@ -28,46 +28,57 @@ const Register = () => {
 
   const createUserCheck = () => {
     setError()
-    if(terms === false){
+    if(user.match(/[A-Z]/)){
       setProcessing(false)
-      setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
+      setError('Username cannot contain upercase letters')
+    }else if(user.match(/[.]/)){
+      setProcessing(false)
+      setError('Username cannot contain dots, please try an underscore instead')
     }else{
-      if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
-        fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user: user,
-            email: email,
-            password: password,
-            repeatPassword: repeatPassword,
-            name: name,
-            address: address,
-            description: description,
-            timezone: timezone
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if(data.status === 'ok'){
-            setCreated(true)
-            setProcessing(false)
-            setTimeout(()=>{
-              router.push("/auth/signin")
-            }, 3000)
-          }else{
-            setProcessing(false)
-            setError(data.message)
-          }
-        })
-      }else{
+      if(terms === false){
         setProcessing(false)
-        setError('Please fill all the requested fields')
+        setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
+      }else{
+        if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+          fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user: user,
+              email: email,
+              password: password,
+              repeatPassword: repeatPassword,
+              name: name,
+              address: address,
+              description: description,
+              timezone: timezone
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.status === 'ok'){
+              setCreated(true)
+              setProcessing(false)
+              setTimeout(()=>{
+                router.push("/auth/signin")
+              }, 3000)
+            }else{
+              setProcessing(false)
+              setError(data.message)
+            }
+          })
+        }else{
+          setProcessing(false)
+          setError('Please fill all the requested fields')
+        }
       }
     }
+    
   }
+
+  
 
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen">
