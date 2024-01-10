@@ -26,20 +26,22 @@ const Register = () => {
   const [created, setCreated] = useState(false)
   const [terms, setTerms] = useState(false)
 
+
+
   const createUserCheck = () => {
     setError()
-    if(user.match(/[A-Z]/)){
+    if(terms === false){
       setProcessing(false)
-      setError('Username cannot contain upercase letters')
-    }else if(user.match(/[.]/)){
-      setProcessing(false)
-      setError('Username cannot contain dots, please try an underscore instead')
+      setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
     }else{
-      if(terms === false){
-        setProcessing(false)
-        setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
-      }else{
-        if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+      if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+        if(user.match(/[A-Z]/)){
+          setProcessing(false)
+          setError('Username cannot contain upercase letters')
+        }else if(user.match(/[.]/)){
+          setProcessing(false)
+          setError('Username cannot contain dots, please try an underscore instead')
+        }else{
           fetch('/api/auth/register', {
             method: 'POST',
             headers: {
@@ -69,13 +71,12 @@ const Register = () => {
               setError(data.message)
             }
           })
-        }else{
-          setProcessing(false)
-          setError('Please fill all the requested fields')
         }
+      }else{
+        setProcessing(false)
+        setError('Please fill all the requested fields')
       }
     }
-    
   }
 
   
@@ -143,7 +144,7 @@ const Register = () => {
               className="cursor-pointer"
               onClick={()=> setTerms(!terms)}
             />
-            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions</strong> and the <strong className="font-bold cursor-pointer underline hover:text-purple">Monitoring Agreement</strong></p>
+            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions and Monitoring Agreement</strong></p>
           </div> 
           <button 
             className="button-big mb-4"
@@ -151,7 +152,6 @@ const Register = () => {
               setProcessing(true)
               createUserCheck()
             }}
-            disabled={error ? true : false}
           >Create User and Organization</button>
           <p className="error-message mb-4">{error}</p>
           <hr className="border-[.25px] border-grey w-[240px] lg:w-[350px] mb-2 bg-grey"/>
