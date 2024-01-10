@@ -10,6 +10,8 @@ import Loader from "@/src/components/loader/page"
 
 const Register = () => {
 
+  let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
   const router = useRouter()
 
   const [user, setUser] = useState('')
@@ -22,105 +24,48 @@ const Register = () => {
   const [error, setError] = useState('')
   const [processing, setProcessing] = useState(false)
   const [created, setCreated] = useState(false)
+  const [terms, setTerms] = useState(false)
 
   const createUserCheck = () => {
-    if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
-      console.log({user, email, password, repeatPassword, name, description})
-      userCreation()
+    setError()
+    if(terms === false){
+      setProcessing(false)
+      setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
     }else{
-      setProcessing(false)
-      setError('Please fill all the requested fields')
-    }
-  }
-
-  const userCreation = async() =>{
-    try{
-        let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/users/', {
+      if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+        fetch('/api/auth/register', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            username: user,
+            user: user,
+            email: email,
             password: password,
-            email: email
-          })
-        })
-        let data = await response.json()
-        if(response.ok){
-          createOrganization()
-        } else {
-          setProcessing(false)
-          setError('There has been an error creating the user: "' + data.message + '". Please contact try again or contact support@connectedsensors.com')
-        }
-      } catch(e){
-        setProcessing(false)
-        setError('There has been an error creating the user: ' + e + '. Please contact try again or contact support@connectedsensors.com')
-      }
-  }
-
-  const createOrganization = async() =>{
-    try{
-      let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
-          },
-          body: JSON.stringify({
-            label: name.replaceAll(/[^A-Za-z0-9]/g, ''),
+            repeatPassword: repeatPassword,
             name: name,
+            address: address,
             description: description,
-            properties: {
-              address: address
-            }
+            timezone: timezone
           })
         })
-        let data = await response.json()
-        console.log(data)
-        console.log(response)
-        if(response.ok){
-          assignOrgToUser()
-        } else {
-          setProcessing(false)
-          setError(data.message)
-        }
-    } catch(e){
-      setProcessing(false)
-      setError('There has been an error creating the organization: ' + e + '. Please contact try again or contact support@connectedsensors.com')
-    }
-  }
-
-  const assignOrgToUser = async () => {
-    try{
-      let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
-          },
-          body: JSON.stringify([{
-            "label": name.replaceAll(/[^A-Za-z0-9]/g, ''),
-            "role": "super-viewer-test",
-          }])
+        .then(res => res.json())
+        .then(data => {
+          if(data.status === 'ok'){
+            setCreated(true)
+            setProcessing(false)
+            setTimeout(()=>{
+              router.push("/auth/signin")
+            }, 3000)
+          }else{
+            setProcessing(false)
+            setError(data.message)
+          }
         })
-        let data = await response.json()
-        console.log(data)
-        console.log(response)
-        if(response.ok){
-          setCreated(true)
-          setTimeout(()=>{
-            router.push("/auth/signin")
-          }, 3000)
-        } else {
-          setProcessing(false)
-          setError(`There was an error assigning the user to the organization: "` + data.message +  `". Please contact support at support@connectedsensors.com`)
-        }
-
-    } catch(e){
-      setProcessing(false)
-      setError(`There was an error assigning the user to the organization: "` + e +  `" . Please contact support at support@connectedsensors.com`)
+      }else{
+        setProcessing(false)
+        setError('Please fill all the requested fields')
+      }
     }
   }
 
@@ -181,14 +126,23 @@ const Register = () => {
                 }}/>
             </div>
           </div>
+          <div className="flex flex-row mb-4">
+            <input 
+              type="checkbox"
+              className="cursor-pointer"
+              onClick={()=> setTerms(!terms)}
+            />
+            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions</strong> and the <strong className="font-bold cursor-pointer underline hover:text-purple">Monitoring Agreement</strong></p>
+          </div> 
           <button 
             className="button-big mb-4"
             onClick={()=>{
               setProcessing(true)
               createUserCheck()
             }}
+            disabled={error ? true : false}
           >Create User and Organization</button>
-          <p className="error-message">{error}</p>
+          <p className="error-message mb-4">{error}</p>
           <hr className="border-[.25px] border-grey w-[240px] lg:w-[350px] mb-2 bg-grey"/>
           <p className="auth-text">Already registered? <Link href='/auth/signin'><u className="hover:font-bold hover:text-blue">Login here</u></Link></p>
         </>

@@ -1,106 +1,129 @@
+import { toTimestamp } from "@/src/functions/toTimestamp"
+
+async function checkPrevious(user, name){
+  try{
+    let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+      },
+    })
+    let data = await response.json()
+    if(data.code && data.code === 404001){
+      try{
+        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/organizations/~${name}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+          },
+        })
+        let data = await response.json()
+        if(data.code && data.code === 404001){
+          return {"status": "ok"}
+        }else if(data.username === user){
+          return {"status": "error", "message": "Organization name already taken, please try another"}
+        }else{
+          return {"status": "error", "message": "Organization name already taken, please try another"}
+        }
+      }catch(e){
+        return {"status": "error", "message": `There was an error checking the chosen organization's name availability: ${e}. Please try again or contact support.`}
+      }
+    }else if(data.username === user){
+      return {"status": "error", "message": "Username already taken, please try another"}
+    }else{
+      return {"status": "error", "message": "Username already taken, please try another"}
+    }
+  }catch(e){
+    return {"status": "error", "message": `There was an error checking the chosen username's availability: ${e}. Please try again or contact support.`}
+  }
+}
+
 export async function POST(req){
 
+  const {user, email, password, repeatPassword, name, address, description, timezone} = await req.json()
 
-  const createUserCheck = () => { 
-    if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
-      console.log({user, email, password, repeatPassword, name, description})
-      userCreation()
-    }else{
-      setProcessing(false)
-      setError('Please fill all the requested fields')
-    }
-  }
+  let response = await checkPrevious(user, name)
 
-  const userCreation = async() =>{
+  if(response.status === "ok"){
     try{
-        let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/users/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
-          },
-          body: JSON.stringify({
-            username: user,
-            password: password,
-            email: email
-          })
+      let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+        },
+        body: JSON.stringify({
+          username: user,
+          password: password,
+          email: email,
+          properties: {
+              "terms": {
+                  "status": "accepted",
+                  "date": new Date(),
+                  "timezone": timezone,
+                  "timestamp": toTimestamp(new Date())
+              }
+          }
         })
-        let data = await response.json()
-        if(response.ok){
-          createOrganization()
-        } else {
-          setProcessing(false)
-          setError('There has been an error creating the user: "' + data.message + '". Please contact try again or contact support@connectedsensors.com')
-        }
-      } catch(e){
-        setProcessing(false)
-        setError('There has been an error creating the user: ' + e + '. Please contact try again or contact support@connectedsensors.com')
-      }
-  }
-
-  const createOrganization = async() =>{
-    try{
-      let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
-          },
-          body: JSON.stringify({
-            label: name.replaceAll(/[^A-Za-z0-9]/g, ''),
-            name: name,
-            description: description,
-            properties: {
-              address: address
+      })
+      let data = await response.json()
+      if(response.ok){
+        try{
+          let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+              },
+              body: JSON.stringify({
+                label: name.replaceAll(/[^A-Za-z0-9]/g, ''),
+                name: name,
+                description: description,
+                properties: {
+                  address: address
+                }
+              })
+            })
+            let data = await response.json()
+            console.log(data)
+            console.log(response)
+            if(response.ok){
+              try{
+                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+                    },
+                    body: JSON.stringify([{
+                      "label": name.replaceAll(/[^A-Za-z0-9]/g, ''),
+                      "role": "super-viewer-test",
+                    }])
+                  })
+                  let data = await response.json()
+                  if(response.ok){
+                    return new Response(JSON.stringify({"status": "ok"}))
+                  } else {
+                    return new Response(JSON.stringify({"status": "error", "message": 'There has been an error assigning the organization to the user: ' + data.message + '. The user and organization have been successfully created though. Please login and contact support to ask for the organization to be assigned to your user.'}))
+                  }
+              } catch(e){
+                return new Response(JSON.stringify({"status": "error", "message": 'There has been an error assigning the organization to the user: ' + e + '. The user and organization have been successfully created though. Please login and contact support to ask for the organization to be assigned to your user.'}))
+              }
+            } else {
+              return new Response(JSON.stringify({"status": "error", "message": 'There has been an error creating the organization: "' + data.message + '". The user has been successfully created though. You can login and manually create the organization afterwards or contact support@connectedsensors.com'}))
             }
-          })
-        })
-        let data = await response.json()
-        console.log(data)
-        console.log(response)
-        if(response.ok){
-          assignOrgToUser()
-        } else {
-          setProcessing(false)
-          setError(data.message)
+        } catch(e){
+          return new Response(JSON.stringify({"status": "error", "message": 'There has been an error creating the organization: ' + e + '. The user has been successfully created though. You can login and manually create the organization afterwards or contact support@connectedsensors.com'}))
         }
-    } catch(e){
-      setProcessing(false)
-      setError('There has been an error creating the organization: ' + e + '. Please contact try again or contact support@connectedsensors.com')
+      } else {
+        return new Response(JSON.stringify({"status": "error", "message": 'There has been an error creating the user: "' + data.message + '". Please contact try again or contact support@connectedsensors.com'}))
+      }
+    }catch(e){
+      return new Response(JSON.stringify({"status": "error", "message": 'There has been an error creating the user: ' + e + '. Please contact try again or contact support@connectedsensors.com'}))
     }
+  }else{
+    return new Response(JSON.stringify(response))
   }
-
-  const assignOrgToUser = async () => {
-    try{
-      let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t"
-          },
-          body: JSON.stringify([{
-            "label": name.replaceAll(/[^A-Za-z0-9]/g, ''),
-            "role": "super-viewer-test",
-          }])
-        })
-        let data = await response.json()
-        console.log(data)
-        console.log(response)
-        if(response.ok){
-          setCreated(true)
-          setTimeout(()=>{
-            router.push("/auth/signin")
-          }, 3000)
-        } else {
-          setProcessing(false)
-          setError(`There was an error assigning the user to the organization: "` + data.message +  `". Please contact support at support@connectedsensors.com`)
-        }
-
-    } catch(e){
-      setProcessing(false)
-      setError(`There was an error assigning the user to the organization: "` + e +  `" . Please contact support at support@connectedsensors.com`)
-    }
-  }
-
-  createUserCheck()
 }

@@ -32,7 +32,7 @@ const Step2 = ({ params }) => {
   const [highSideSize, setHighSideSize] = useState()
   const [floor, setFloor] = useState()
   const [roomDetails, setRoomDetails] = useState()
-  const [terms, setTerms] = useState(false)
+  // const [terms, setTerms] = useState(false)
   
   const router = useRouter()
   
@@ -179,13 +179,13 @@ const Step2 = ({ params }) => {
           "value": highSideSize,
           "description": "High Side Size"
         },
-        "terms": {
-          "key": "terms",
-          "text": "Terms and Conditions and Monitoring Agreement accepted",
-          "type": "text",
-          "value": terms.toString(),
-          "description": "Terms and Conditions and Monitoring Agreement accepted"
-        },
+        // "terms": {
+        //   "key": "terms",
+        //   "text": "Terms and Conditions and Monitoring Agreement accepted",
+        //   "type": "text",
+        //   "value": terms.toString(),
+        //   "description": "Terms and Conditions and Monitoring Agreement accepted"
+        // },
         "commission_stage": {
           "key": "commission_stage",
           "text": "Commissioning Process Stage",
@@ -197,7 +197,7 @@ const Step2 = ({ params }) => {
     if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && !highSideSize) && false) || !floor || !roomDetails){
       setError("Please complete all the required fields")
     }else{
-      if(terms){
+      // if(terms){
         setLoader(true)
         fetch('/api/comm-tool/step-2-assign-properties-to-wm', {
             method: 'POST',
@@ -219,9 +219,9 @@ const Step2 = ({ params }) => {
               setError(data.message)
             }
           })
-      }else{
-        setError("Please read and accept the Terms and Conditions and the Monitoring Agreement")
-      }
+      // }else{
+      //   setError("Please read and accept the Terms and Conditions and the Monitoring Agreement")
+      // }
     }
   }
 
@@ -393,17 +393,17 @@ const Step2 = ({ params }) => {
         </div>
       </div>
       <WarningSign head={"BEFORE INSTALLATION"} text={`Keep the provided magnet away from the Water Monkey until time of activation. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`} />
-      <div className="w-full flex flex-col md:flex-row justify-between items-center mt-[1rem]">
-        <div className="flex flex-row">
+      <div className="w-full flex flex-col md:flex-row justify-end items-center mt-[1rem]">
+        {/* <div className="flex flex-row">
           <input 
             type="checkbox"
             className="cursor-pointer"
             onClick={()=> setTerms(!terms)}
           />
           <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions</strong> and the <strong className="font-bold cursor-pointer underline hover:text-purple">Monitoring Agreement</strong></p>
-        </div>
+        </div> */}
         <button 
-            className="mt-[1rem] md:mt-0 w-full md:w-[45%] button-small text-[1rem] h-[2rem]"
+            className="mt-[1rem] md:mt-0 w-full md:w-[20%] button-small text-[1rem] h-[2rem]"
             onClick={()=> onSubmit()}
         >
             Submit and move to Step 3
