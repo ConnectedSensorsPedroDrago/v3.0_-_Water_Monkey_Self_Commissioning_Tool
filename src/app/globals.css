@@ -41,6 +41,9 @@
   .button-big {
     @apply w-[240px] md:w-[350px] lg:w-[460px] bg-purple rounded md:h-12 text-white font-light md:text-lg hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
   }
+  .button-adapt {
+    @apply bg-purple rounded text-white font-light md:text-lg hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold text-sm cursor-pointer p-2;
+  }
   .button-small {
     @apply w-[120px] md:w-[140px] lg:w-[200px] bg-purple rounded md:h-8 text-white font-light hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
   }

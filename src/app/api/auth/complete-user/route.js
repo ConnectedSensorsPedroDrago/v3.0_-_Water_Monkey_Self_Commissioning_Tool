@@ -6,7 +6,7 @@ export async function GET(req, res){
     let userInfo
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}?fields=organizations,id,firstName,lastName,mugshotUrl`, {
+        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}?fields=organizations,id,firstName,lastName,mugshotUrl,properties`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -22,10 +22,10 @@ export async function GET(req, res){
             fistName: data.firstName,
             lastName: data.lastName,
             organizations: data.organizations,
-            role: data.organizations[0].role.label
+            role: data.organizations[0].role.label,
+            terms: (data.properties && data.properties.terms.status === "accepted") ? data.properties.terms : "not accepted"
         }
     } catch(e){
-        console.log("There was an error requesting the user: " + e)
         return new NextResponse(JSON.stringify({"status": "error", "message": "There was an error requesting the user: " + e}))
     } finally{
         let monkeys = []

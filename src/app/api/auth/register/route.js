@@ -1,6 +1,6 @@
 import { toTimestamp } from "@/src/functions/toTimestamp"
 
-async function checkPrevious(user, name){
+async function checkPrevious(user, name, email){
   try{
     let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}`, {
       method: 'GET',
@@ -21,7 +21,24 @@ async function checkPrevious(user, name){
         })
         let data = await response.json()
         if(data.code && data.code === 404001){
-          return {"status": "ok"}
+          try{
+            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/?email=${email}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
+              },
+            })
+            let data = await response.json()
+            if(data.results && data.results[0] && (data.results[0].email === email)){
+              return {"status": "error", "message": "The email you are trying to use is already being used by another user, please try another one."}
+            }else{
+              return {"status": "ok"}
+            }
+          }catch(e){
+            return {"status": "error", "message": `There was an error checking the chosen email's availability: ${e}. Please try again or contact support.`}
+
+          }
         }else if(data.username === user){
           return {"status": "error", "message": "Organization name already taken, please try another"}
         }else{
@@ -44,7 +61,7 @@ export async function POST(req){
 
   const {user, email, password, repeatPassword, name, address, description, timezone} = await req.json()
 
-  let response = await checkPrevious(user, name)
+  let response = await checkPrevious(user, name, email)
 
   if(response.status === "ok"){
     try{

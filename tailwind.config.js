@@ -10,6 +10,11 @@ module.exports = {
       backgroundImage: {
         'add-device': './public/addDevice.svg'
       },
+      zIndex: {
+        '100': '100',
+        '200': '200',
+        '1000': '1000'
+      }
     },
     colors: {
       "dark-grey": "#333333",

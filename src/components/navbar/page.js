@@ -15,6 +15,8 @@ const NavBar = ({session}) => {
 
   const [menu, setMenu] = useState(false)
 
+  console.log(user)
+
   useEffect(()=>{
    async function getSession(){
     setUserSession(session)
