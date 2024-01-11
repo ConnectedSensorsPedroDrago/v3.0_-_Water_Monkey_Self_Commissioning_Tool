@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
 import Loader from "../loader/page"
@@ -29,7 +28,6 @@ const TermsAndConidtions = () => {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         if(data.status === "error"){
             setLoad(false)
             setError(data.message)
@@ -55,7 +53,7 @@ const TermsAndConidtions = () => {
                     You can review them
                 </p>
                 <p className="w-full flex justify-center items-center font-semibold underline text-blue-hard text-2xl md:text-4xl mt-2 mb-16 md:mb-32 text-center">
-                    <Link href={'http://connectedsensors.com/'}>here</Link>
+                    <a target="_blank" href={'https://39979673.fs1.hubspotusercontent-na1.net/hubfs/39979673/Terms%20Conditions/Monitoring%20Terms%20and%20Conditions_Jan%2010%202024.pdf'}>here</a>
                 </p>
             </div>
             <div className="w-full flex flex-col items-center justify-center">
