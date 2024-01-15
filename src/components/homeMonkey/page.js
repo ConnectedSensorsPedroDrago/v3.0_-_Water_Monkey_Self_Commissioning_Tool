@@ -35,15 +35,20 @@ const HomeMonkey = ({ monkey }) => {
                 className="md:mr-4 hidden md:flex md:scale-100"
             />
             <Link 
-                href={commissionStage && commissionStage.stage !== undefined && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? `/comm-tool/step-3/${monkey.label}` : `/dashboard/${monkey.id}`}
+                href={commissionStage && commissionStage.stage !== undefined && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? `/comm-tool/step-3/${monkey.label}` : monkey.properties && monkey.properties.address ? `/dashboard/${monkey.id}` : `/comm-tool/step-2/${monkey.label}`}
             >
-                <p className="home-text home-text-hover">{monkey.properties.address}</p>
+                <p className="home-text home-text-hover">{monkey.properties && monkey.properties.address ? monkey.properties.address : `${"Water Monkey ID: " + monkey.id}`}</p>
             </Link>
         </div>
         { commissionStage && commissionStage.stage !== undefined && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') 
             ?
             <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
                 <p className="text-center md:text-end w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">{commissionStage.stage === 'none' ? "Commissioning Stage: Pending First Reading" : commissionStage.stage === 'first reading' ? "Commissioning Stage: Pending Second Reading" : commissionStage.stage === 'second reading' && "Commissioning Stage: Pending Final Confirmation"}</p>
+            </div>
+            :
+            (!monkey.properties || !monkey.properties.address) ?
+            <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
+                <p className="text-center md:text-end w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">Commissioning Stage: Pending Water Monkey Details</p>
             </div>
             :
             <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
