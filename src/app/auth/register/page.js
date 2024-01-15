@@ -144,7 +144,7 @@ const Register = () => {
               className="cursor-pointer"
               onClick={()=> setTerms(!terms)}
             />
-            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions and Monitoring Agreement</strong></p>
+            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <a target="_blank" href={'https://39979673.fs1.hubspotusercontent-na1.net/hubfs/39979673/Terms%20Conditions/Monitoring%20Terms%20and%20Conditions_Jan%2010%202024.pdf'}><strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions and Monitoring Agreement</strong></a></p>
           </div> 
           <button 
             className="button-big mb-4"
