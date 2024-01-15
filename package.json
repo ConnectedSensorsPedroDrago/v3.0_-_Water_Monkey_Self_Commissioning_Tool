@@ -16,6 +16,7 @@
     "chartjs-plugin-zoom": "^2.0.1",
     "country-state-city": "^3.2.1",
     "date-fns": "^2.30.0",
+    "dom-to-image": "^2.6.0",
     "eslint": "8.47.0",
     "eslint-config-next": "^14.0.2",
     "firebase": "^10.6.0",

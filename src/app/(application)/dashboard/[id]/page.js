@@ -241,33 +241,32 @@ const Dashboard = ({ params }) => {
               setCsvModal={setCsvModal}
               exportDashbaord={exportDashbaord}
             />
-            <AddressHeader 
-              address={device.properties.address} 
-            />
-            {
-              mainChartValues &&
-              <div className="print-dashboard flex flex-col w-full h-full">
-                <MainChart 
-                  mainChartValues={mainChartValues} 
-                  lastValues={lastValues} 
-                  reportStart={reportStart} 
-                  reportEnd={reportEnd} 
-                  meterType={lastValues.meter_type.value}
-                  metric={metric}
-                  cubic={cubic}
-                />
-                {/* {  */}
-                  {/* (window.innerWidth > 480 && window.innerHeight > 480) && */}
-                  <LowerChartContainer
-                    label={device.label}
+            <div className="dashboard-to-print w-full">
+              <AddressHeader 
+                address={device.properties.address} 
+              />
+              {
+                mainChartValues &&
+                <div className="flex flex-col w-full h-full">
+                  <MainChart 
+                    mainChartValues={mainChartValues} 
+                    lastValues={lastValues} 
                     reportStart={reportStart} 
                     reportEnd={reportEnd} 
                     meterType={lastValues.meter_type.value}
                     metric={metric}
+                    cubic={cubic}
                   />
-                {/* } */}
-              </div>
-            }
+                    <LowerChartContainer
+                      label={device.label}
+                      reportStart={reportStart} 
+                      reportEnd={reportEnd} 
+                      meterType={lastValues.meter_type.value}
+                      metric={metric}
+                    />
+                </div>
+              }
+            </div>
           </>
         }
         {

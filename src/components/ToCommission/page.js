@@ -9,7 +9,7 @@ const ToCommission = ({device}) => {
     const [close, setClose] = useState(false)
 
   return (
-    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-20 hover:shadow-xl border-[0.05rem] border-gold ${device.properties.commission_stage.stage === 'failed' ? 'bg-red' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
+    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-10 hover:shadow-xl border-[0.05rem] border-gold ${device.properties.commission_stage.stage === 'failed' ? 'bg-red' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
          <Image 
             src={CloseSmall}
             alt="close"
@@ -21,7 +21,6 @@ const ToCommission = ({device}) => {
             onClick={()=> router.push(`/comm-tool/step-3/${device.label}`)} 
             className={`w-[10rem] h-[10.5rem] rounded-md p-[0.75rem] flex flex-col justify-between items-center cursor-pointer`}
         >
-            {/* <p className="w-full text-center text-dark-grey font-light text-[0.8rem] mt-2">Pending finish setting up</p> */}
             <p className="w-full text-center text-dark-grey font-semibold text-[0.75rem] border-dark-grey border-b-[0.05rem]">{device.organization.name}</p>
             <p className="w-full text-center text-purple font-semibold text-[1rem] max-h-[3rem] overflow-hidden">{device.properties.address}</p>
             

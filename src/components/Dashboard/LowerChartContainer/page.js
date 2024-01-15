@@ -80,7 +80,7 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType, metric})
 
   return (
     <>
-        <div className='print section-dashboard'>
+        <div className='section-dashboard'>
             {
                 load &&
                 <div className='w-full flex flex-col justify-center items-center'>
