@@ -70,18 +70,6 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Consumption</p>
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
-                        {/* {metric === "liters" ? 
-                            (cubic ?
-                                (mainChartValues.water_consumption_per_update ? (mainChartValues.water_consumption_per_update/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
-                                :
-                                (mainChartValues.water_consumption_per_update ? mainChartValues.water_consumption_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L") 
-                            )
-                            : 
-                            (cubic ?
-                                mainChartValues.water_consumption_per_update_g ? (mainChartValues.water_consumption_per_update_g*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
-                                :
-                                mainChartValues.water_consumption_per_update_g ? mainChartValues.water_consumption_per_update_g.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G" 
-                        )} */}
                         {metric === "liters" ? 
                             (cubic ?
                                 (mainChartValues.water_consumption_per_update ? ((mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update)/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
