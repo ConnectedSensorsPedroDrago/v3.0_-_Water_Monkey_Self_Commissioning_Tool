@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const Loader = () => {
   return (
-    <div className=" absolute flex flex-col items-center justify-around mb-20 opacity-50 w-screen h-screen bg-white bg-opacity-80 z-50">
+    <div className="fixed top-0 w-full h-full flex flex-col justify-center items-center opacity-50 bg-white bg-opacity-80 z-50">
         <Image
             src={LoaderBig}
             alt="Loader small"

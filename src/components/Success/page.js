@@ -1,25 +1,29 @@
 import Image from 'next/image'
 import ButtonSmall from '../buttonSmall/page'
 import SucessTick from '@/public/successTick.svg'
+import { useRouter } from 'next/navigation'
 
 
-const Success = ({ setter }) => {
+const Success = ({ success }) => {
+
+  const router = useRouter()
+
   return (
-    <div className="absolute flex flex-col items-center justify-center mb-20 w-screen h-screen z-500">
-      <div className="w-[95%] h-[30%] md:w-[35%] md:h-[20%] bg-white bg-opacity-100 rounded shadow-lg p-4 flex flex-col items-center justify-around border-dark-grey border-[0.05rem]">
+    <div className="fixed top-0 w-full h-full flex flex-col justify-center items-center z-30">
+      <div className="top-[0rem] w-[100%] h-[100%] md:w-[35%] md:h-[20%] bg-white bg-opacity-100 rounded shadow-lg p-4 flex flex-col items-center justify-center md:justify-around border-dark-grey border-[0.05rem] z-10 ">
         <div className='w-full flex flex-row items-center justify-center border-b-[0.05rem] border-grey'>
           <Image 
             src={SucessTick}
             alt="Success Tick"
             className='mr-[0.5rem] scale-75'
           />
-          <p className='font-bold text-purple text-center text-[2rem]'>Readings completed!</p>
+          <p className='font-bold text-purple text-center text-[2rem]'>Readings submitted!</p>
         </div>
-        <p className='text-modal'>You will be contacted by one of our representatives once the calibration process is finished.</p>
+        <p className='text-modal mt-[4rem] mb-[4rem] md:mt-0 md:mb-0'>{success}</p>
         <ButtonSmall
-          text={"Ok"}
+          text={"Take me Home"}
           type={"purple"}
-          action={()=> setter()}
+          action={()=> router.push('/home')}
         />
       </div>
     </div>

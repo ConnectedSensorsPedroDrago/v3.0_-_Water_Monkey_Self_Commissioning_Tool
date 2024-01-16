@@ -9,6 +9,15 @@
   box-sizing: border-box;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
 @layer base {
   .font-outline {
     -webkit-text-stroke: 0.175px #292561;
@@ -16,6 +25,10 @@
   .input-date-reset {
     -webkit-appearance: none;
     -moz-appearance: none;
+  }
+  input {
+    -webkit-appearance: none;
+    outline: 0;
   }
 }
 

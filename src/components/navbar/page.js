@@ -25,6 +25,7 @@ const NavBar = ({session}) => {
         res.json()
     )
     .then(data => {
+      console.log(data)
       setUser(data.user_info)
       setLoader(false)
     })
