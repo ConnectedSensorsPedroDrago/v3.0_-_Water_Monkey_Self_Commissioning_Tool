@@ -90,7 +90,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                             )
                             : 
                             (cubic ?
-                                mainChartValues.water_consumption_per_update_g ? (m(mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
+                                mainChartValues.water_consumption_per_update_g ? ((mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
                                 :
                                 mainChartValues.water_consumption_per_update_g ? (mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G" 
                         )}
