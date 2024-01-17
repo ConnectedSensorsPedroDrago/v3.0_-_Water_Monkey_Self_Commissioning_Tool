@@ -9,7 +9,7 @@ const ToCommission = ({device}) => {
     const [close, setClose] = useState(false)
 
   return (
-    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-10 hover:shadow-xl border-[0.05rem] border-gold ${device.properties.commission_stage.stage === 'failed' ? 'bg-red' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
+    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-10 hover:shadow-xl border-[0.05rem] border-gold ${device.properties.commission_stage.stage === 'failed' ? 'bg-gradient-to-r from-red-300 to-red-100' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
          <Image 
             src={CloseSmall}
             alt="close"
@@ -26,7 +26,7 @@ const ToCommission = ({device}) => {
             
             <div>
                 <p className="w-full text-center text-dark-grey font-light text-[0.65rem]">Status</p>
-                <p className="w-full text-center text-dark-grey font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending first meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending second meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Comissioning failed, please try again"}</p>
+                <p className="w-full text-center text-dark-grey font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending first meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending second meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Failed, please try again"}</p>
             </div>
         </div>
     </div>

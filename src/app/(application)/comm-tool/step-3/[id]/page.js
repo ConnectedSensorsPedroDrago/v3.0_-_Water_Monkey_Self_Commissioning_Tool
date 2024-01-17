@@ -17,7 +17,8 @@ import { storage } from '@/src/firebase/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import ButtonSmall from '@/src/components/buttonSmall/page'
 import EditButton from '@/public/editButton.svg'
-import Success from '@/src/components/Success/page'
+import Carousell from '@/src/components/Carousell/Carousell'
+import { toTimestamp } from '@/src/functions/toTimestamp'
 
 const Step3 = ({params}) => {
 
@@ -120,7 +121,12 @@ const Step3 = ({params}) => {
                                     .then(res => res.json())
                                     .then(data => {
                                         if(data.status === 'ok'){
-                                            setSuccess(`Your device provides updates on water usage every 6 hours - to ensure the highest level of accuracy and best data insights on your portal, please make sure that your second reading is at a 6 hour interval of the initial reading. Your first reading was at ${new Date(dateFirst.timestamp)}. It is strongly suggested that you can take your second reading no earlier than ${new Date(dateFirst.timestamp + 86400000)}, after that ${new Date(dateFirst.timestamp + 86400000 + 21600000)}, ${new Date(dateFirst.timestamp + 86400000 + 43200000)}, ${new Date(dateFirst.timestamp + 86400000 + 64800000)}, etc. Also remember that this process requires no less than 10m3 (or it's equivalent) of water having flown through your meter between the first and last reading`)
+                                            let in24hs = Number(dateFirst.timestamp) + 86400000
+                                            setSuccess([["Congratulations your first reading has been successfully submitted!"], ["Ensuring that your reading is as close as possible to your Water Monkey's cloud update time will yield the most accurate volume representation."], [`To confirm HERE are the 4 cloud update times (starting in 24hs time):`, [
+                                                dateFirst && (new Date(in24hs + 21600000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 21600000).toLocaleTimeString('en-US')), 
+                                                dateFirst && (new Date(in24hs + 43200000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 43200000).toLocaleTimeString('en-US')), 
+                                                dateFirst && (new Date(in24hs + 64800000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 64800000).toLocaleTimeString('en-US')), 
+                                                dateFirst && (new Date(in24hs + 86400000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 86400000).toLocaleTimeString('en-US'))]], ["Please try to take your secondary reading as close to one of these previously stated dates and times and having let at least 10m3 of water (or its equivalent) flow through your water meter"], ["We will be waiting for your final meter readings! Thanks!"]])
                                             setCommStage(comm_stage)
                                             setUser(data.user_info)
                                             setLoad(false)
@@ -188,13 +194,20 @@ const Step3 = ({params}) => {
                                     .then(res => res.json())
                                     .then(data => {
                                         if(data.status === 'ok'){
+                                            let today = toTimestamp(new Date(dateSecond.timestamp).toLocaleDateString('en-US') + ' ' + new Date(commStage.first.date_time.timestamp).getHours() + ':' + new Date(commStage.first.date_time.timestamp).getMinutes())
                                             setUser(data.user_info)
                                             setCommStage(comm_stage)
                                             setLoad(false)
-                                            setSuccess(`${((commStage && commStage.first.date_time && dateSecond && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) > 0.1 ) && (commStage && commStage.first.date_time && dateSecond && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) < 0.9)))) ? `Your reading has been successfully submitted! Please note that this reading is ${commStage && commStage.first.date_time && dateSecond && (((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) > 0.1 )*360).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2})} minutes apart from your device update period. Bringing the reading closer to the update period will provide more accurate data, and can be done by accessing your Water Monkey from the home page and editing your last reading. If you prefer to continue with this reading, your process will continue normally.` 
-                                            : 
-                                            ""}
-                                            You will be contacted by one of our representatives once the calibration process is finished.`)
+                                            setSuccess(
+                                                ((commStage && commStage.first.date_time && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) > 0.1 ) && (commStage && commStage.first.date_time && dateSecond && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) < 0.9)))) ? 
+                                                [["Congratulations your second reading has been successfully submitted!"], ["Ensuring that your second reading is as close as possible to your Water Monkey's cloud update time will yield the most accurate volume representation."], [`To confirm HERE are the 4 cloud update times:`, [
+                                                commStage.first && (new Date(today + 21600000).toLocaleDateString('en-US') + ' ' + new Date(today + 21600000).toLocaleTimeString('en-US')), 
+                                                commStage.first && (new Date(today + 43200000).toLocaleDateString('en-US') + ' ' + new Date(today + 43200000).toLocaleTimeString('en-US')) , 
+                                                commStage.first && (new Date(today+ 64800000).toLocaleDateString('en-US') + ' ' + new Date(today + 64800000).toLocaleTimeString('en-US')), 
+                                                commStage.first && (new Date(today + 86400000).toLocaleDateString('en-US') + ' ' + new Date(today + 86400000).toLocaleTimeString('en-US'))]], ["In the event that you wish to update your Secondary reading you may do so from the home page by editing the last submitted secondary reading."], ["Now that you've submitted your secondary reading a Connected Sensors representative will reach out once your dashboard and data has been validated."]]
+                                                : 
+                                                [["Congratulations your reading have been successfully submitted! You will be contacted by one of our representatives once the calibration process is finished"]]
+                                            )
                                         }else if(data.status === "error"){
                                             setError(data.message)
                                         }
@@ -227,6 +240,12 @@ const Step3 = ({params}) => {
         })
     }
 
+    // if(commStage && commStage.first && commStage.second){
+    //     console.log(toTimestamp(new Date(commStage.second.date_time.timestamp).toLocaleDateString('en-US') + ' ' + new Date(commStage.first.date_time.timestamp).getHours() + ':' + new Date(commStage.first.date_time.timestamp).getMinutes()))
+    //     console.log(new Date(commStage.second.date_time.timestamp).toLocaleDateString('en-US') + ' ' + new Date(commStage.first.date_time.timestamp).getHours() + ':' + new Date(commStage.first.date_time.timestamp).getMinutes())
+    //     console.log(new Date(new Date(commStage.second.date_time.timestamp).getDate() + ' ' + new Date(commStage.first.date_time.timestamp).getTime()))
+    // }
+
   return (
     <div className='container-pages h-fit'>
         {
@@ -235,8 +254,9 @@ const Step3 = ({params}) => {
         }
         {
             success &&
-            <Success success={success}/>
+            <Carousell message={success}/>
         }
+        
         <CommToolTop 
             title={"Step 3"}
             back={`/comm-tool/step-2/${params.id}`}

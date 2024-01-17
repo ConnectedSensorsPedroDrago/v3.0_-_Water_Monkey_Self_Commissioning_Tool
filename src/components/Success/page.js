@@ -10,7 +10,7 @@ const Success = ({ success }) => {
 
   return (
     <div className="fixed top-0 w-full h-full flex flex-col justify-center items-center z-30">
-      <div className="top-[0rem] w-[100%] h-[100%] md:w-[35%] md:h-auto bg-white bg-opacity-100 rounded shadow-lg p-4 flex flex-col items-center justify-center md:justify-around border-dark-grey border-[0.05rem] z-10 ">
+      <div className="top-[0rem] w-[100%] h-[100%] md:w-[35%] md:h-auto bg-white bg-opacity-100 rounded shadow-lg p-4 flex flex-col items-center justify-center md:justify-around border-dark-grey border-[0.05rem] z-2000 ">
         <div className='w-full flex flex-row items-center justify-center border-b-[0.05rem] border-grey'>
           <Image 
             src={SucessTick}

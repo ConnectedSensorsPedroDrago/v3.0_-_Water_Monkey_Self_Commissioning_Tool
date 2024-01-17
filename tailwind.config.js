@@ -13,7 +13,8 @@ module.exports = {
       zIndex: {
         '100': '100',
         '200': '200',
-        '1000': '1000'
+        '1000': '1000',
+        '2000': '2000'
       }
     },
     colors: {
@@ -33,6 +34,8 @@ module.exports = {
       "gold": '#d4af37',
       "gray-50": '#f9fafb',
       'zinc-100': '#f4f4f5',
+      'red-300': '#fecaca',
+      'red-100': '#fee2e2'
     },
   },
   
