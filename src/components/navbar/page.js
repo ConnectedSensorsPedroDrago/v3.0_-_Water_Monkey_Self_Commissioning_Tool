@@ -15,8 +15,6 @@ const NavBar = ({session}) => {
 
   const [menu, setMenu] = useState(false)
 
-  console.log(user)
-
   useEffect(()=>{
    async function getSession(){
     setUserSession(session)
@@ -25,7 +23,6 @@ const NavBar = ({session}) => {
         res.json()
     )
     .then(data => {
-      console.log(data)
       setUser(data.user_info)
       setLoader(false)
     })

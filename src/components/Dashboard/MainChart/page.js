@@ -48,7 +48,6 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Cost</p>
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
-                        {/* {mainChartValues.water_cost_per_update ? "$ " + mainChartValues.water_cost_per_update.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "$ 0"}  */}
                         {mainChartValues.water_cost_per_update ? "$ " + (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "$ 0"} 
                     </p>
                 </div>

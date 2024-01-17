@@ -22,6 +22,8 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
 
     const [showLowerChart, setShowLowerChart] = useState(false)
 
+    console.log(meterType)
+
     //Define font of charts
     defaults.font.family = "Fira Sans"
     defaults.font.size = 9
@@ -312,6 +314,7 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
                         <input 
                             type="checkbox"
                             onClick={()=> setShowLowerChart(!showLowerChart)}
+                            className="w-[0.75rem] h-[0.75rem] border-dark-grey border-[0.05rem] rounded"
 
                         />
                         <p className="text-blue-hard font-semibold text-[0.75rem] text-start ml-[0.5rem]">View High vs. Low Flow chart</p>

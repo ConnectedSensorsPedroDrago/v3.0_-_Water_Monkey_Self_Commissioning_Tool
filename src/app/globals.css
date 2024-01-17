@@ -27,7 +27,6 @@ select::-ms-expand {
     -moz-appearance: none;
   }
   input {
-    -webkit-appearance: none;
     outline: 0;
   }
 }

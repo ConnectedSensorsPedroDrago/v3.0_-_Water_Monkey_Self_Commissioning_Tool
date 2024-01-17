@@ -42,8 +42,10 @@ const Step3 = ({params}) => {
     const [error, setError] = useState()
     const [commStage, setCommStage] = useState()
     const [success, setSuccess] = useState(false)
+    const [timegap, setTimegap] = useState()
     
     useEffect(()=>{
+        
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
         .then(res => res.json())
         .then(data => {
@@ -118,7 +120,7 @@ const Step3 = ({params}) => {
                                     .then(res => res.json())
                                     .then(data => {
                                         if(data.status === 'ok'){
-                                            setSuccess("Please remember to take your second readings as close to 24hs after these first readings and after having used at least 10m3 (or it's equivalent) of water.")
+                                            setSuccess(`Your device provides updates on water usage every 6 hours - to ensure the highest level of accuracy and best data insights on your portal, please make sure that your second reading is at a 6 hour interval of the initial reading. Your first reading was at ${new Date(dateFirst.timestamp)}. It is strongly suggested that you can take your second reading no earlier than ${new Date(dateFirst.timestamp + 86400000)}, after that ${new Date(dateFirst.timestamp + 86400000 + 21600000)}, ${new Date(dateFirst.timestamp + 86400000 + 43200000)}, ${new Date(dateFirst.timestamp + 86400000 + 64800000)}, etc. Also remember that this process requires no less than 10m3 (or it's equivalent) of water having flown through your meter between the first and last reading`)
                                             setCommStage(comm_stage)
                                             setUser(data.user_info)
                                             setLoad(false)
@@ -189,7 +191,10 @@ const Step3 = ({params}) => {
                                             setUser(data.user_info)
                                             setCommStage(comm_stage)
                                             setLoad(false)
-                                            setSuccess("You will be contacted by one of our representatives once the calibration process is finished.")
+                                            setSuccess(`${((commStage && commStage.first.date_time && dateSecond && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) > 0.1 ) && (commStage && commStage.first.date_time && dateSecond && ((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) < 0.9)))) ? `Your reading has been successfully submitted! Please note that this reading is ${commStage && commStage.first.date_time && dateSecond && (((((dateSecond.timestamp - commStage.first.date_time.timestamp)/21600000)%1) > 0.1 )*360).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2})} minutes apart from your device update period. Bringing the reading closer to the update period will provide more accurate data, and can be done by accessing your Water Monkey from the home page and editing your last reading. If you prefer to continue with this reading, your process will continue normally.` 
+                                            : 
+                                            ""}
+                                            You will be contacted by one of our representatives once the calibration process is finished.`)
                                         }else if(data.status === "error"){
                                             setError(data.message)
                                         }
@@ -340,7 +345,7 @@ const Step3 = ({params}) => {
                         </button>
                     </>
                     :
-                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3'>
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
                         <div className='w-full flex items-center justify-start'>
                             <Image 
                                 src={successTick}
@@ -364,7 +369,7 @@ const Step3 = ({params}) => {
                             <div className='w-full flex flex-col justify-between'>
                                 <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.first.date_time && commStage.first.pic}>Click here</a></p>
                             </div>
-                        <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Please remember to take your second readings as close to 24hs after these first readings and after having used at least 10m3 (or it's equivalent) of water.</p>
+                        <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Please remember to take your second readings as close to 6 hour gaps after these first readings and after having used at least 10m3 (or it's equivalent) of water.</p>
                     </div>
                 }
             </div>
@@ -446,7 +451,7 @@ const Step3 = ({params}) => {
                     </>
                     :
                     commStage && commStage.second.date_time &&
-                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3'>
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
                         <div className='w-full flex items-center justify-start'>
                             <Image 
                                 src={successTick}
@@ -458,7 +463,6 @@ const Step3 = ({params}) => {
                                 <p className='w-fullxs ml-[0.5rem] font-normal text-[1rem] text-start text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
                             </div>
                         </div>
-                        {/* <hr className='mt-[0.5rem] mb-[1rem] bg-grey w-full'/> */}
                         <div className='w-full flex flex-col justify-between ml-[0rem] mt-[1rem]'>
                             <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>Low Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.low_unit}</p>
                         </div>
@@ -471,7 +475,7 @@ const Step3 = ({params}) => {
                             <div className='w-full flex flex-col justify-between ml-[0rem]'>
                                 <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.second.date_time && commStage.second.pic}>Click here</a></p>
                             </div>
-                        <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Readings completed! You will be contacted by one of our representatives once the calibration process is finished.</p>
+                        <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Your readings are complete! You will be contacted by one of our representatives once the calibration process is finished.</p>
                     </div>
                 }
             </div>
@@ -479,10 +483,6 @@ const Step3 = ({params}) => {
         {
             error &&
             <p className='error-message mb-[1rem]'>{error}</p>
-        }
-        {
-            success &&
-            <p className="success-message">{success}</p>
         }
         {
             commStage && commStage.stage === 'failed' &&
