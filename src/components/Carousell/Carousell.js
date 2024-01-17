@@ -46,7 +46,7 @@ const Carousell = ({message}) => {
                 {
                     message[subMessage][1] &&
                     message[subMessage][1].map( msg =>
-                        <p className={`font-semibold text-sm ${subMessage[subMessage.length] !== msg && 'mb-2'}`}>{msg}</p>
+                        <p className={`font-semibold text-sm ${subMessage[subMessage.length] !== msg && 'mb-2'}`} key={msg}>{msg}</p>
                     ) 
                 }
             </div>
