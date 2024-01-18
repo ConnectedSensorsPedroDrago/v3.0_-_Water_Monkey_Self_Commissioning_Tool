@@ -14,6 +14,7 @@ export async function GET(req, res){
             },
         })
         let data = await response.json()
+        console.log(data)
         if(data && data.username === user){
             userInfo = {
                 name: user,
@@ -23,7 +24,7 @@ export async function GET(req, res){
                 fistName: data.firstName ? data.firstName : '',
                 lastName: data.lastName ? data.lastName : '',
                 organizations: data.organizations ? data.organizations : [],
-                role: (data.properties && data.properties.role) ? data.properties.role : (data.organizations && data.organizations.length > 0) ? data.organizations[0].role.label : "viewer",
+                role: (data.properties && data.properties.role) ? data.properties.role === 'admin' ? 'super-viewer-test' : data.properties.role : (data.organizations && data.organizations.length > 0) ? data.organizations[0].role.label : "viewer",
                 terms: (data.properties && data.properties.terms && data.properties.terms.status === "accepted") ? data.properties.terms : "not accepted"
             }
         }else{
