@@ -14,7 +14,6 @@ export async function GET(req, res){
             },
         })
         let data = await response.json()
-        console.log(data)
         if(data && data.username === user){
             userInfo = {
                 name: user,
