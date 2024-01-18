@@ -48,7 +48,7 @@ select::-ms-expand {
     @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-14 border-[0.5px] border-grey p-2 lg:text-xl font-light text-grey mb-2  text-sm md:text-lg rounded;
   }
   .input-small {
-    @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-10 border-[0.5px] border-grey p-2 lg:text-base font-light text-grey mb-2  text-sm md:text-sm rounded;
+    @apply w-[240px] md:w-[350px] lg:w-[460px] h-10 border-[0.5px] border-grey p-2 lg:text-base font-light text-grey mb-2  text-sm md:text-sm rounded;
   }
   .button-big {
     @apply w-[240px] md:w-[350px] lg:w-[460px] bg-purple rounded md:h-12 text-white font-light md:text-lg hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;

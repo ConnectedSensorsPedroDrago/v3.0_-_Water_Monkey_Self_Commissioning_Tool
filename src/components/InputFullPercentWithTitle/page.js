@@ -8,7 +8,7 @@ const InputFullPercentWithTitle = ({name, setter, placeholder, type, disabled}) 
     <div className="flex flex-col justify-start w-full">
         <p className={`${disabled ? 'text-grey' : 'text-dark-grey'} text-sm font-medium`}>{name}</p>
         <input 
-          className={`w-full input-date-reset input-small ${type === ("file" || "datetime-local") ? `disabled:text-grey` : disabled === true && `disabled:text-grey disabled: disabled:bg-white font-semibold`}`}
+          className={`w-full input-small ${type === ("file" || "datetime-local") ? `disabled:text-grey` : disabled === true && `disabled:text-grey disabled: disabled:bg-white font-semibold`}`}
           onChange={(e)=> {
             if(type === 'file'){
               setter(e.target.files[0])
