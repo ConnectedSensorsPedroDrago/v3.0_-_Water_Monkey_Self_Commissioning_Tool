@@ -15,6 +15,9 @@ export async function POST(req){
                 firstName: name, 
                 lastName: lastName, 
                 password: password,
+                properties: {
+                    "role": role
+                }
             })
         })
         let data = await response.json()

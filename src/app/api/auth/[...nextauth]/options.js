@@ -44,7 +44,6 @@ export const options = {
                         body: reqBody
                     })
                     let data = await response.json()
-                    console.log(data)
                     if(response.ok){
                         try{
                             let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${credentials.user}`, {

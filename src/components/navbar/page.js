@@ -8,12 +8,16 @@ import Link from 'next/link'
 import NavBarMenu from '../navbarMenu/page'
 import { useState, useEffect, useContext } from 'react'
 import { userContext } from '@/src/context/userContext'
+import { useRouter } from 'next/navigation'
 
 const NavBar = ({session}) => {
 
   const { setUser, user, setLoader, reloadUser, setUserSession } = useContext(userContext)
 
   const [menu, setMenu] = useState(false)
+  const [error, setError] = useState()
+
+  const router = useRouter()
 
   useEffect(()=>{
    async function getSession(){
@@ -23,8 +27,17 @@ const NavBar = ({session}) => {
         res.json()
     )
     .then(data => {
-      setUser(data.user_info)
-      setLoader(false)
+      if(data.status === 'ok'){
+        setUser(data.user_info)
+        setLoader(false)
+      }else{
+        setLoader(false)
+        setError(data.message)
+        setTimeout(()=>{
+          router.push('/auth/signin')
+        }, 5000)
+      }
+      
     })
    }
    getSession()
@@ -32,7 +45,13 @@ const NavBar = ({session}) => {
 
   return (
     <>
-      { user &&
+      {
+        error &&
+        <div className='container-pages'>
+          <p className='error-message'>{error}</p>
+        </div>
+      }
+      { user && !error &&
         <div className="bg-white h-28 w-screen drop-shadow-md p-6 flex flex-row justify-between items-center absolute z-40">
             <Link href='/home'>
               <Image
