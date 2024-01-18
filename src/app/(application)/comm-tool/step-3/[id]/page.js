@@ -44,7 +44,6 @@ const Step3 = ({params}) => {
     const [error, setError] = useState()
     const [commStage, setCommStage] = useState()
     const [success, setSuccess] = useState(false)
-    const [timegap, setTimegap] = useState()
     const [message, setMessage] = useState()
     
     useEffect(()=>{
@@ -230,7 +229,7 @@ const Step3 = ({params}) => {
         .then(data => {
             if(data.status === 'ok'){
                 setLoad(false)
-                setSuccess('Readings resetted, reloading page...')
+                setMessage('Readings resetted, reloading page...')
                 setTimeout(()=> {
                     location.reload()
                 }, 2000)
@@ -255,6 +254,10 @@ const Step3 = ({params}) => {
         {
             error &&
             <Message message={error} setMessage={()=> setError()} time={100000} type={'error'}/>
+        }
+        {
+            message &&
+            <Message message={message} setMessage={()=> setError()} time={100000} type={'error'}/>
         }
         {   commStage &&
             <>
