@@ -13,7 +13,7 @@ const ToCommission = ({device}) => {
          <Image 
             src={CloseSmall}
             alt="close"
-            className="absolute top-1 right-1 cursor-pointer"
+            className="absolute top-1 right-1 cursor-pointer z-20"
             onClick={()=> setClose(true)}
         />
         <div 
@@ -26,7 +26,7 @@ const ToCommission = ({device}) => {
             
             <div>
                 <p className="w-full text-center text-dark-grey font-light text-[0.65rem]">Status</p>
-                <p className="w-full text-center text-dark-grey font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending first meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending second meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Failed, please try again"}</p>
+                <p className="w-full text-center text-dark-grey font-semibold text-[1rem]">{device.properties.commission_stage.stage === "none" ? "Pending inital meter reading" : device.properties.commission_stage.stage === "first reading" ? "Pending final meter reading" : device.properties.commission_stage.stage === "second reading" ? "Pending final confirmation" : device.properties.commission_stage.stage === "failed" && "Failed, please try again"}</p>
             </div>
         </div>
     </div>
