@@ -148,7 +148,7 @@ const Step3 = ({params}) => {
         let comm_stage
         if(picSecond === null){
             setError("No image was found")
-        }else if(!dateSecond || !lowSideSecond || !lowSideSecondUnit){
+        }else if(!dateSecond || !lowSideSecond || !lowSideSecondUnit || !picSecond){
             setError("Please complete all the required fields.")
         }else{
             setLoad(true)
@@ -186,6 +186,8 @@ const Step3 = ({params}) => {
                             })
                             .then(data => data.json())
                             .then(response => {
+                                console.log(response)
+                                console.log(typeof(response))
                                 if(response.status === "error"){
                                     setError(response.message)
                                     setLoad(false)
@@ -194,6 +196,7 @@ const Step3 = ({params}) => {
                                     fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
                                     .then(res => res.json())
                                     .then(data => {
+                                        console.log(data)
                                         if(data.status === 'ok'){
                                             let today = toTimestamp(new Date(dateSecond.timestamp).toLocaleDateString('en-US') + ' ' + new Date(commStage.first.date_time.timestamp).getHours() + ':' + new Date(commStage.first.date_time.timestamp).getMinutes())
                                             setUser(data.user_info)

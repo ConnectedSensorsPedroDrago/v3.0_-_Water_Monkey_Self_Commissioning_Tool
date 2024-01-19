@@ -1,11 +1,8 @@
 import { toTimestamp } from "@/src/functions/toTimestamp"
 
 export async function POST(req){
-    const { meterType, label, commStage } = await req.json()
+    const { meterType, label, commStage } = await req.json()    
 
-    console.log({ step:"step-3-calculate-volume-per-pulse", meterType, label, commStage })
-    
-    // let JSONCommStage = await JSON.parse(commStage)
     let JSONCommStage = commStage
 
 
