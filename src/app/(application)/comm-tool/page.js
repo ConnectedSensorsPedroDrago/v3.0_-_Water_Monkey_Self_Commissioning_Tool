@@ -18,7 +18,7 @@ const CommToolHome = () => {
     const [org, setOrg] = useState()
     const [loader, setLoader] = useState(false)
     const [error, setError] = useState()
-    const [modal, setModal] = useState(true)
+    const [modal, setModal] = useState(false)
     const [label, setLabel] = useState()
     
     const router = useRouter()
