@@ -22,7 +22,6 @@ export async function POST(req){
             "meter_model": props.meter_model.value,
             "low_side": props.low_side.value,
             "high_side": props.high_side.value,
-            // "terms": props.terms.value,
             "commission_stage": props.commission_stage.value
         }
     }
@@ -73,6 +72,10 @@ export async function POST(req){
                                     }
                                 },
                                 "meter_type": {
+                                    "timestamp": now,
+                                    "value": meterType
+                                },
+                                "se": {
                                     "timestamp": now,
                                     "value": meterType
                                 }

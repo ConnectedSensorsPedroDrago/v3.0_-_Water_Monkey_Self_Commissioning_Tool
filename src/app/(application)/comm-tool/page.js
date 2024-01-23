@@ -9,6 +9,7 @@ import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
 import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
+import ModalSingleButton from "@/src/components/ModalSingleButton/page"
 
 const CommToolHome = () => {
 
@@ -17,6 +18,8 @@ const CommToolHome = () => {
     const [org, setOrg] = useState()
     const [loader, setLoader] = useState(false)
     const [error, setError] = useState()
+    const [modal, setModal] = useState(true)
+    const [label, setLabel] = useState()
     
     const router = useRouter()
 
@@ -31,8 +34,11 @@ const CommToolHome = () => {
             .then(resp => resp.json())
             .then((data)=> {
                 setLoader(false)
-                if(data.status === 'ok'){
+                if(data.status === 'ok' && data.previous === 'no'){
                     router.push(`/comm-tool/step-2/${data.monkey}`)
+                }else if(data.status === 'ok' && data.previous === 'yes'){
+                    setLabel(data.monkey)
+                    setModal(true)
                 }else if(data.status === 'error'){
                     setError(data.message)
                 }
@@ -42,6 +48,9 @@ const CommToolHome = () => {
 
   return (
     <div className='container-pages h-fit'>
+        {
+            modal && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> router.push(`/comm-tool/step-2/${label}`)}/>
+        }
         {
             loader && <Loader />
         }

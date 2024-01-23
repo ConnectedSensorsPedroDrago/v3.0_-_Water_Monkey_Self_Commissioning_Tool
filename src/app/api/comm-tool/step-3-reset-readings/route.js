@@ -19,13 +19,30 @@ export async function GET(req){
             })
             let data = await response.json()
             if(data.properties){
-                return new Response(JSON.stringify({"status": "ok"}))
+                fetch('/api/devices/water-monkey/delete-historical-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        label: id,
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "ok"){
+                        return new Response(JSON.stringify({"status": "ok"}))
+                    }else{
+                        return new Response(JSON.stringify({"status": "error", "message": data.message}))
+                    }
+                })
+                .catch(e => {
+                    return new Response(JSON.stringify({"status": "error", "message": "There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support."}
+                ))})
             }else{
-                console.log("There was an error resetting the metrics. Please try again.")
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting the metrics. Please try again."}))
             }
     }catch(e){
-        console.log("There was an error resetting the metrics" + e + ". Please try again.")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting the metrics" + e + ". Please try again."}))
     }
 }

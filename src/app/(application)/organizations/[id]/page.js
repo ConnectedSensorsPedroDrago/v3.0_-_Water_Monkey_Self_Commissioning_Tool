@@ -13,7 +13,7 @@ import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 import UserTable from "@/src/components/UserTable/page"
-import Modal from "@/src/components/modal/page"
+import Modal from "@/src/components/ModalSingleButton/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
 
 const Organization = ({ params }) => {

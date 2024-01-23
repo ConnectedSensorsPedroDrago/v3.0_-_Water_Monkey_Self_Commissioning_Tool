@@ -4,7 +4,7 @@ export async function POST(req){
 
     let newCommStage
 
-     let readingsVariables = []
+    let readingsVariables = []
 
     let firstLowToCompare = commStage.first.low_unit === "m3" ? Number(commStage.first.low) : commStage.first.low_unit === "liters" ? Number(commStage.first.low)*0.001 : commStage.first.low_unit === "gallons" && Number(commStage.first.low)*0.00378541
 
@@ -307,7 +307,6 @@ export async function POST(req){
                     }else{
                         return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: 'tc_p and/or tc_s value missing'. Please try again or contact support."}))
                     }
-    
                 }catch(e){
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: " + e + ". Please try again or contact support."}))
                 }
