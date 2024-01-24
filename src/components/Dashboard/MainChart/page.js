@@ -8,7 +8,7 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterType, metric, cubic }) => {
 
     var donutChartConfig = {
-        series: [ (mainChartValues.leak_cost_per_update / mainChartValues.water_cost_per_update)*100, 100 -((mainChartValues.leak_cost_per_update / mainChartValues.water_cost_per_update)*100) ],
+        series: [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ],
         labels: ['Leaked Water', 'Consumed Water'],
         chart: {
             type: 'donut',
@@ -30,13 +30,14 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
 		colors: ['#E8D12A', '#292561']
 	};
 
+
   return (
     <div className='section-dashboard flex flex-col pr-[0.5rem]'>
         <div className="flex flex-row items-center justify-around lg:justify-around flex-wrap">
             <div className="flex items-center justify-center">
                 <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={300} height={300}/>
                 <div className="absolute z-10 w-[320px] h-[320px] flex flex-col justify-center items-center">
-                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem] font-outline">{mainChartValues.leak_cost_per_update && mainChartValues.water_cost_per_update ? ((mainChartValues.leak_cost_per_update / mainChartValues.water_cost_per_update)*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
+                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem] font-outline">{mainChartValues.leak_cost_per_update && mainChartValues.actual_cost_per_update ? ((mainChartValues.leak_cost_per_update / (mainChartValues.leak_cost_per_update + mainChartValues.actual_cost_per_update))*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
                     <p className="text-yellow font-bold text-[1.5rem] font-outline">LEAK</p>
                 </div>
             </div>  
@@ -48,7 +49,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Total Water Cost</p>
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
-                        {mainChartValues.water_cost_per_update ? "$ " + (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "$ 0"} 
+                        {mainChartValues.actual_cost_per_update && mainChartValues.leak_cost_per_update ? "$ " + (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) : "$ 0"} 
                     </p>
                 </div>
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
