@@ -15,7 +15,6 @@ export async function POST(req){
             }
         })
         let data = await response.json()
-        console.log(data)
         if(!data.task.id){
             return new Response({"status": "error", "message": "There was an error deleting the historical data of your device, please try again or contact support."})
         }
@@ -30,17 +29,17 @@ export async function POST(req){
                     'Content-Type': 'application/json'
                     },
                     body: JSON.stringify([{
-                        rc: 1, timestamp: toTimestamp(now)
-                    },{
-                        rb: 0, timestamp: toTimestamp(now)
-                    },{
-                        fce: 0, timestamp: toTimestamp(now)
-                    },{
-                        shutdown: 0, timestamp: toTimestamp(now)
-                    },{
-                        ti: 10, timestamp: toTimestamp(now)
-                    },{
-                        ui: 360, timestamp: toTimestamp(now)
+                            rc: 1, timestamp: toTimestamp(now)
+                        },{
+                            rb: 0, timestamp: toTimestamp(now)
+                        },{
+                            fce: 0, timestamp: toTimestamp(now)
+                        },{
+                            shutdown: 0, timestamp: toTimestamp(now)
+                        },{
+                            ti: 10, timestamp: toTimestamp(now)
+                        },{
+                            ui: 360, timestamp: toTimestamp(now)
                     }])
             })
             let data = await response.json()

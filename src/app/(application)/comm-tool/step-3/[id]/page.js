@@ -226,16 +226,38 @@ const Step3 = ({params}) => {
     const resetReadings = async() => {
         setLoad(true)
         setError()
-        setCommStage()
         fetch(`/api/comm-tool/step-3-reset-readings?id=${params.id}`)
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             if(data.status === 'ok'){
-                setLoad(false)
-                setMessage('Readings resetted, reloading page...')
-                setTimeout(()=> {
-                    location.reload()
-                }, 2000)
+                fetch(`/api/devices/water-monkey/delete-historical-data`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':'application/json',
+                        },
+                        body: JSON.stringify({
+                            "label": params.id,
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.status === "ok"){
+                            setCommStage()
+                            setLoad(false)
+                            setMessage('Readings resetted, reloading page...')
+                            setTimeout(()=> {
+                                location.reload()
+                            }, 2000)
+                        }else{
+                            setLoad(false)
+                            setError(data.message)
+                        }
+                    })
+                    .catch(e => {
+                        setLoader(false)
+                        setError("There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support.")}
+                    )
             }else if(data.status === "error"){
                 setLoad(false)
                 setError(data.message)

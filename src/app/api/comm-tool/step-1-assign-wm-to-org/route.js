@@ -2,8 +2,8 @@ export async function GET(req){
 
     let code = req.nextUrl.searchParams.get("code")
     let org = req.nextUrl.searchParams.get("org")
-    let props
 
+    let props
     let label
 
     try{
@@ -21,7 +21,7 @@ export async function GET(req){
             }
             label = data.results[0].label
             try{
-                let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${data.results[0].label}` , {
+                let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${label}` , {
                     method: 'PATCH',
                     headers:{
                         'Content-Type':'application/json',
@@ -32,27 +32,8 @@ export async function GET(req){
                     })
                 })
                 let data1 = await response1.json()
-                if(data1.label === data.results[0].label && data1.organization.id === org){
-                    fetch('/api/devices/water-monkey/delete-historical-data', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            label: label,
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.status === "ok"){
-                            return new Response(JSON.stringify({"status": "ok", "monkey": label, "previous": props === 1 ? "yes" : "no"}))
-                        }else{
-                            return new Response(JSON.stringify({"status": "error", "message": data.message}))
-                        }
-                    })
-                    .catch(e => {
-                        return new Response(JSON.stringify({"status": "error", "message": "There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support."}
-                    ))})
+                if(data1.label === label && data1.organization.id === org){
+                    return new Response(JSON.stringify({"status": "ok", "monkey": label, "previous": props === 1 ? "yes" : "no"}))
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the Water Monkey to the selected organization: " + e + ". Please try again or contact support"}))
                 }
