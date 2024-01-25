@@ -197,7 +197,6 @@ const Step2 = ({ params }) => {
     if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && !highSideSize) && false) || !floor || !roomDetails){
       setError("Please complete all the required fields")
     }else{
-      // if(terms){
         setLoader(true)
         fetch('/api/comm-tool/step-2-assign-properties-to-wm', {
             method: 'POST',
@@ -210,18 +209,15 @@ const Step2 = ({ params }) => {
               id: params.id
             })
         })
-          .then(resp => resp.json())
-          .then(data => {
-            if(data.status === "ok"){
-              router.push(`/comm-tool/step-3/${params.id}`)
-            }else if(data.status === "error"){
-              setLoader(false)
-              setError(data.message)
-            }
-          })
-      // }else{
-      //   setError("Please read and accept the Terms and Conditions and the Monitoring Agreement")
-      // }
+        .then(resp => resp.json())
+        .then(data => {
+          if(data.status === "ok"){
+            router.push(`/comm-tool/step-3/${params.id}`)
+          }else if(data.status === "error"){
+            setLoader(false)
+            setError(data.message)
+          }
+        })
     }
   }
 

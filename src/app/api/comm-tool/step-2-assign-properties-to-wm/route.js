@@ -4,6 +4,7 @@ export async function POST(req){
 
     const { props, meterType, id } = await req.json()
 
+
     let payload = {
         "properties": {
             "country": props.country.value,
@@ -53,7 +54,7 @@ export async function POST(req){
             })
             let data1 = await response1.json()
             if(data1.properties){
-                if(meterType !== undefined){
+                if(meterType == 1 || meterType == 0){
                     let now = toTimestamp(new Date())
                     try{
                         let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${id}/`, {
@@ -91,7 +92,7 @@ export async function POST(req){
                         return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property" + e +  ". Please try again or contact support"}))
                     }
                 }else{
-                    return new Response(JSON.stringify({"status": "ok"}))
+                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
                 }
             }else{
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}))
