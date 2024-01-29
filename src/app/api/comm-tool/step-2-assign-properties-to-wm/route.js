@@ -78,7 +78,7 @@ export async function POST(req){
                                 },
                                 "se": {
                                     "timestamp": now,
-                                    "value": meterType
+                                    "value": meterType == 1 ? 0 : 1
                                 }
                             })
                         })
