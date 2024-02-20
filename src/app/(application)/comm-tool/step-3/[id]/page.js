@@ -45,16 +45,16 @@ const Step3 = ({params}) => {
     const [commStage, setCommStage] = useState()
     const [success, setSuccess] = useState(false)
     const [message, setMessage] = useState()
+    const [propertyType, setPropertyType] = useState()
     
     useEffect(()=>{
-        
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
         .then(res => res.json())
         .then(data => {
-            
             setLoad(false)
             if(data.status === "ok"){
                 let commissionStage = JSON.parse(data.device.properties.commission_stage)
+                setPropertyType(data.device.properties.property_type)
                 setMeterType(data.device.properties.meter_type)
                 setOrg(data.device.organization.name)
                 setCommStage(commissionStage)
@@ -127,7 +127,7 @@ const Step3 = ({params}) => {
                                                 dateFirst && (new Date(in24hs + 21600000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 21600000).toLocaleTimeString('en-US')), 
                                                 dateFirst && (new Date(in24hs + 43200000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 43200000).toLocaleTimeString('en-US')), 
                                                 dateFirst && (new Date(in24hs + 64800000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 64800000).toLocaleTimeString('en-US')), 
-                                                dateFirst && (new Date(in24hs + 86400000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 86400000).toLocaleTimeString('en-US'))]], ["Please try to take your secondary reading as close to one of these previously stated dates and times and having let at least 10m3 of water (or its equivalent) flow through your water meter"], ["We will be waiting for your final meter readings! Thanks!"]])
+                                                dateFirst && (new Date(in24hs + 86400000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 86400000).toLocaleTimeString('en-US'))]], [`Please try to take your secondary reading as close to one of these previously stated dates and times${propertyType !== "Residential - Single Family Home" ? " and having let at least 10m3 of water (or its equivalent) flow through your water meter" : ""}.`], ["We will be waiting for your final meter readings! Thanks!"]])
                                             setCommStage(comm_stage)
                                             setUser(data.user_info)
                                             setLoad(false)
@@ -181,7 +181,8 @@ const Step3 = ({params}) => {
                                     setUser: setUser,
                                     userSession: userSession,
                                     setLoader: setLoader,
-                                    setPortfolio: setPortfolio
+                                    setPortfolio: setPortfolio,
+                                    propertyType: propertyType
                                 })
                             })
                             .then(data => data.json())
@@ -274,7 +275,7 @@ const Step3 = ({params}) => {
         }
         {
             success &&
-            <Carousell message={success}/>
+            <Carousell message={success} propertyType={propertyType}/>
         }
         {
             error &&
@@ -542,10 +543,6 @@ const Step3 = ({params}) => {
                             }
                         </div>
                     </div>
-                    {/* {
-                        message &&
-                        <p className='error-message mb-[1rem]'>{message}</p>
-                    } */}
                 </div>
                 
             </>

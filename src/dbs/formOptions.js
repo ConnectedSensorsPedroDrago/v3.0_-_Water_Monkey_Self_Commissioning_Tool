@@ -4,7 +4,8 @@ export const countries = [
 ]
 
 export const propType = [
-    {value: "Residential", displayValue: "Residential"}, 
+    {value: "Residential - Building", displayValue: "Residential - Building"}, 
+    {value: "Residential - Single Family Home", displayValue: "Residential - Single Family Home"}, 
     {value: "Commercial", displayValue: "Commercial"}, 
     {value: "Hybrid", displayValue: "Hybrid"}
 ]
