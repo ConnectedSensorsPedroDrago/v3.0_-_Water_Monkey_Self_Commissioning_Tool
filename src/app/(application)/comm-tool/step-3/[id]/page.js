@@ -303,7 +303,7 @@ const Step3 = ({params}) => {
                         <div className='flex flex-col items-center w-full justify-center mt-[1rem] md:mt-[-3rem]'>
                             <h1 className="text-[1rem] lg:text-[1rem] mb-[0.5rem] font-bold text-start md:text-center text-dark-grey">Download the On-site Installation Guide</h1>
                             <Link 
-                                className='flex flex-col items-center cursor-pointer hover:scale-125 duration-500'
+                                className='flex flex-col items-center cursor-pointer hover:scale-110 duration-500'
                                 href={'https://firebasestorage.googleapis.com/v0/b/wm-readings-storage.appspot.com/o/Installation%20Guide_Water%20Monkey.pdf?alt=media&token=cb7d9760-0a69-4a62-b875-0d129d332faf'}
                                 download={'https://firebasestorage.googleapis.com/v0/b/wm-readings-storage.appspot.com/o/Installation%20Guide_Water%20Monkey.pdf?alt=media&token=cb7d9760-0a69-4a62-b875-0d129d332faf'}
                                 target="_blank"

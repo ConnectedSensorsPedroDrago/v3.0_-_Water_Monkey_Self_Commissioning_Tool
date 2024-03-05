@@ -91,6 +91,7 @@ const Dashboard = ({ params }) => {
           })
         }else if(data.status === "error"){
           setError(data.message)
+          setLoader(false)
         }
       })
       

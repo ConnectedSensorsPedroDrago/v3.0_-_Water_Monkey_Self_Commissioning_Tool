@@ -34,13 +34,13 @@ export async function GET(req){
                     device.variables = variables
                     return new Response(JSON.stringify({"status": "ok", "device": device}))
                 }else{
-                    return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey variable data. Please try again or contact support"}))
+                    return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey variable data. Please try again or contact support."}))
                 }
             }catch(e){
-                return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey variable data: " + e + ". Please try again or contact support"}))
+                return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey variable data: " + e + ". Please try again or contact support."}))
             }
         } else {
-            return new Response(JSON.stringify({"status": "error", "message": "There was an error retrieving the data for this Water Monkey. Please try again or contact support"}))
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error retrieving the data for this Water Monkey or this is a Water Monkey you do not have access to. Please try again or contact support."}))
         }
     }catch(e){
         console.log("There was an error requesting the Water Monkey data: " + e + ". Please try again or contact support")

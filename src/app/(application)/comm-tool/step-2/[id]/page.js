@@ -378,7 +378,7 @@ const Step2 = ({ params }) => {
               elements={sideSizes}
             />
             <Select50PercentWithTitle 
-              name={meterType === "Single" ? "High Side Size (only in Compound meters)" : "High Side Size"} 
+              name={meterType === "Single" ? "High Side Size (only for Compound)" : "High Side Size"} 
               placeholder={highSideSize !== undefined ? highSideSize : ""} 
               type={"text"} 
               disabled={meterType === "Single" ? true : false} 
@@ -390,14 +390,6 @@ const Step2 = ({ params }) => {
       </div>
       <WarningSign head={"BEFORE INSTALLATION"} text={`Keep the provided magnet away from the Water Monkey until time of activation. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`} />
       <div className="w-full flex flex-col md:flex-row justify-end items-center mt-[1rem]">
-        {/* <div className="flex flex-row">
-          <input 
-            type="checkbox"
-            className="cursor-pointer"
-            onClick={()=> setTerms(!terms)}
-          />
-          <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions</strong> and the <strong className="font-bold cursor-pointer underline hover:text-purple">Monitoring Agreement</strong></p>
-        </div> */}
         <button 
             className="mt-[1rem] md:mt-0 w-full md:w-[20%] button-small text-[1rem] h-[2rem]"
             onClick={()=> onSubmit()}
