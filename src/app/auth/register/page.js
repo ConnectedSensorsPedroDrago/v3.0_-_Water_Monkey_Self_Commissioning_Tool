@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import loaderBig from '@/public/loaderBig.svg'
 import Loader from "@/src/components/loader/page"
+import Message from "@/src/components/Message/page"
 
 const Register = () => {
 
@@ -34,13 +35,16 @@ const Register = () => {
       setProcessing(false)
       setError('Please read and accept the Terms & Conditions and the Monitoring Agreement')
     }else{
-      if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0 && description.length > 0){
+      if(user.length > 0 && email.length > 0 && password.length > 0 && repeatPassword.length > 0 && name.length > 0){
         if(user.match(/[A-Z]/)){
           setProcessing(false)
           setError('Username cannot contain upercase letters')
-        }else if(user.match(/[.]/)){
+        }else if(user.match(/[.]/) || user.match(/^.+\s.+$/g)){
           setProcessing(false)
-          setError('Username cannot contain dots, please try an underscore instead')
+          setError('Username cannot contain dots or spaces, please try an underscore instead')
+        }else if(name.match(/[.]/) || name.match(/^.+\s.+$/g)){
+          setProcessing(false)
+          setError('Organizations cannot contain dots or spaces, please try an underscore instead')
         }else{
           fetch('/api/auth/register', {
             method: 'POST',
@@ -54,7 +58,7 @@ const Register = () => {
               repeatPassword: repeatPassword,
               name: name,
               address: address,
-              description: description,
+              description: description ? description : '',
               timezone: timezone
             })
           })
@@ -86,6 +90,15 @@ const Register = () => {
     {
       processing &&
         <Loader/>
+    }
+    {
+      error &&
+      <Message
+        time={100000}
+        message={error}
+        type={'error'}
+        setMessage={setError}
+      />
     }
     {
       created ? 
@@ -138,13 +151,13 @@ const Register = () => {
                 }}/>
             </div>
           </div>
-          <div className="flex flex-row mb-4">
+          <div className="w-[70%] md:w-[100%] flex flex-row items-center justify-center mb-4">
             <input 
               type="checkbox"
               className="cursor-pointer"
               onClick={()=> setTerms(!terms)}
             />
-            <p className="ml-[0.5rem] font-light text-[0.85rem] text-dark-grey">I have read and accept the <a target="_blank" href={'https://39979673.fs1.hubspotusercontent-na1.net/hubfs/39979673/Terms%20Conditions/Monitoring%20Terms%20and%20Conditions_Jan%2010%202024.pdf'}><strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions and Monitoring Agreement</strong></a></p>
+            <p className="text-[0.65rem] ml-[0.5rem] font-light md:text-[0.85rem] text-dark-grey">I have read and accept the <a target="_blank" href={'https://39979673.fs1.hubspotusercontent-na1.net/hubfs/39979673/Terms%20Conditions/Monitoring%20Terms%20and%20Conditions_Jan%2010%202024.pdf'}><strong className="font-bold cursor-pointer underline hover:text-purple">Terms & Conditions and Monitoring Agreement</strong></a></p>
           </div> 
           <button 
             className="button-big mb-4"
@@ -153,7 +166,7 @@ const Register = () => {
               createUserCheck()
             }}
           >Create User and Organization</button>
-          <p className="error-message mb-4">{error}</p>
+          {/* <p className="error-message mb-4">{error}</p> */}
           <hr className="border-[.25px] border-grey w-[240px] lg:w-[350px] mb-2 bg-grey"/>
           <p className="auth-text">Already registered? <Link href='/auth/signin'><u className="hover:font-bold hover:text-blue">Login here</u></Link></p>
         </>

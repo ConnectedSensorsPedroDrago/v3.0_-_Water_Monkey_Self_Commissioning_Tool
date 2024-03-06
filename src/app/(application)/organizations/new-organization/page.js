@@ -26,7 +26,8 @@ const NewOrganization = () => {
       setError('')
       setSuccess('')
       setLoad(true)
-       if(name.length < 1 || address.length < 1 || description.length < 1){
+       if(name.length < 1 || address.length < 1){
+        setLoad(false)
         setError("Please fill all the required fields")
        }else{
         fetch('/api/organizations/create-organization', {
@@ -37,7 +38,7 @@ const NewOrganization = () => {
           body: JSON.stringify({
             name: name,
             address: address,
-            description: description,
+            description: description ? description : '',
             user: user
           })
         })

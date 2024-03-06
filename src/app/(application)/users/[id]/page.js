@@ -13,7 +13,7 @@ import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 import OrganizationsTable from "@/src/components/OrganizationsTable/page"
-import Modal from "@/src/components/ModalSingleButton/page"
+import Modal from "@/src/components/modal/page"
 
 const User = ({ params }) => {
 

@@ -32,7 +32,6 @@ const Step2 = ({ params }) => {
   const [highSideSize, setHighSideSize] = useState()
   const [floor, setFloor] = useState()
   const [roomDetails, setRoomDetails] = useState()
-  // const [terms, setTerms] = useState(false)
   
   const router = useRouter()
   
@@ -63,7 +62,7 @@ const Step2 = ({ params }) => {
         }
       })
       .then(()=> setLoader(false))
-  },[params.id])
+  }, [params.id])
 
   const onSubmit = async() => {
     let data = {
@@ -244,7 +243,9 @@ const Step2 = ({ params }) => {
         <Loader />
       }
       <CommToolTop title={"Step 2"} back={"/comm-tool"} />
-      <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Enter <strong className="text-purple">Property</strong> and <strong className="text-purple">Meter</strong> Details</h1>
+      <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">
+        Enter <strong className="text-purple">Property</strong> and <strong className="text-purple">Meter</strong> Details
+      </h1>
       {error &&
         <p className="error-message mb-[1.5rem]">{error}</p>
       }
@@ -388,7 +389,10 @@ const Step2 = ({ params }) => {
           </div>
         </div>
       </div>
-      <WarningSign head={"BEFORE INSTALLATION"} text={`Keep the provided magnet away from the Water Monkey until time of activation. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`} />
+      <WarningSign 
+        head={"BEFORE INSTALLATION"} 
+        text={`Keep the provided magnet away from the Water Monkey until time of activation. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`}
+      />
       <div className="w-full flex flex-col md:flex-row justify-end items-center mt-[1rem]">
         <button 
             className="mt-[1rem] md:mt-0 w-full md:w-[20%] button-small text-[1rem] h-[2rem]"

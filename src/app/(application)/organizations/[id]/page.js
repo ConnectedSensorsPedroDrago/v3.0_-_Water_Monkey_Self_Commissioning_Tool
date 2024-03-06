@@ -13,7 +13,7 @@ import ButtonSmall from "@/src/components/buttonSmall/page"
 import DropDownMenuObjects from "@/src/components/DropDownMenuObjects/page"
 import MessageScreen from "@/src/components/MessageScreen/page"
 import UserTable from "@/src/components/UserTable/page"
-import Modal from "@/src/components/ModalSingleButton/page"
+import Modal from "@/src/components/modal/page"
 import TextArea50PercentWithTitle from "@/src/components/TextArea50PercentWithTitle/page"
 
 const Organization = ({ params }) => {
@@ -66,7 +66,7 @@ const Organization = ({ params }) => {
       if(data.status === "ok"){
         setLoad(false)
         setReloadUser(!reloadUser)
-        setSuccess('Organization successfully deleted, redirecting you to Users...')
+        setSuccess('Organization successfully deleted, redirecting you to Organizations...')
         setTimeout(()=>{
           router.push('/organizations')
         }, 5000)
@@ -88,7 +88,7 @@ const Organization = ({ params }) => {
       body: JSON.stringify({
           org: params.id,
           address: address,
-          description: description
+          description: description ? description : ''
         })
     })
     .then(res => res.json())
@@ -163,9 +163,19 @@ const Organization = ({ params }) => {
 
   return (
     <>
-      {modal && <Modal message={modalMessage} action1={()=> modalMessage === 'Are you sure you want to delete this organization?' ? handleDelete() : modalMessage === 'Are you sure you want to remove this user from this organization?' && handleRemove(userToRemove)} action2={()=> setModal(false)} />}
-      {load && <Loader />}
-      {user.role === "viewer" ?
+      { 
+        modal && 
+        <Modal 
+          message={modalMessage} 
+          action1={()=> modalMessage === 'Are you sure you want to delete this organization?' ? handleDelete() : modalMessage === 'Are you sure you want to remove this user from this organization?' && handleRemove(userToRemove)} 
+          action2={()=> setModal(false)}
+      />}
+      {
+        load && 
+        <Loader />
+      }
+      {
+        user.role === "viewer" ?
         <div className="container-pages flex justify-center items-center">
           <p className="text-4xl text-red font-bold text-center">Not Found</p>
         </div>
