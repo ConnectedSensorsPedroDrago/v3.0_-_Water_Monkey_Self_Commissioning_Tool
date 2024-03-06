@@ -10,6 +10,7 @@ import { useContext, useState } from "react"
 import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
 import ModalSingleButton from "@/src/components/ModalSingleButton/page"
+import Message from "@/src/components/Message/page"
 
 const CommToolHome = () => {
 
@@ -79,6 +80,16 @@ const CommToolHome = () => {
         {
             loader && <Loader />
         }
+        {
+            error &&
+            <Message
+                message={error}
+                time={100000}
+                setMessage={setError}
+                type={"error"}
+
+            />
+        }
         <CommToolTop 
             title={"Step 1"} 
             back={'/home'} 
@@ -131,10 +142,6 @@ const CommToolHome = () => {
                 >
                     Submit and move to Step 2
                 </button>
-                {
-                    error &&
-                    <p className="error-message">{error}</p>
-                }
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@ export async function POST(req){
         return new Response({"status": "error", "message": "There was an error deleting the historical data of your device: " + e + ". Please try again or contact support."})
     }finally{
         try{
-            let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${label}/_/bulk/values`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/_/bulk/values`, {
                 method: 'POST',
                     headers: {
                     'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
