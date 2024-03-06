@@ -30,6 +30,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
 		colors: ['#E8D12A', '#292561']
 	};
 
+    console.log(mainChartValues)
 
   return (
     <div className='section-dashboard flex flex-col pr-[0.5rem]'>
@@ -205,7 +206,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                     :
                                     'text-yellow'
                                 }`}
-                            >{lastValues.low_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
+                            >{lastValues.low_flow_percentage.value ? lastValues.low_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) + '%*' : 'Not Found'}</p>
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
                                     lastValues.high_flow_percentage && lastValues.high_flow_percentage.value ? 
@@ -221,8 +222,8 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                 }`}>{lastValues.high_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                         </div>
                         <div className="fixed flex flex-row w-[56%] md:w-[51.5%] items-center justify-between top-[52%]">
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value ? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading.value ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
                         </div>
                     </div>
                 </div>
@@ -238,7 +239,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     />
                     <div className="absolute self-center z-10 w-[432px] h-[318px] flex flex-col justify-around items-center">
                             <div className="fixed flex flex-row items-center justify-center w-full top-[50%] md:top-[52.55%]">
-                                <p className="text-center w-[80px] font-semibold text-white mr-[11%]">{lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}</p>
+                                <p className="text-center w-[80px] font-semibold text-white mr-[11%]">{lastValues.low_flow_water_meter_reading.value ? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
                             </div>
                     </div>
                 </div>
