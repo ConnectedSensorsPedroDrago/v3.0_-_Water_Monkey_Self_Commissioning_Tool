@@ -20,7 +20,6 @@ export async function POST(req){
                 data.results.forEach(x => {
                     wu_p_sum = wu_p_sum + x.value
                 })
-                // if(wu_p_sum >= 100){
                 if(wu_p_sum >= 0){
                     volume_per_pulse = ((JSONCommStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*0.00378541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low)*0.001 : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*0.00378541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low)*0.001 : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low))) / wu_p_sum
                     try{

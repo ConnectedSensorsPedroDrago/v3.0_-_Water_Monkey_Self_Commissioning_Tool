@@ -4,7 +4,6 @@ import CommToolTop from "@/src/components/CommToolTop/page"
 import Image from "next/image"
 import Devices from '@/public/stepOneDevices.svg'
 import WarningSign from "@/src/components/WarningSign/page"
-import ButtonSmall from "@/src/components/buttonSmall/page"
 import { userContext } from "@/src/context/userContext"
 import { useContext, useState } from "react"
 import { useRouter } from "next/navigation"

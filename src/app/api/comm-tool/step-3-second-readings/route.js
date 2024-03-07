@@ -39,7 +39,7 @@ export async function POST(req){
                 )
                 for(let i = 0; i <= readingsVariables.length; i++){
                     try{
-                        let response = fetch(`https://industrial.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
+                        let response = fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 120000}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type':'application/json',
@@ -60,11 +60,46 @@ export async function POST(req){
         }catch(e){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error retrieving the variables for the meter readings: " + e + ". Please try again or contact support."}))
         }finally{
-            if(meterType === "Single" && lowSideSecond && dateSecond && lowSideSecondUnit && picSecond || meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond && picSecond){
+            if((meterType === "Single" && lowSideSecond && dateSecond && lowSideSecondUnit && picSecond) || (meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond && picSecond)){
                 let newLowSideSecond = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541
                 let newHighSideSecond = highSideSecondUnit === "m3" ? highSideSecond : highSideSecondUnit === "liters" ? Number(highSideSecond)*0.001 : highSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541        
-                let payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}, "wu_s": {"value": 0, "timestamp": dateSecond.timestamp}}
-                    meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}, "final_meter_reading_secondary": {"value": newHighSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}})
+                let payload = {
+                    "final_meter_reading_primary": {
+                        "value": newLowSideSecond, 
+                        "timestamp": dateSecond.timestamp, 
+                        "context": {
+                            "pic": picURL, 
+                            "date_time": dateSecond
+                        }
+                    }, 
+                    "wu_s": {
+                        "value": 0, 
+                        "timestamp": dateSecond.timestamp
+                    }
+                }
+                meterType === "Compound" && 
+                    (payload = 
+                        {
+                            "final_meter_reading_primary": 
+                                {
+                                    "value": newLowSideSecond, 
+                                    "timestamp": dateSecond.timestamp, 
+                                    "context": {
+                                        "pic": picURL, 
+                                        "date_time": dateSecond
+                                    }
+                                }, 
+                            "final_meter_reading_secondary": 
+                                {
+                                    "value": newHighSideSecond, 
+                                    "timestamp": dateSecond.timestamp, 
+                                    "context": {
+                                        "pic": picURL, 
+                                        "date_time": dateSecond
+                                    }
+                                }
+                        }
+                    )
                 try{
                     let response = await fetch(`https://cs.ubidots.site/api/v2.0/variables/?label__in=tc_p,tc_s&fields=label,lastValue,device&device__label__in=${params.id}`, {
                         method: 'GET',
@@ -105,6 +140,47 @@ export async function POST(req){
                                     let data1 = await response.json()
                                     if(data1.status === 'ok'){
                                         try{
+                                            let payload = {
+                                                "final_meter_reading_primary": {
+                                                    "value": newLowSideSecond, 
+                                                    "timestamp": dateSecond.timestamp, 
+                                                    "context": {
+                                                        "pic": picURL, "date_time": dateSecond
+                                                    }},
+                                                    "primary_volume_per_pulse": {
+                                                        "value": data1.data.primary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    },
+                                                }
+                                            meterType === "Compound" && 
+                                            (
+                                                payload = {
+                                                    "final_meter_reading_primary": {
+                                                        "value": newLowSideSecond, 
+                                                        "timestamp": dateSecond.timestamp, 
+                                                        "context": {
+                                                            "pic": picURL, 
+                                                            "date_time": dateSecond
+                                                        }
+                                                    }, 
+                                                    "final_meter_reading_secondary": {
+                                                        "value": newHighSideSecond, 
+                                                        "timestamp": dateSecond.timestamp, 
+                                                        "context": {
+                                                            "pic": picURL, 
+                                                            "date_time": dateSecond
+                                                        }
+                                                    },
+                                                    "primary_volume_per_pulse": {
+                                                        "value": data1.data.primary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    },
+                                                    "secondary_volume_per_pulse": {
+                                                        "value": data1.data.secondary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    }
+                                                }
+                                            )
                                             let response2 = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                                                 method: 'POST',
                                                 headers:{
@@ -218,9 +294,49 @@ export async function POST(req){
                                     })
                                     let data1 = await response.json()
                                     if(data1.status === 'ok'){
+                                        console.log(data1)
                                         try{
-                                            let payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}}
-                                            meterType === "Compound" && (payload = {"final_meter_reading_primary": {"value": newLowSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}, "final_meter_reading_secondary": {"value": newHighSideSecond, "timestamp": dateSecond.timestamp, "context": {"pic": picURL, "date_time": dateSecond}}})
+                                            let payload = {
+                                                "final_meter_reading_primary": {
+                                                    "value": newLowSideSecond, 
+                                                    "timestamp": dateSecond.timestamp, 
+                                                    "context": {
+                                                        "pic": picURL, "date_time": dateSecond
+                                                    }},
+                                                    "primary_volume_per_pulse": {
+                                                        "value": data1.data.primary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    },
+                                                }
+                                            meterType === "Compound" && 
+                                            (
+                                                payload = {
+                                                    "final_meter_reading_primary": {
+                                                        "value": newLowSideSecond, 
+                                                        "timestamp": dateSecond.timestamp, 
+                                                        "context": {
+                                                            "pic": picURL, 
+                                                            "date_time": dateSecond
+                                                        }
+                                                    }, 
+                                                    "final_meter_reading_secondary": {
+                                                        "value": newHighSideSecond, 
+                                                        "timestamp": dateSecond.timestamp, 
+                                                        "context": {
+                                                            "pic": picURL, 
+                                                            "date_time": dateSecond
+                                                        }
+                                                    },
+                                                    "pulse_volume_per_primary": {
+                                                        "value": data1.data.primary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    },
+                                                    "pulse_volume_per_secondary": {
+                                                        "value": data1.data.secondary_volume_per_pulse,
+                                                        "timestamp": dateSecond.timestamp
+                                                    }
+                                                }
+                                            )
                                             let response2 = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                                                 method: 'POST',
                                                 headers:{
