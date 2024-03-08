@@ -2044,7 +2044,7 @@ document.querySelector('#selector_cubic').addEventListener('click', ()=>{
 //GET LAST VALUES
 
 async function getLastValues(){
-    let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${deviceData.deviceLabel}/_/values/last`, {
+    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${deviceData.deviceLabel}/_/values/last`, {
         method: 'GET',
         headers: {
             'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'

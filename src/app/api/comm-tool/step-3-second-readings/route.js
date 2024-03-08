@@ -217,7 +217,7 @@ export async function POST(req){
                                                     if(data.label == params.id){
                                                         for(let i = 0; i <= readingsVariables.length; i++){
                                                             try{
-                                                                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
+                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
                                                                     method: 'POST',
                                                                     headers: {
                                                                         'Content-Type':'application/json',
@@ -336,7 +336,7 @@ export async function POST(req){
                                                     }
                                                 }
                                             )
-                                            let response2 = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
+                                            let response2 = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                                                 method: 'POST',
                                                 headers:{
                                                     'Content-Type':'application/json',
@@ -372,7 +372,7 @@ export async function POST(req){
                                                     if(data.label === params.id){
                                                         for(let i = 0; i <= readingsVariables.length; i++){
                                                             try{
-                                                                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
+                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
                                                                     method: 'POST',
                                                                     headers: {
                                                                         'Content-Type':'application/json',

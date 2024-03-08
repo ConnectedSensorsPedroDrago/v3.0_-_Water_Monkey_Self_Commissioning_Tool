@@ -1,6 +1,6 @@
 export default async function assignWMToOrg(code, org){
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -10,7 +10,7 @@ export default async function assignWMToOrg(code, org){
         let data = await response.json()
         if(data.results[0]){
             try{
-                let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${data.results[0].label}` , {
+                let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${data.results[0].label}` , {
                     method: 'PATCH',
                     headers:{
                         'Content-Type':'application/json',

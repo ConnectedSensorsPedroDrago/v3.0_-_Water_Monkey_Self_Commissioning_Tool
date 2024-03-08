@@ -5,7 +5,7 @@ export async function POST(req){
     const { user, timezone } = await req.json()
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/${user}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/${user}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,7 +2,7 @@ export async function POST(req){
     const { device, metric } = await req.json()
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${device}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${device}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -8,7 +8,7 @@ export default async function updateOrganization(org, address, description, setL
         reqBody.description = description
     }
     try {
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/organizations/${org}`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/organizations/${org}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

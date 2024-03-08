@@ -8,7 +8,7 @@ export async function POST(req){
 
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${label}/_/values/delete/?startDate=1546300800000&endDate=${toTimestamp(now)-10000}`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${label}/_/values/delete/?startDate=1546300800000&endDate=${toTimestamp(now)-10000}`, {
             method: 'POST',
                 headers: {
                 'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN

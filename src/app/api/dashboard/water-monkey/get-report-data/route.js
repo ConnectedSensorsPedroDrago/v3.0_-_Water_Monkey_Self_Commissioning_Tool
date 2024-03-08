@@ -13,7 +13,7 @@ export async function POST(req){
             let count = 0
             for(let i = 0; i <= variables.length; i++){
                 try{
-                    let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/variables/${variables[i].id}/statistics/sum/${start}/${end}`, {
+                    let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/variables/${variables[i].id}/statistics/sum/${start}/${end}`, {
                         headers: {
                             "X-Auth-Token": process.env.UBIDOTS_AUTHTOKEN
                         }

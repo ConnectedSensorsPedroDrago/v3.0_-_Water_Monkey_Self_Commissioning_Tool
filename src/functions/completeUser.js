@@ -3,7 +3,7 @@ export const completeUser = async(setUser, session, setLoader) => {
     let userInfo
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${session.user.name}?fields=organizations,id,firstName,lastName,mugshotUrl`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${session.user.name}?fields=organizations,id,firstName,lastName,mugshotUrl`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -31,7 +31,7 @@ export const completeUser = async(setUser, session, setLoader) => {
             let users = []
             let devices = ''
             try{
-                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${userInfo.organizations[i].id}&page_size=50000`, {
+                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${userInfo.organizations[i].id}&page_size=50000`, {
                     method: 'GET',
                     headers:{
                         'Content-Type':'application/json',
@@ -50,7 +50,7 @@ export const completeUser = async(setUser, session, setLoader) => {
                     monkeys: data.results.length > 0 ? data.results : undefined
                 })
                 
-                let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/?organization__label=${userInfo.organizations[i].label}`, {
+                let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/?organization__label=${userInfo.organizations[i].label}`, {
                     method: 'GET',
                     headers:{
                         'Content-Type':'application/json',

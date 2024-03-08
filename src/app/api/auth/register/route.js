@@ -2,7 +2,7 @@ import { toTimestamp } from "@/src/functions/toTimestamp"
 
 async function checkPrevious(user, name, email){
   try{
-    let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}`, {
+    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${user}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ async function checkPrevious(user, name, email){
     let data = await response.json()
     if(data.code && data.code === 404001){
       try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/organizations/~${name}`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/organizations/~${name}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ async function checkPrevious(user, name, email){
         let data = await response.json()
         if(data.code && data.code === 404001){
           try{
-            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/?email=${email}`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/?email=${email}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export async function POST(req){
 
   if(response.status === "ok"){
     try{
-      let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/users/', {
+      let response = await fetch('https://cs.api.ubidots.com/api/v2.0/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export async function POST(req){
       let data = await response.json()
       if(response.ok){
         try{
-          let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
+          let response = await fetch('https://cs.api.ubidots.com/api/v2.0/organizations/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export async function POST(req){
             let data = await response.json()
             if(response.ok){
               try{
-                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {
+                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',

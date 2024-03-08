@@ -3,7 +3,7 @@ export async function DELETE(req){
     const { org } = await req.json()
 
     try{
-        let response = await fetch (`https://industrial.api.ubidots.com/api/v2.0/organizations/${org}`, {
+        let response = await fetch (`https://cs.api.ubidots.com/api/v2.0/organizations/${org}`, {
                 method: 'DELETE',
                 headers:{
                     'Content-Type':'application/json',

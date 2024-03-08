@@ -5,7 +5,7 @@ export async function POST(req){
     let newOrgId
 
     try{
-        let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
+        let response = await fetch('https://cs.api.ubidots.com/api/v2.0/organizations/', {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -24,7 +24,7 @@ export async function POST(req){
         if(data.name === name){
             newOrgId = data.id
             try{
-                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user.name}/_/assign_organizations/`, {
+                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${user.name}/_/assign_organizations/`, {
                     method: 'POST',
                     headers:{
                         'Content-Type':'application/json',

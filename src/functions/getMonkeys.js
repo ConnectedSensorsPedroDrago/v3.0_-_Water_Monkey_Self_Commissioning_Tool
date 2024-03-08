@@ -4,7 +4,7 @@ export const getMonkeys = (user, setPortfolio) => {
 
     user.organizations.forEach(async(org) =>{
         try{
-            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${org.id}&page_size=50000`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${org.id}&page_size=50000`, {
                 method: 'GET',
                 headers:{
                     'Content-Type':'application/json',

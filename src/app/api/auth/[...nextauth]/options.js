@@ -46,7 +46,7 @@ export const options = {
                     let data = await response.json()
                     if(response.ok){
                         try{
-                            let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${credentials.user}`, {
+                            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${credentials.user}`, {
                                 method: 'GET',
                                 headers:{
                                     'Content-Type':'application/json',

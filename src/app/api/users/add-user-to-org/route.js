@@ -1,7 +1,7 @@
 export async function POST(req){
     const { userToAdd, orgSelected } = await req.json()
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${userToAdd}/_/assign_organizations/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${userToAdd}/_/assign_organizations/`, {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

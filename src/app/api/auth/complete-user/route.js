@@ -6,7 +6,7 @@ export async function GET(req, res){
     let userInfo
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}?fields=username,organizations,id,firstName,lastName,mugshotUrl,properties`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${user}?fields=username,organizations,id,firstName,lastName,mugshotUrl,properties`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -39,7 +39,7 @@ export async function GET(req, res){
                 let users = []
                 let devices = ''
                 try{
-                    let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${userInfo.organizations[i].id}&page_size=50000`, {
+                    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?deviceType=watermonkeyv2.0&organization__id=${userInfo.organizations[i].id}&page_size=50000`, {
                         method: 'GET',
                         headers:{
                             'Content-Type':'application/json',
@@ -58,7 +58,7 @@ export async function GET(req, res){
                     })
                     if(userInfo.role === 'super-viewer-test'){
                         try{
-                            let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/?organization__label=${userInfo.organizations[i].label}`, {
+                            let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/?organization__label=${userInfo.organizations[i].label}`, {
                                 method: 'GET',
                                 headers:{
                                     'Content-Type':'application/json',

@@ -24,7 +24,7 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
         }
     }
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
             method: 'PATCH',
             headers:{
                 'Content-Type':'application/json',
@@ -41,7 +41,7 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
             return {"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}
         }
         try{
-            let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+            let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
                 method: 'PATCH',
                 headers:{
                     'Content-Type':'application/json',
@@ -54,7 +54,7 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
                 if(meterType !== undefined){
                     let now = toTimestamp(new Date())
                     try{
-                        let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${id}/`, {
+                        let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${id}/`, {
                             method: 'POST',
                             headers:{
                                 'Content-Type':'application/json',

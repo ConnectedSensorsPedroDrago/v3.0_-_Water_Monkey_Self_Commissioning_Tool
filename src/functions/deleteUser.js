@@ -1,6 +1,6 @@
 export default async function deleteUser(user, setLoad, setMessage, setReloadUser, reloadUser){
     setLoad(true)
-    let response = await fetch (`https://industrial.api.ubidots.com/api/v2.0/users/${user}`, {
+    let response = await fetch (`https://cs.api.ubidots.com/api/v2.0/users/${user}`, {
         method: 'DELETE',
         headers:{
             'Content-Type':'application/json',

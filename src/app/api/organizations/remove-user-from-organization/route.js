@@ -3,7 +3,7 @@ export async function POST(req){
     const { userToRemove, orgSelected } = await req.json()
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${userToRemove}/_/remove_organizations/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${userToRemove}/_/remove_organizations/`, {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

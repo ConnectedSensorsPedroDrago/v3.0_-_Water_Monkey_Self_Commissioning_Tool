@@ -2,7 +2,7 @@ export default async function createOrganization(name, address, description, set
     let newOrgId
     setLoad(true)
     try{
-        let response = await fetch('https://industrial.api.ubidots.com/api/v2.0/organizations/', {
+        let response = await fetch('https://cs.api.ubidots.com/api/v2.0/organizations/', {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -22,7 +22,7 @@ export default async function createOrganization(name, address, description, set
         if(data.name === name){
             newOrgId = data.id
             try{
-                let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user.name}/_/assign_organizations/`, {
+                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/~${user.name}/_/assign_organizations/`, {
                     method: 'POST',
                     headers:{
                         'Content-Type':'application/json',

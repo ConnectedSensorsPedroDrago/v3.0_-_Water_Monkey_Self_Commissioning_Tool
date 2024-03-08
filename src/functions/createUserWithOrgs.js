@@ -1,7 +1,7 @@
 export default async function createUserWithOrgs(username, email, name, lastName, password, role, organizations, setError, setLoad){
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/users/`, {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -25,7 +25,7 @@ export default async function createUserWithOrgs(username, email, name, lastName
                 reqBody.push({label: organizations[0], role: role})
             }
             try{
-                let response = await fetch (`https://industrial.api.ubidots.com/api/v2.0/users/~${username}/_/assign_organizations/`, {
+                let response = await fetch (`https://cs.api.ubidots.com/api/v2.0/users/~${username}/_/assign_organizations/`, {
                     method: 'POST',
                     headers:{
                         'Content-Type':'application/json',
