@@ -33,7 +33,6 @@ export async function GET(req){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting alerts for the device " + label + ": " + e}))
         }
     } catch(e){
-        console.log("There was an error requesting alerts for the device " + label + ": " + e )
         return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting alerts for the device " + label + ": " + e }))
     }
 

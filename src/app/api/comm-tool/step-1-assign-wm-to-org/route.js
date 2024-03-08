@@ -7,7 +7,7 @@ export async function GET(req){
     let label
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?description=${code}`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -21,7 +21,7 @@ export async function GET(req){
             }
             label = data.results[0].label
             try{
-                let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${label}` , {
+                let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${label}` , {
                     method: 'PATCH',
                     headers:{
                         'Content-Type':'application/json',
@@ -38,14 +38,12 @@ export async function GET(req){
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the Water Monkey to the selected organization: " + e + ". Please try again or contact support"}))
                 }
             }catch(e){
-                console.log("There was an error assigning the Water Monkey to the selected organization. Please try again or contact support")
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the Water Monkey to the selected organization. Please try again or contact support"}))
             }
         } else {
             return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey from the QR Code. Please check the code and try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error requesting the WM from the QR Code. Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the WM from the QR Code. Please try again or contact support"}))
     }
 }

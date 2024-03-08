@@ -4,7 +4,6 @@ export async function POST(req){
 
     const { props, meterType, id } = await req.json()
 
-
     let payload = {
         "properties": {
             "country": props.country.value,
@@ -23,11 +22,12 @@ export async function POST(req){
             "meter_model": props.meter_model.value,
             "low_side": props.low_side.value,
             "high_side": props.high_side.value,
-            "commission_stage": props.commission_stage.value
+            "commission_stage": props.commission_stage.value,
+            "added": props.added.value
         }
     }
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
             method: 'PATCH',
             headers:{
                 'Content-Type':'application/json',
@@ -44,7 +44,7 @@ export async function POST(req){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}))
         }
         try{
-            let response1 = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+            let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
                 method: 'PATCH',
                 headers:{
                     'Content-Type':'application/json',
@@ -57,7 +57,7 @@ export async function POST(req){
                 if(meterType == 1 || meterType == 0){
                     let now = toTimestamp(new Date())
                     try{
-                        let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${id}/`, {
+                        let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${id}/`, {
                             method: 'POST',
                             headers:{
                                 'Content-Type':'application/json',

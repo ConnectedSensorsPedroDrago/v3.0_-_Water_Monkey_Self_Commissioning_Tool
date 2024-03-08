@@ -5,12 +5,6 @@ export async function POST(req){
     let end = req.nextUrl.searchParams.get("end")
     let quick = req.nextUrl.searchParams.get("quick")
 
-    console.log("get-values")
-    console.log(device)
-    console.log(start)
-    console.log(end)
-    console.log(quick)
-
     let deviceData = {}
 
     let metric = "liters"
@@ -36,7 +30,6 @@ export async function POST(req){
             })
             let data = await response.json()
             if(data.results){
-                // console.log(data)
                 data.results.forEach( x => {
                     waterConsumption.push(parseFloat(x.value).toFixed(2))
                 })
@@ -80,7 +73,6 @@ export async function POST(req){
             })
             let data = await response.json()
             if(data.results){
-                // console.log("getRunOffWaterFlowRate()")
                 data.results.forEach( x => {
                     runOffWaterFlowRate.push(parseFloat(x.value).toFixed(2))
                 })
@@ -607,7 +599,6 @@ export async function POST(req){
         }catch(e){
             return new Response(JSON.stringify({"status": "error", "message": "There was a problem requesting the high flow side rate: " + e + ". Please try again or contact support"}))
         }finally{
-            console.log("DONE!")
             return new Response(JSON.stringify({"status": "ok", "device_data": deviceData}))
         }
     }

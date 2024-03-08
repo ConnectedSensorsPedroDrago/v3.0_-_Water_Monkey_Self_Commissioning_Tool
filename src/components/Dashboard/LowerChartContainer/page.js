@@ -33,7 +33,6 @@ const LowerChartContainer = ({label, reportStart, reportEnd, meterType, metric})
         .then(res => res.json())
         .then(data => {
             if(data.status === "ok"){
-                console.log(data)
                 let chartWeekendsStart = []
                 let chartWeekendsEnd = []
                 let chartDateNightStart = []

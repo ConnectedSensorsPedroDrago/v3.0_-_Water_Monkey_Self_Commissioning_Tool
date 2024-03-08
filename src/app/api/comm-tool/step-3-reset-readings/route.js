@@ -4,7 +4,7 @@ export async function GET(req){
     let comm_stage = JSON.stringify({stage: "none", first: {}, second: {}})
 
     try{
-        let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
                 method: 'PATCH',
                 headers:{
                     'Content-Type':'application/json',

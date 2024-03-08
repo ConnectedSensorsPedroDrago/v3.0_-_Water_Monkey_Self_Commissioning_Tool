@@ -11,6 +11,8 @@ import { State, City } from "country-state-city"
 import { countries, propType, metType, metBrand, sideSizes, roomDet, unitOfCost } from "@/src/dbs/formOptions"
 import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
+import { toTimestamp } from "@/src/functions/toTimestamp"
+import Message from "@/src/components/Message/page"
 
 const Step2 = ({ params }) => {
 
@@ -32,8 +34,12 @@ const Step2 = ({ params }) => {
   const [highSideSize, setHighSideSize] = useState()
   const [floor, setFloor] = useState()
   const [roomDetails, setRoomDetails] = useState()
+  const [commStage, setCommStage] = useState()
   
   const router = useRouter()
+
+  let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  let now = new Date()
   
   useEffect(()=> {
     fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
@@ -59,6 +65,7 @@ const Step2 = ({ params }) => {
           properties.high_side && setHighSideSize(properties.high_side)
           properties.floor && setFloor(properties.floor)
           properties.room_details && setRoomDetails(properties.room_details)
+          properties.commission_stage && setCommStage(properties.commission_stage)
         }
       })
       .then(()=> setLoader(false))
@@ -178,13 +185,13 @@ const Step2 = ({ params }) => {
           "value": highSideSize,
           "description": "High Side Size"
         },
-        // "terms": {
-        //   "key": "terms",
-        //   "text": "Terms and Conditions and Monitoring Agreement accepted",
-        //   "type": "text",
-        //   "value": terms.toString(),
-        //   "description": "Terms and Conditions and Monitoring Agreement accepted"
-        // },
+        "added": {
+          "key": "added",
+          "text": "Added at",
+          "type": "json",
+          "value": JSON.stringify({"timestamp": toTimestamp(now), "timezone": timezone, "utc_time": now}),
+          "description": "When were the Property and Meter properties were added to this WM in the Commissioning Tool"
+        },
         "commission_stage": {
           "key": "commission_stage",
           "text": "Commissioning Process Stage",
@@ -246,8 +253,20 @@ const Step2 = ({ params }) => {
       <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">
         Enter <strong className="text-purple">Property</strong> and <strong className="text-purple">Meter</strong> Details
       </h1>
+      {commStage &&
+        <Message 
+          message={`It seems that the Property and Meter Details of this Water Monkey were previously added. Please be aware that updating this properties will reset the commissioning process. If you got here pressing "Back" on Step 3, just click on the "Back" button of the Browser to go back to Step 3 and continue commissioning if you do not wish to reset the process.`}
+          setMessage={setCommStage}
+          time={30000}
+        />
+      }
       {error &&
-        <p className="error-message mb-[1.5rem]">{error}</p>
+        <Message 
+          type={"error"}
+          message={error}
+          setMessage={setError}
+          time={30000}
+        />
       }
       <div className="w-full flex flex-col md:flex-row mb-[1rem]">
         <div className="w-full mr-[0.5rem]">

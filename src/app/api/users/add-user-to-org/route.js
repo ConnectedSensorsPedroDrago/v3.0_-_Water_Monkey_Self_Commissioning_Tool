@@ -16,11 +16,9 @@ export async function POST(req){
         if(response.ok){
             return new Response(JSON.stringify({"status": "ok", "message": "User assigned"}))
         } else {
-            console.log("There was an error assigning the user to the organization: " + data.message + " Please try again or contact support")
             return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the user to the organization: " + data.message + " Please try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error assigning the user to the organization. Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the user to the organization. Please try again or contact support"}))
     }
 }

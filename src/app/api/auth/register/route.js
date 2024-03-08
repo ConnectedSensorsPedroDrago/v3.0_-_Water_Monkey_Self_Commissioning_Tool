@@ -104,8 +104,6 @@ export async function POST(req){
               })
             })
             let data = await response.json()
-            console.log(data)
-            console.log(response)
             if(response.ok){
               try{
                 let response = await fetch(`https://industrial.api.ubidots.com/api/v2.0/users/~${user}/_/assign_organizations/`, {

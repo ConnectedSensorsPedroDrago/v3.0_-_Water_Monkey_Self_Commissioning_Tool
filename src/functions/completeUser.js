@@ -69,7 +69,7 @@ export const completeUser = async(setUser, session, setLoader) => {
                     userInfo.organizations[i].users = users
                 }
             }catch(e){
-                console.log("There was an error requesting the Water Monkey devices:" + e)
+               return {"status": "error", "message": "There was an error requesting the Water Monkey devices:" + e}
             }finally{
                 if(userInfo.organizations.length === (i+1)){
                     userInfo.devices = monkeys
@@ -81,7 +81,7 @@ export const completeUser = async(setUser, session, setLoader) => {
                 }
             }
         }
-        return {"status": "ok"}    
+        return {"status": "ok"}   
     }
 }
 

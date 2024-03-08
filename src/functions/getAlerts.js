@@ -6,7 +6,6 @@ export const getAlerts = async(device, setAlerts) => {
             headers:{
                 'Content-Type':'application/json',
                 'X-Auth-Token': "BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t",
-                // 'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
             },
         })
         let data = await response.json()

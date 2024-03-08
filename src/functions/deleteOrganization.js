@@ -17,7 +17,6 @@ export default async function deleteOrganization(org, setMessage, setLoad, setRe
         }
     }catch(e){
         // setLoad(false)
-        console.log("There was an error deleting the organization: " + e + " . Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error deleting the organization: " + e + " . Please try again or contact support"}))
     }
 }

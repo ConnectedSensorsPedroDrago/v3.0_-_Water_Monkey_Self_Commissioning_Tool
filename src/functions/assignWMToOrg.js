@@ -27,12 +27,12 @@ export default async function assignWMToOrg(code, org){
                     return {"status": "error", "message": "There was an error assigning the Water Monkey to the selected organization: " + e + ". Please try again or contact support"}
                 }
             }catch(e){
-                console.log("There was an error assigning the Water Monkey to the selected organization. Please try again or contact support")
+                return {"status": "error", "message": "There was an error assigning the Water Monkey to the selected organization. Please try again or contact support"}
             }
         } else {
             return {"status": "error", "message": "There was an error requesting the Water Monkey from the QR Code. Please check the code and try again or contact support"}
         }
     }catch(e){
-        console.log("There was an error requesting the WM from the QR Code. Please try again or contact support")
+        return {"status": "error", "message": "There was an error requesting the WM from the QR Code. Please try again or contact support"}
     }
 }

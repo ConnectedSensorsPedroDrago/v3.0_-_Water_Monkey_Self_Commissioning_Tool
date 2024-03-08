@@ -119,7 +119,7 @@ export async function POST(req){
                             })
                             if(check === 1){
                                 try{
-                                    let response = await fetch('http://localhost:3000/api/comm-tool/step-3-calculate-volume-per-pulse', {
+                                    let response = await fetch('/api/comm-tool/step-3-calculate-volume-per-pulse', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export async function POST(req){
                                                     }
                                                 }
                                             )
-                                            let response2 = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
+                                            let response2 = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                                                 method: 'POST',
                                                 headers:{
                                                     'Content-Type':'application/json',
@@ -294,7 +294,6 @@ export async function POST(req){
                                     })
                                     let data1 = await response.json()
                                     if(data1.status === 'ok'){
-                                        console.log(data1)
                                         try{
                                             let payload = {
                                                 "final_meter_reading_primary": {

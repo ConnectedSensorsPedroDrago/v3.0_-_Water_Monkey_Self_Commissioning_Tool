@@ -190,7 +190,6 @@ const Dashboard = ({ params }) => {
     }
 
     const handleLeakPercentageAlert = (device, prev_status) => {
-            console.log(device, prev_status)
       fetch('/api/dashboard/water-monkey/actions/alerts/leak_percentage', {
         method: 'POST',
         headers: {

@@ -25,7 +25,6 @@ export async function PATCH(req){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the organization's details. Please try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error updating the organization's details: " + e + " . Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the organization's details: " + e + " . Please try again or contact support"}))
     }
 }

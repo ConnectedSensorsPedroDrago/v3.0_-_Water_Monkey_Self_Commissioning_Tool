@@ -41,19 +41,15 @@ export async function POST(req){
                 return new Response(JSON.stringify({"status": "ok", "message": "User created", "id": data.id}))
             } else{
                 let data = await response.json()
-                console.log('The user was created but there was an error assigning the organization/s to the user: ' + data.message + ' Please contact support or try again.')
                 return new Response(JSON.stringify({"status": "error", "message": 'There was an error assigning the organization/s to the user: ' + data.message + ' Please contact support or try again.'}))
             }
         }catch(e){
-                console.log('The user was created but there was an error assigning the organization/s to the user: ' + e + '. Please contact support or try again.')
                 return new Response(JSON.stringify({"status": "error", "message": 'There was an error assigning the organization/s to the user: ' + e + '. Please contact support or try again.'}))
             }
         } else {
-            console.log('There was an error creating the user: ' + data.detail.non_field_errors + ' Please contact support or try again.')
             return new Response(JSON.stringify({"status": "error", "message": 'There was an error creating the user: ' + data.detail.non_field_errors + ' Please contact support or try again.'}))
         }
     } catch(e){
-        console.log('There was an error creating the user: ' + e + ' Please contact support or try again.')
         return new Response(JSON.stringify({"status": "error", "message": 'There was an error creating the user: ' + e + ' Please contact support or try again.'}))
     }
 

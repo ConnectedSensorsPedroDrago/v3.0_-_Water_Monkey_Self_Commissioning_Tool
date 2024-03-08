@@ -81,7 +81,7 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
                             return {"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}
                         }
                     }catch(e){
-                        console.log("There was an error writing the meter type property" + e +  ". Please try again or contact support")
+                       return("There was an error writing the meter type property" + e +  ". Please try again or contact support")
                     }
                 }else{
                     return {"status": "ok"}
@@ -90,9 +90,9 @@ export default async function assignPropertiesToNewWM(props, meterType, id){
                 return {"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}
             }
         }catch(e){
-            console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+            return("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
         }
     }catch(e){
-        console.log("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
+        return("There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support")
     }
 }

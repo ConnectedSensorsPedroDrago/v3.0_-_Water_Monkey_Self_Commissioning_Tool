@@ -76,7 +76,6 @@ export async function POST(req){
                     deviceData.waterConsumptionShadow = waterConsumptionShadow
                     // deviceData.waterConsumptionShadowPlus = waterConsumptionShadowPlus
                     // deviceData.waterConsumptionShadowLess = waterConsumptionShadowLess
-                    // console.log(deviceData)
                 }
             }catch(e){
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting your the previous period consumption: " + e + " Please try again or contact support"}))

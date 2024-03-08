@@ -22,8 +22,6 @@ const LowerChartConsumption = ({ chartWeekendsStart, chartWeekendsEnd, chartDate
 
     const [showLowerChart, setShowLowerChart] = useState(false)
 
-    console.log(meterType)
-
     //Define font of charts
     defaults.font.family = "Fira Sans"
     defaults.font.size = 9

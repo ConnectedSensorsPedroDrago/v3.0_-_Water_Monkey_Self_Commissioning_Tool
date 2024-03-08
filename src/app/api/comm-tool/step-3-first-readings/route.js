@@ -9,7 +9,7 @@ export async function POST(req){
             let payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "timestamp": dateFirst.timestamp, "context": {"pic": picURL, "date_time": dateFirst}}}
             meterType === "Compound" && (payload = {"initial_meter_reading_primary": {"value": newLowSideFirst, "timestamp": dateFirst.timestamp, "context": {"pic": picURL, "date_time": dateFirst}}, "initial_meter_reading_secondary": {"value": newHighSideFirst, "timestamp": dateFirst.timestamp, "context": {"pic": picURL, "date_time": dateFirst}}})
 
-            let response = await fetch(`https://industrial.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${params.id}/`, {
                 method: 'POST',
                 headers:{
                     'Content-Type':'application/json',

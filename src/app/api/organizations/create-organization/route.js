@@ -39,19 +39,15 @@ export async function POST(req){
                 if(response.ok){
                     return new Response(JSON.stringify({"status": "ok", "message": "Org created", "id": newOrgId}))
                 } else {
-                    console.log("There was an error assigning the organization to you: " + data.message + ". Please try again or contact support")
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the organization to you: " + data.message + ". Please try again or contact support"}))
                 }
             }catch(e){
-                console.log("There was an error assigning the organization to you. Please try again or contact support")
                 return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the organization to you. Please try again or contact support"}))
             }
         } else {
-            console.log("There was an error creating the organization. Please try again or contact support")
             return new Response(JSON.stringify({"status": "error", "message": "There was an error creating the organization. Please try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error creating the organization: " + e + " . Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error creating the organization: " + e + " . Please try again or contact support"}))
     }
 }

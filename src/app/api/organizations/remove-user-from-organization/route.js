@@ -18,11 +18,9 @@ export async function POST(req){
             return new Response(JSON.stringify({"status": "ok", "message": "User removed"}))
         } else {
             let data = await response.json()
-            console.log("There was an error removing the user from the organization: " + data.message + " Please try again or contact support")
             return new Response(JSON.stringify({"status": "error", "message": "There was an error removing the user from the organization: " + data.message + " Please try again or contact support"}))
         }
     }catch(e){
-        console.log("There was an error removing the user from the organization. Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error removing the user from the organization. Please try again or contact support"}))
     }
 }

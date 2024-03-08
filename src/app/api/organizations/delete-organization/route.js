@@ -14,7 +14,6 @@ export async function DELETE(req){
             return new Response(JSON.stringify({"status": "ok", "message": "Organization deleted"}))
         }
     }catch(e){
-        console.log("There was an error deleting the organization: " + e + " . Please try again or contact support")
         return new Response(JSON.stringify({"status": "error", "message": "There was an error deleting the organization: " + e + " . Please try again or contact support"}))    }
 
 }
