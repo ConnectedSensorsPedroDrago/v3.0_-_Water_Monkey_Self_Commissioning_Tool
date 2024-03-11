@@ -1,6 +1,6 @@
 export async function POST(req){
 
-    const { meterType, lowSideFirst, dateFirst, lowSideFirstUnit, picFirst, highSideFirst, highSideFirstUnit, picURL, params, commStage } = await req.json()
+    const { meterType, lowSideFirst, dateFirst, lowSideFirstUnit, picFirst, highSideFirst, highSideFirstUnit, picURL, params, commStage, deviceId } = await req.json()
 
     if(meterType === "Single" && lowSideFirst && dateFirst && lowSideFirstUnit && picFirst || meterType === "Compound" && lowSideFirst && highSideFirst && lowSideFirstUnit && highSideFirstUnit && dateFirst && picFirst){
             let newLowSideFirst = lowSideFirstUnit === "m3" ? lowSideFirst : lowSideFirstUnit === "liters" ? Number(lowSideFirst)*0.001 : lowSideFirstUnit === "gallons" && Number(lowSideFirst)*0.00378541
@@ -47,8 +47,46 @@ export async function POST(req){
                 })
                 let data = await response.json()
                 if(data.label === params.id){
-                    return new Response(JSON.stringify({"status": "ok", "commission_stage": data.properties.commission_stage}))
-
+                    let comm_stage = data.properties.commission_stage
+                    let vars = []
+                    try{
+                        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/${deviceId}/variables?page_size=500`, {
+                            'headers': {
+                                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+                            }
+                        })
+                        let data = await response.json()
+                        if(data.count > 0){
+                            data.results.forEach(variable => {
+                                if(variable.label === 'wu_p' || variable.label === 'wu_s'){
+                                    vars.push(variable.id)
+                                }
+                            })
+                        }
+                    }catch(e){
+                        return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p and wu_s variables to clean the previous data"}))
+                    }finally{
+                        for(let i = 0; i < vars.length; i++){
+                            try{
+                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${vars[i]}/_/values/delete/?startDate=1546300800000&endDate=${dateFirst.timestamp}`, {
+                                    'method': 'POST',
+                                    'headers': {
+                                        'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+                                    }
+                                })
+                                let data = await response.json()
+                                if(data.task.id){
+                                    if(i == (vars.length -1)){
+                                        return new Response(JSON.stringify({"status": "ok", "commission_stage": comm_stage}))
+                                    }
+                                }else{
+                                    return new Response(JSON.stringify({"status": "error", "message": `There was an error deleting the previous data for variable id: ${deviceId}`}))
+                                }
+                            }catch(e){
+                                return new Response(JSON.stringify({"status": "error", "message": `There was an error deleting the previous data for variable id: ${deviceId}: ${e}`}))
+                            }
+                        }
+                    }
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the first readings. Please try again or contact support."}))
                 }

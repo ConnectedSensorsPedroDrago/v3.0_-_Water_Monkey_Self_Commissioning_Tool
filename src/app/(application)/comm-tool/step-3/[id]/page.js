@@ -46,6 +46,7 @@ const Step3 = ({params}) => {
     const [success, setSuccess] = useState(false)
     const [message, setMessage] = useState()
     const [propertyType, setPropertyType] = useState()
+    const [deviceId, setDeviceId] = useState()
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
@@ -57,6 +58,7 @@ const Step3 = ({params}) => {
                 setPropertyType(data.device.properties.property_type)
                 setMeterType(data.device.properties.meter_type)
                 setOrg(data.device.organization.name)
+                setDeviceId(data.device.id)
                 setCommStage(commissionStage)
                 commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
                 commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
@@ -99,15 +101,10 @@ const Step3 = ({params}) => {
                                     picFirst: picFirst,
                                     highSideFirst: highSideFirst,
                                     highSideFirstUnit: highSideFirstUnit,
-                                    org: org,
                                     params: params,
-                                    user: user,
                                     commStage: commStage,
                                     picURL: picURL,
-                                    setUser: setUser,
-                                    userSession: userSession,
-                                    setLoader: setLoader,
-                                    setPortfolio: setPortfolio
+                                    deviceId: deviceId
                                 })
                             })
                             .then(data => data.json())
@@ -127,7 +124,7 @@ const Step3 = ({params}) => {
                                                 dateFirst && (new Date(in24hs + 21600000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 21600000).toLocaleTimeString('en-US')), 
                                                 dateFirst && (new Date(in24hs + 43200000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 43200000).toLocaleTimeString('en-US')), 
                                                 dateFirst && (new Date(in24hs + 64800000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 64800000).toLocaleTimeString('en-US')), 
-                                                dateFirst && (new Date(in24hs + 86400000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 86400000).toLocaleTimeString('en-US'))]], [`Please try to take your secondary reading as close to one of these previously stated dates and times${propertyType !== "Residential - Single Family Home" ? " and having let at least 10m3 of water (or its equivalent) flow through your water meter" : ""}.`], ["We will be waiting for your final meter readings! Thanks!"]])
+                                                dateFirst && (new Date(in24hs + 86400000).toLocaleDateString('en-US') + ' ' + new Date(in24hs + 86400000).toLocaleTimeString('en-US'))]], [`Please try to take your secondary reading as close to one of these previously stated dates and times${propertyType !== "Residential - Single Family Home" ? ` and having let at least 10m3 of water (or its equivalent) flow through your water meter` : ""}.`], ["We will be waiting for your final meter readings! Thanks!"]])
                                             setCommStage(comm_stage)
                                             setUser(data.user_info)
                                             setLoad(false)
