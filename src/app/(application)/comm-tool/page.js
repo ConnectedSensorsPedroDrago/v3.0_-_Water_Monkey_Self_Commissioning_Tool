@@ -26,55 +26,118 @@ const CommToolHome = () => {
     const onSubmit = () => {
         setLoader(true)
         setError()
-        let param
-        let previous
         if(code === undefined || org === undefined){
             setError("Please add the code and choose an organization to assign the Water Monkey to.")
             setLoader(false)
         }else{
-            fetch(`/api/comm-tool/step-1-assign-wm-to-org?code=${code}&org=${org}`)
-            .then(resp => resp.json())
-            .then((data)=> {
-                setLoader(false)
-                if(data.status === 'ok' && data.previous && data.monkey){
-                    previous = data.previous
-                    setLabel(data.monkey)
-                    param = data.monkey
-                    fetch(`/api/devices/water-monkey/delete-historical-data`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type':'application/json',
-                        },
-                        body: JSON.stringify({
-                            "label": param,
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.status === "ok"){
-                            setLoader(false)
-                            if(previous === 'no'){
-                                router.push(`/comm-tool/step-2/${param}`)
-                            }else if(previous === 'yes'){
-                                setModal(true)
-                            }
-                        }else{
-                            setError(data.message)
-                        }
-                    })
-                    .catch(e => {
+            let param
+            fetch(`/api/devices/water-monkey/get-device-with-description?code=${code}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    if(data.status === "error"){
                         setLoader(false)
-                        setError("There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support.")}
-                    )
+                        setError(data.message)
+                    }else if(data.status === 'ok'){
+                        param = data.device.label
+                        setLabel(data.device.label)
+                        console.log(data.device.properties)
+                        if(data.device.properties.commission_stage){
+                            setLoader(false)
+                            setModal(true)
+                        }else{
+                            fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}`)
+                                .then(resp => resp.json())
+                                .then(data => {
+                                    if(data.status === "error"){
+                                        setLoader(false)
+                                        setError(data.message)
+                                    }else if(data.status === "ok"){
+                                        fetch(`/api/devices/water-monkey/delete-historical-data`, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type':'application/json',
+                                            },
+                                            body: JSON.stringify({
+                                                "label": param,
+                                            })
+                                        })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if(data.status === "ok"){
+                                                    setLoader(false)
+                                                    if(previous === 'no'){
+                                                        router.push(`/comm-tool/step-2/${param}`)
+                                                    }else if(previous === 'yes'){
+                                                        setModal(true)
+                                                    }
+                                                }else{
+                                                    setError(data.message)
+                                                }
+                                            })
+                                            .catch(e => {
+                                                setLoader(false)
+                                                setError("There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support.")}
+                                            )
+                                    }
+                                })
+                        }
+                    }
+                })
+        }
+    }
+
+    async function onSubmitRecommission(){
+        setModal(false)
+        setLoader(true)
+        setError()
+        let param
+        fetch(`/api/devices/water-monkey/get-device-with-description?code=${code}`)
+            .then(resp => resp.json())
+            .then(data => {
+                if(data.status === "error"){
+                    setLoader(false)
+                    setError(data.message)
+                }else if(data.status === 'ok'){
+                    param = data.device.label
+                    fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}`)
+                        .then(resp => resp.json())
+                        .then(data => {
+                            if(data.status === "error"){
+                                setLoader(false)
+                                setError(data.message)
+                            }else if(data.status === "ok"){
+                                fetch(`/api/devices/water-monkey/delete-historical-data`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type':'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        "label": param,
+                                    })
+                                })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if(data.status === "ok"){
+                                            setLoader(false)
+                                            router.push(`/comm-tool/step-2/${param}`)
+                                        }else{
+                                            setError(data.message)
+                                        }
+                                    })
+                                    .catch(e => {
+                                        setLoader(false)
+                                        setError("There was an error deleting the historical data of your Water Monkey to prepare it for commissioning: " + e + ". Please try again or contact support.")}
+                                    )
+                            }
+                        })
                 }
             })
-        }
     }
 
   return (
     <div className='container-pages h-fit'>
         {
-            modal && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> router.push(`/comm-tool/step-2/${label}`)}/>
+            modal && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> onSubmitRecommission()}/>
         }
         {
             loader && <Loader />

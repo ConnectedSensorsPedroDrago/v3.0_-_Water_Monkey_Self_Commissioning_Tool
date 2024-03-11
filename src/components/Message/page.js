@@ -16,6 +16,7 @@ const Message = ({message, setMessage, time, type}) => {
                 <p className='text-blue-hard font-semibold text-[0.75rem]'>Message</p>
                 <Image 
                     src={Close}
+                    alt={"Close Message"}
                     className="hover:scale-110 cursor-pointer"
                     onClick={()=> setMessage()}
                 />
