@@ -71,11 +71,7 @@ const CommToolHome = () => {
                                             .then(data => {
                                                 if(data.status === "ok"){
                                                     setLoader(false)
-                                                    if(previous === 'no'){
                                                         router.push(`/comm-tool/step-2/${param}`)
-                                                    }else if(previous === 'yes'){
-                                                        setModal(true)
-                                                    }
                                                 }else{
                                                     setError(data.message)
                                                 }
