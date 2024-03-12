@@ -26,7 +26,13 @@ const CommToolHome = () => {
     const onSubmit = () => {
         setLoader(true)
         setError()
-        if(code === undefined || org === undefined){
+        if(code == undefined || code.length === 0){
+            setError("Please add the code to assign the Water Monkey to the organization.")
+            setLoader(false)
+        }else if(org == undefined){
+            setError("Please choose an organization to assign the Water Monkey to.")
+            setLoader(false)
+        }else if((code == undefined || code.length === 0) && org == undefined){
             setError("Please add the code and choose an organization to assign the Water Monkey to.")
             setLoader(false)
         }else{

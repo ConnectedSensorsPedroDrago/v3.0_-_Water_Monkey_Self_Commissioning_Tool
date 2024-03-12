@@ -201,7 +201,23 @@ const Step2 = ({ params }) => {
         }
     }
     if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && !highSideSize) && false) || !floor || !roomDetails){
-      setError("Please complete all the required fields")
+      (!country || country.length < 1) ? setError("Please complete the Country field") :
+      (!state || state.length < 1 )? setError("Please complete the State field") :
+      (!city  || city.length < 1) ? setError("Please complete the City field") :
+      (!zipCode || zipCode.length < 1) ? setError("Please complete the Zip Code field") :
+      (!address || address.length < 1) ? setError("Please complete the Address field") :
+      (!buildingName || buildingName.length < 1) ? setError("Please complete the Building Name field") :
+      (!propertyType || propertyType.length < 1) ? setError("Please complete the Property Type field") :
+      (!meterType || meterType.length < 1) ? setError("Please complete the Meter Type field") :
+      (!costPerUnit || costPerUnit.length < 1) ? setError("Please complete the Cost Per Unit field") :
+      (!costUnit || costUnit.length < 1) ? setError("Please complete the Cost Unit field") :
+      (!meterBrand || meterBrand.length < 1) ? setError("Please complete the Meter Brand field") :
+      (!meterModel || meterModel.length < 1) ? setError("Please complete the Meter Model field") :
+      (!lowSideSize || lowSideSize.length < 1) ? setError("Please complete the Low Side Size field") :
+      ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && (!highSideSize  || highSideSize.length < 1)) && false) ? setError("Please complete the High Side Size field") :
+      (!floor || floor.length < 1) ? setError(`Please complete the Floor field. If it is your basement, you can add "-1"`) :
+      (!roomDetails || roomDetails.length < 1) && setError("Please complete the Room Details field")
+      // setError("Please complete all the required fields")
     }else{
         setLoader(true)
         fetch('/api/comm-tool/step-2-assign-properties-to-wm', {

@@ -74,10 +74,14 @@ const Step3 = ({params}) => {
         setError()
         let picURL
         let comm_stage
-        if(picFirst === null){
-            setError("No image was found")
-        }else if(!dateFirst || !lowSideFirst || !lowSideFirstUnit){
-            setError("Please complete all the required fields.")
+        if(picFirst === undefined){
+            setError("No Meter Photo was found for your first readings. Please submit one before sending it.")
+        }else if(!dateFirst || !lowSideFirst || !lowSideFirstUnit || (meterType == 'Compound' && (!highSideFirst || highSideFirst.length < 1)) || (meterType == 'Compound' && (!highSideFirstUnit || highSideFirstUnit.length < 1))){
+            (!dateFirst || dateFirst.length < 1) ? setError("Please add the Date and Time of your first readings before sending it.") :
+            (!lowSideFirst || lowSideFirst.length < 1) ? setError("Please add the value for the Low Side of your water meter.") :
+            (!lowSideFirstUnit || lowSideFirstUnit.length < 1) ? setError("Please add the value for the Low Side Unit of your water meter.") :
+            (meterType == 'Compound' && (!highSideFirst || highSideFirst.length < 1)) ? setError("Please add the value for the High Side Unit of your water meter.") :
+            (meterType == 'Compound' && (!highSideFirstUnit || highSideFirstUnit.length < 1)) && setError("Please add the value for the High Side Unit of your water meter.")
         }else{
             setLoad(true)
             const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_FirstReadings_${user.name}_${dateFirst.timestamp}.jpg`)
@@ -143,10 +147,14 @@ const Step3 = ({params}) => {
         setError()
         let picURL
         let comm_stage
-        if(picSecond === null){
-            setError("No image was found")
-        }else if(!dateSecond || !lowSideSecond || !lowSideSecondUnit || !picSecond){
-            setError("Please complete all the required fields.")
+        if(picSecond === undefined){
+            setError("No Meter Photo was found for your second readings. Please submit one before sending it.")
+        }else if(!dateSecond || !lowSideSecond || !lowSideSecondUnit || (meterType == 'Compound' && (!highSideSecond || highSideSecond.length < 1)) || (meterType == 'Compound' && (!highSideSecondUnit || highSideSecondUnit.length < 1))){
+            (!dateSecond || dateSecond.length < 1) ? setError("Please add the Date and Time of your second readings before sending it.") :
+            (!lowSideSecond || lowSideSecond.length < 1) ? setError("Please add the value for the Low Side of your water meter.") :
+            (!lowSideSecondUnit || lowSideSecondUnit.length < 1) ? setError("Please add the value for the Low Side Unit of your water meter.") :
+            (meterType == 'Compound' && (!highSideSecond || highSideSecond.length < 1)) ? setError("Please add the value for the High Side Unit of your water meter.") :
+            (meterType == 'Compound' && (!highSideSecondUnit || highSideSecondUnit.length < 1)) && setError("Please add the value for the High Side Unit of your water meter.")
         }else{
             setLoad(true)
             const imageRef = ref(storage, `WM_Readings/${org}/${params.id}/${org}_${params.id}_SecondReadings_${user.name}_${dateSecond.timestamp}.jpg`)
