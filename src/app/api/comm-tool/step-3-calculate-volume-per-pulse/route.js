@@ -64,7 +64,7 @@ export async function POST(req){
         let secondary_volume_per_pulse
         
         try{
-            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${JSONCommStage.first.date_time.timestamp}&end=${JSONCommStage.second.date_time.timestamp}&page_size=4000`, {
+            let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_p/values?start=${JSONCommStage.first.date_time.timestamp}&end=${JSONCommStage.second.date_time.timestamp}&page_size=50000`, {
                 headers: {
                     'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                 },
@@ -87,7 +87,7 @@ export async function POST(req){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the wu_p information calculating the volume per pulse: " + e + ". Please try again or contact support"}))
         }finally{
             try{
-                let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_s/values?start=${toTimestamp(JSONCommStage.first.date_time)}&end=${toTimestamp(JSONCommStage.second.date_time)}&page_size=4000`, {
+                let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/wu_s/values?start=${JSONCommStage.first.date_time.timestamp}&end=${JSONCommStage.second.date_time.timestamp}&page_size=50000`, {
                     headers: {
                         'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                     },

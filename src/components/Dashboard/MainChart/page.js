@@ -7,9 +7,6 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterType, metric, cubic }) => {
 
-    console.log(mainChartValues)
-    console.log(lastValues)
-
     var donutChartConfig = {
         series: [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ],
         labels: ['Leaked Water', 'Consumed Water'],
@@ -148,7 +145,6 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Max. Recorded Daily Consumption</p>
                     <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">
-                        {/* {metric === "liters" ? (lastValues && lastValues.metric_max_daily_l.value ? lastValues.metric_max_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L") : lastValues && lastValues.metric_max_daily_gal.value ? lastValues.metric_max_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G"} */}
                         {metric === "liters" ? 
                             (cubic ?
                                 ((lastValues.metric_max_daily_l && lastValues.metric_max_daily_l.value)? (lastValues.metric_max_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
@@ -166,7 +162,6 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                 <div className="flex flex-col items-center lg:items-start">
                     <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Min. Recorded Daily Consumption</p>
                     <p className="text-yellow font-bold text-[1.75rem] tracking-wider font-outline">
-                        {/* {metric === "liters" ? (lastValues && lastValues.metric_min_daily_l.value ? lastValues.metric_min_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0 L") : lastValues && lastValues.metric_min_daily_gal.value ? lastValues.metric_min_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G"} */}
                         {metric === "liters" ? 
                             (cubic ?
                                 ((lastValues.metric_min_daily_l && lastValues.metric_min_daily_l.value) ? (lastValues.metric_min_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
