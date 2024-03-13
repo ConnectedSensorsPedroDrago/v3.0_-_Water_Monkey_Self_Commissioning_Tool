@@ -119,7 +119,7 @@ export async function POST(req){
                             })
                             if(check === 1){
                                 try{
-                                    let response = await fetch('/api/comm-tool/step-3-calculate-volume-per-pulse', {
+                                    let response = await fetch('http://localhost:3000/api/comm-tool/step-3-calculate-volume-per-pulse', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',
@@ -274,7 +274,7 @@ export async function POST(req){
                             })
                             if(check === 2){
                                 try{
-                                    let response = await fetch('https://main.da9s7rgkwljh7.amplifyapp.com/api/comm-tool/step-3-calculate-volume-per-pulse', {
+                                    let response = await fetch('http://localhost:3000/api/comm-tool/step-3-calculate-volume-per-pulse', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',
