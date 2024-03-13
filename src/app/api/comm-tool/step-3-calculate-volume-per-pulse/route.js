@@ -21,7 +21,7 @@ export async function POST(req){
                     wu_p_sum = wu_p_sum + x.value
                 })
                 if(wu_p_sum >= 0){
-                    volume_per_pulse = ((JSONCommStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*0.00378541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low)*0.001 : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*0.00378541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low)*0.001 : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low))) / wu_p_sum
+                    volume_per_pulse = ((JSONCommStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*3.78541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low) : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)*1000) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*3.78541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low) : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low)*1000)) / wu_p_sum
                     try{
                         let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${label}/`, {
                             method: 'POST',
@@ -75,7 +75,7 @@ export async function POST(req){
                     wu_p_sum = wu_p_sum + x.value
                 })
                 if(wu_p_sum >= 0){
-                    primary_volume_per_pulse = ((commStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*0.00378541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low)*0.001 : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*0.00378541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low)*0.001 : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low))) / wu_p_sum 
+                    primary_volume_per_pulse = ((commStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*3.78541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low) : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)*1000) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*3.78541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low) : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low)*1000)) / wu_p_sum 
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "Not enough pulses have gone through the low side, just " + wu_p_sum + ", we need at lest 100 . Please let more water flow and try again later."}))
                 }
@@ -98,7 +98,7 @@ export async function POST(req){
                         wu_s_sum = wu_s_sum + x.value
                     })
                     if(wu_s_sum >= 0){
-                        secondary_volume_per_pulse = ((JSONCommStage.second.high_unit === "gallons" ? Number(JSONCommStage.second.high)*0.00378541 : JSONCommStage.second.high_unit === "liters" ? Number(JSONCommStage.second.high)*0.001 : JSONCommStage.second.high_unit === "m3" && Number(JSONCommStage.second.high)) - (JSONCommStage.first.high_unit === "gallons" ? Number(JSONCommStage.first.high)*0.00378541 : JSONCommStage.first.high_unit === "liters" ? Number(JSONCommStage.first.high)*0.001 : JSONCommStage.first.high_unit === "m3" && Number(JSONCommStage.first.high))) / wu_s_sum
+                        secondary_volume_per_pulse = ((JSONCommStage.second.high_unit === "gallons" ? Number(JSONCommStage.second.high)*3.78541 : JSONCommStage.second.high_unit === "liters" ? Number(JSONCommStage.second.high) : JSONCommStage.second.high_unit === "m3" && Number(JSONCommStage.second.high)*1000) - (JSONCommStage.first.high_unit === "gallons" ? Number(JSONCommStage.first.high)*3.78541 : JSONCommStage.first.high_unit === "liters" ? Number(JSONCommStage.first.high) : JSONCommStage.first.high_unit === "m3" && Number(JSONCommStage.first.high)*1000)) / wu_s_sum
                         return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": primary_volume_per_pulse, "secondary_volume_per_pulse": secondary_volume_per_pulse}}))
                     }else{
                         return new Response(JSON.stringify({"status": "error", "message": "Not enough pulses have gone through the high side, just " + wu_s_sum + ", we need at lest 100 . Please let more water flow and try again later."}))
