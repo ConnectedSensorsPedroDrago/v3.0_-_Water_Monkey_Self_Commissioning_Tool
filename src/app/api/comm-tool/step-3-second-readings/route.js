@@ -146,12 +146,16 @@ export async function POST(req){
                                                     "timestamp": dateSecond.timestamp, 
                                                     "context": {
                                                         "pic": picURL, "date_time": dateSecond
-                                                    }},
-                                                    "pulse_volume_per_primary": {
+                                                }},
+                                                "pulse_volume_per_primary": {
                                                         "value": data1.data.primary_volume_per_pulse,
                                                         "timestamp": dateSecond.timestamp
-                                                    },
+                                                },
+                                                "wu_s": {
+                                                    "value": 0,
+                                                    "timestamp": dateSecond.timestamp
                                                 }
+                                            }
                                             meterType === "Compound" && 
                                             (
                                                 payload = {
