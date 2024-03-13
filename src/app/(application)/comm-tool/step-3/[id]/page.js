@@ -70,6 +70,8 @@ const Step3 = ({params}) => {
         })
     }, [params])
 
+    console.log(highSideSecond)
+
     const onSubmitFirst = async() => {
         setError()
         let picURL
@@ -515,7 +517,7 @@ const Step3 = ({params}) => {
                                 </>
                                 :
                                 commStage && commStage.second.date_time &&
-                                <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
+                                <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[13.75rem]'>
                                     <div className='w-full flex items-center justify-start'>
                                         <Image 
                                             src={successTick}
@@ -531,7 +533,7 @@ const Step3 = ({params}) => {
                                         <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>Low Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.low_unit}</p>
                                     </div>
                                     {
-                                        highSideFirst &&
+                                        commStage && commStage.second.high &&
                                         <div className='w-full flex flex-col justify-between ml-[0rem]'>
                                             <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>High Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.high).toLocaleString('en-US',  {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.high_unit}</p>
                                         </div>
