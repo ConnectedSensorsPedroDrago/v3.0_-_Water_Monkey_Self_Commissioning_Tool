@@ -148,7 +148,7 @@ export async function POST(req){
                                                         "pic": picURL, "date_time": dateSecond
                                                 }},
                                                 "pulse_volume_per_primary": {
-                                                        "value": data1.data.primary_volume_per_pulse,
+                                                        "value": Number(data1.data.primary_volume_per_pulse).toFixed(3),
                                                         "timestamp": dateSecond.timestamp
                                                 },
                                                 "wu_s": {
