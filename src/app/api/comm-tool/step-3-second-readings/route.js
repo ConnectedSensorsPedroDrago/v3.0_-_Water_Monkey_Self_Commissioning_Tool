@@ -147,7 +147,7 @@ export async function POST(req){
                                                     "context": {
                                                         "pic": picURL, "date_time": dateSecond
                                                     }},
-                                                    "primary_volume_per_pulse": {
+                                                    "pulse_volume_per_primary": {
                                                         "value": data1.data.primary_volume_per_pulse,
                                                         "timestamp": dateSecond.timestamp
                                                     },
@@ -171,11 +171,11 @@ export async function POST(req){
                                                             "date_time": dateSecond
                                                         }
                                                     },
-                                                    "primary_volume_per_pulse": {
+                                                    "pulse_volume_per_primary": {
                                                         "value": data1.data.primary_volume_per_pulse,
                                                         "timestamp": dateSecond.timestamp
                                                     },
-                                                    "secondary_volume_per_pulse": {
+                                                    "pulse_volume_per_secondary": {
                                                         "value": data1.data.secondary_volume_per_pulse,
                                                         "timestamp": dateSecond.timestamp
                                                     }
@@ -302,7 +302,7 @@ export async function POST(req){
                                                     "context": {
                                                         "pic": picURL, "date_time": dateSecond
                                                     }},
-                                                    "primary_volume_per_pulse": {
+                                                    "pulse_volume_per_primary": {
                                                         "value": data1.data.primary_volume_per_pulse,
                                                         "timestamp": dateSecond.timestamp
                                                     },
