@@ -5,7 +5,6 @@ export async function POST(req){
 
     let JSONCommStage = commStage
 
-
     if(meterType === 'Single'){
         let wu_p_sum = 0
         try{
@@ -75,7 +74,7 @@ export async function POST(req){
                     wu_p_sum = wu_p_sum + x.value
                 })
                 if(wu_p_sum >= 0){
-                    primary_volume_per_pulse = ((commStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*3.78541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low) : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)*1000) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*3.78541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low) : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low)*1000)) / wu_p_sum 
+                        primary_volume_per_pulse = ((commStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*3.78541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low) : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)*1000) - (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*3.78541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low) : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low)*1000)) / wu_p_sum 
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "Not enough pulses have gone through the low side, just " + wu_p_sum + ", we need at lest 100 . Please let more water flow and try again later."}))
                 }

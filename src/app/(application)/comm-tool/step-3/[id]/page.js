@@ -70,8 +70,6 @@ const Step3 = ({params}) => {
         })
     }, [params])
 
-    console.log(highSideSecond)
-
     const onSubmitFirst = async() => {
         setError()
         let picURL
