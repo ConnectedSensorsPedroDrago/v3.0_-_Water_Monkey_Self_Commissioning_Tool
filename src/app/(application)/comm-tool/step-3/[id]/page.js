@@ -20,7 +20,7 @@ import EditButton from '@/public/editButton.svg'
 import Carousell from '@/src/components/Carousell/Carousell'
 import { toTimestamp } from '@/src/functions/toTimestamp'
 import Message from '@/src/components/Message/page'
-import WarningSign from '@/src/components/WarningSign/page'
+import ModalSingleButton from '@/src/components/ModalSingleButton/page'
 
 const Step3 = ({params}) => {
 
@@ -49,6 +49,7 @@ const Step3 = ({params}) => {
     const [propertyType, setPropertyType] = useState()
     const [deviceId, setDeviceId] = useState()
     const [recalibrate, setRecalibrate] = useState()
+    const [rsrp, setRsrp] = useState()
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
@@ -75,9 +76,8 @@ const Step3 = ({params}) => {
                     .then(res => res.json())
                     .then(data => {
                         if(data.status === 'ok'){ 
-                            data.data.rc && (data.data.rc.value > -1) && 
-                            console.log(data.data.rc.value)
-                            setRecalibrate(data.data.rc.value)
+                            data.data.rsrp && data.data.rsrp.value && setRsrp(data.data.rsrp.value)
+                            data.data.rc && data.data.rc.value && setRecalibrate(data.data.rc.value === 0 ? 'no' : data.data.rc.value)
                             data.data.rc && (data.data.rc.value === 1) && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
                         }else{
                             setError('There was an error requesting the activation status of your Water Monkey. Please refresh the page to try again or contact support.')
@@ -305,14 +305,21 @@ const Step3 = ({params}) => {
             message &&
             <Message message={message} setMessage={()=> setMessage()} time={100000} type={'error'}/>
         }
+        {
+            rsrp && rsrp < 25 &&
+            <ModalSingleButton 
+                message={"We have detected that the signal stregth of your Water Monkey is below the expected level for it to operate and transmit information properly. Please consider installing the External Antenna to improve its connectivity (contact support for more details)."}
+                action={()=> setRsrp(26)}
+            />
+        }
         {   commStage &&
             <>
                 <CommToolTop 
                     title={"Step 3"}
                     back={`/comm-tool/step-2/${params.id}`}
                 />
-                                {
-                    recalibrate < 1 && recalibrate !== undefined &&
+                {
+                    recalibrate !== "no" ?
                         <div className={`flex flex-col w-full items-center justify-around mb-[4rem] `}>
                             <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">{commStage && commStage.first.date_time ? 'With your Water Monkey already installed, now its time to take the readings' : 'After successful install...'}</h1>
                             {
@@ -536,6 +543,10 @@ const Step3 = ({params}) => {
                                     }
                                 </div>
                             </div>
+                        </div>
+                        :
+                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] `}>
+                            <p class="error-message">No value detected for "RC", please contact support.</p>
                         </div>
                 }
                 <div className={`flex flex-col w-full items-center justify-around mb-[2rem] `}>
