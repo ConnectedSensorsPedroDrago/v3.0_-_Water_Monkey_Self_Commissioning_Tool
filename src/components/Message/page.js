@@ -3,6 +3,7 @@ import Close from '@/public/closeSmallDark.svg'
 
 const Message = ({message, setMessage, time, type}) => {
 
+    console.log(message)
 
     setTimeout(()=>{
         setMessage()

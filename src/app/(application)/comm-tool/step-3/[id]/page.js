@@ -20,6 +20,7 @@ import EditButton from '@/public/editButton.svg'
 import Carousell from '@/src/components/Carousell/Carousell'
 import { toTimestamp } from '@/src/functions/toTimestamp'
 import Message from '@/src/components/Message/page'
+import WarningSign from '@/src/components/WarningSign/page'
 
 const Step3 = ({params}) => {
 
@@ -47,27 +48,45 @@ const Step3 = ({params}) => {
     const [message, setMessage] = useState()
     const [propertyType, setPropertyType] = useState()
     const [deviceId, setDeviceId] = useState()
+    const [recalibrate, setRecalibrate] = useState()
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
-        .then(res => res.json())
-        .then(data => {
-            setLoad(false)
-            if(data.status === "ok"){
-                let commissionStage = JSON.parse(data.device.properties.commission_stage)
-                setPropertyType(data.device.properties.property_type)
-                setMeterType(data.device.properties.meter_type)
-                setOrg(data.device.organization.name)
-                setDeviceId(data.device.id)
-                setCommStage(commissionStage)
-                commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
-                commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
-                commissionStage.stage === 'failed' && setError(`Commissioning failed: ${commissionStage.message}. Please reset readings and try again`)
-            }
-            if(data.status === "error"){
-                setError(data.message)
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                setLoad(false)
+                if(data.status === "ok"){
+                    let commissionStage = JSON.parse(data.device.properties.commission_stage)
+                    setPropertyType(data.device.properties.property_type)
+                    setMeterType(data.device.properties.meter_type)
+                    setOrg(data.device.organization.name)
+                    setDeviceId(data.device.id)
+                    setCommStage(commissionStage)
+                    commissionStage.first.date_time && setDateFirst(commissionStage.first.date_time)
+                    commissionStage.second.date_time && setDateSecond(commissionStage.second.date_time)
+                    commissionStage.stage === 'failed' && setError(`Commissioning failed: ${commissionStage.message}. Please reset readings and try again`)
+                }
+                if(data.status === "error"){
+                    setError(data.message)
+                }
+            })
+            .then(()=> {
+                fetch(`/api/dashboard/water-monkey/get-last-values/?device=~${params.id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.status === 'ok'){ 
+                            data.data.rc && (data.data.rc.value > -1) && 
+                            console.log(data.data.rc.value)
+                            setRecalibrate(data.data.rc.value)
+                            data.data.rc && (data.data.rc.value === 1) && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
+                        }else{
+                            setError('There was an error requesting the activation status of your Water Monkey. Please refresh the page to try again or contact support.')
+                        }
+                    })
+            })
+            .catch((e) => {
+                setError('There has been an error requesting your Water Monkey: ' + e + '. Please refresh the page and try again.')
+            })
     }, [params])
 
     const onSubmitFirst = async() => {
@@ -284,7 +303,7 @@ const Step3 = ({params}) => {
         }
         {
             message &&
-            <Message message={message} setMessage={()=> setError()} time={100000} type={'error'}/>
+            <Message message={message} setMessage={()=> setMessage()} time={100000} type={'error'}/>
         }
         {   commStage &&
             <>
@@ -321,230 +340,233 @@ const Step3 = ({params}) => {
                         </div>
                     </div>
                 </div>
-                <div className={`flex flex-col w-full items-center justify-around mb-[4rem] ${commStage && commStage.first.date_time && 'order-1'}`}>
-                    <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">{commStage && commStage.first.date_time ? 'With your Water Monkey already installed, now its time to take the readings' : 'After successful install...'}</h1>
-                    {
-                        commStage && commStage.stage === 'failed' &&
-                        <div className=' mb-[2rem] w-full flex items-center justify-center'>
-                            <ButtonSmall
-                                text={"Reset readings"}
-                                type={"purple"}
-                                action={()=> resetReadings()}
-                            />
-                        </div>
-                    }
-                    <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
-                        <div className='w-full flex flex-col'>
-                            <div className='flex flex-row items-start justify-between w-full'>
-                                <p className={`${(commStage && (commStage.first.date_time !== undefined)) ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
-                                {
-                                    commStage && commStage.stage === "first reading" &&
-                                    <Image
-                                        src={EditButton}
-                                        alt="Edit readings"
-                                        className='fill-blue-hard scale-[80%] cursor-pointer'
-                                        onClick={()=> setCommStage({"stage": "none", "first": {}, "second": {}})}
+                {
+                    recalibrate < 1 && recalibrate !== undefined &&
+                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] ${commStage && commStage.first.date_time && 'order-1'}`}>
+                            <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">{commStage && commStage.first.date_time ? 'With your Water Monkey already installed, now its time to take the readings' : 'After successful install...'}</h1>
+                            {
+                                commStage && commStage.stage === 'failed' &&
+                                <div className=' mb-[2rem] w-full flex items-center justify-center'>
+                                    <ButtonSmall
+                                        text={"Reset readings"}
+                                        type={"purple"}
+                                        action={()=> resetReadings()}
                                     />
-                                }
-                            </div>
-                            {   commStage && !commStage.first.date_time ?
-                                <>
-                                    <InputFullPercentWithTitle 
-                                        name={"Date and Time"}
-                                        type={"datetime-local"}
-                                        placeholder={(commStage && commStage.first.date_time) ? commStage.first.date_time : ""}
-                                        setter={setDateFirst}
-                                        disabled={commStage && commStage.first.date_time ? true : false}
-                                    />
-                                    <div className='flex flex-row justify-between items-center'>
-                                        <Input50PercentWithTitle 
-                                            name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
-                                            type={"number"}
-                                            placeholder={commStage && commStage.first.low ? commStage.first.low : ""}
-                                            setter={setLowSideFirst}
-                                            disabled={commStage && commStage.first.date_time ? true : false}
-                                        />
-                                        <Select50PercentWithTitle 
-                                            name={"Reading Unit"}
-                                            type={"number"}
-                                            elements={unitOfCost}
-                                            placeholder={commStage && commStage.first.low_unit ? commStage.first.low_unit : ""}
-                                            setter={setLowSideFirstUnit}
-                                            disabled={commStage && commStage.first.date_time ? true : false}
-                                        />
-                                    </div>
-                                    {
-                                        meterType === "Compound" &&
-                                        <div className='flex flex-row justify-between items-center'>
-                                            <Input50PercentWithTitle 
-                                                name={"High Side Meter Reading"}
-                                                type={"number"}
-                                                placeholder={commStage && commStage.first.high ? commStage.first.high : ""}
-                                                setter={setHighSideFirst}
-                                                disabled={commStage && commStage.first.date_time ? true : false}
-                                            />
-                                            <Select50PercentWithTitle 
-                                                name={"Reading Unit"}
-                                                type={"select"}
-                                                elements={unitOfCost}
-                                                placeholder={commStage && commStage.first.high_unit ? commStage.first.high_unit : ""}
-                                                setter={setHighSideFirstUnit}
-                                                disabled={commStage && commStage.first.date_time ? true : false}
-                                            />
-                                        </div>
-                                    }
-                                    <InputFullPercentWithTitle 
-                                        name={"Submit Meter Photo"}
-                                        type={"file"}
-                                        placeholder={"Select File"}
-                                        setter={setPicFirst}
-                                        disabled={commStage && commStage.first.date_time ? true : false}
-                                    />
-                                
-                                    <button 
-                                        className=" md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
-                                        onClick={()=> onSubmitFirst()}
-                                    >
-                                        Submit
-                                    </button>
-                                </>
-                                :
-                                <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
-                                    <div className='w-full flex items-center justify-start'>
-                                        <Image 
-                                            src={successTick}
-                                            alt="Success Tick"
-                                            className='scale-[75%]'
-                                        />
-                                        <div className='w-full flex flex-col md:flex-row justify-start items-center'>
-                                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
-                                            <p className='w-fullxs ml-[0.5rem] font-normal text-[1rem] text-start text-dark-grey'>{dateFirst && new Date(dateFirst.utc_time).toLocaleString('en-US', {timeZone: dateFirst.timezone}) + ` (${dateFirst.timezone.replaceAll('_', ' ')} time)`}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-full flex flex-col justify-between mt-[1rem] mb-[0.5rem]'>
-                                        <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Low Side Meter Reading:</b> {commStage && commStage.first.date_time && Number(commStage.first.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.first.date_time && commStage.first.low_unit}</p>
-                                    </div>
-                                    {
-                                        commStage && commStage.first.high &&
-                                        <div className='w-full flex flex-col justify-between mb-[0.5rem]'>
-                                            <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>High Side Meter Reading:</b> {commStage && commStage.first.date_time && Number(commStage.first.high).toLocaleString('en-US',  {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.first.date_time && commStage.first.high_unit}</p>
-                                        </div>
-                                    }
-                                        <div className='w-full flex flex-col justify-between'>
-                                            <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.first.date_time && commStage.first.pic}>Click here</a></p>
-                                        </div>
-                                    <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Please remember to take your second readings as close to 6 hour gaps after these first readings and after having used at least 10m3 (or it's equivalent) of water.</p>
                                 </div>
                             }
-                        </div>
-                        <div className='w-full flex flex-col md:ml-[1rem] md:mt-0 mt-[2rem]'>
-                            <div className='flex flex-row items-start justify-between w-full'>
-                                <p className={`${commStage && !commStage.second.date_time && commStage.first.date_time ? `text-dark-grey` : `text-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter final meter readings</p>
-                                {
-                                    commStage && commStage.stage === "second reading" &&
-                                    <Image
-                                        src={EditButton}
-                                        alt="Edit readings"
-                                        className='fill-blue-hard scale-[80%] cursor-pointer hover:fill-grey'
-                                        onClick={()=> setCommStage({"stage": "first reading", "first": commStage.first, "second": {}})}
-                                    />
-                                }
-                            </div>
-                            {   commStage && !commStage.second.date_time ?
-                                <>
-                                    <InputFullPercentWithTitle 
-                                        name={"Date and Time"}
-                                        type={"datetime-local"}
-                                        placeholder={commStage && commStage.second.date_time ? commStage.second.date_time : ""}
-                                        setter={setDateSecond}
-                                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
-                                    />
-                                    <div className='flex flex-row justify-between items-center'>
-                                        <Input50PercentWithTitle 
-                                            name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
-                                            type={"number"}
-                                            placeholder={commStage && commStage.second.low ? commStage.second.low : ""}
-                                            setter={setLowSideSecond}
-                                            disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
-                                        />
-                                        <Select50PercentWithTitle 
-                                                name={"Reading Unit"}
-                                                type={"select"}
-                                                elements={unitOfCost}
-                                                placeholder={commStage && commStage.second.low_unit ? commStage.second.low_unit : ""}
-                                                setter={setLowSideSecondUnit}
-                                                disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
-                                        />
-                                    </div>
-                                    {
-                                        meterType === "Compound" &&
-                                        <div className='flex flex-row justify-between items-center'>
-                                            <Input50PercentWithTitle 
-                                                name={"High Side Meter Reading"}
-                                                type={"number"}
-                                                placeholder={commStage && commStage.second.high ? commStage.second.high : ""}
-                                                setter={setHighSideSecond}
-                                                disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                            <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
+                                <div className='w-full flex flex-col'>
+                                    <div className='flex flex-row items-start justify-between w-full'>
+                                        <p className={`${(commStage && (commStage.first.date_time !== undefined)) ? `text-grey` : `text-dark-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter initial meter readings</p>
+                                        {
+                                            commStage && commStage.stage === "first reading" &&
+                                            <Image
+                                                src={EditButton}
+                                                alt="Edit readings"
+                                                className='fill-blue-hard scale-[80%] cursor-pointer'
+                                                onClick={()=> setCommStage({"stage": "none", "first": {}, "second": {}})}
                                             />
-                                            <Select50PercentWithTitle 
-                                                name={"Reading Unit"}
-                                                type={"select"}
-                                                elements={unitOfCost}
-                                                placeholder={commStage && commStage.second.high_unit ? commStage.second.high_unit : ""}
-                                                setter={setHighSideSecondUnit}
-                                                disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                        }
+                                    </div>
+                                    {   commStage && !commStage.first.date_time ?
+                                        <>
+                                            <InputFullPercentWithTitle 
+                                                name={"Date and Time"}
+                                                type={"datetime-local"}
+                                                placeholder={(commStage && commStage.first.date_time) ? commStage.first.date_time : ""}
+                                                setter={setDateFirst}
+                                                disabled={commStage && commStage.first.date_time ? true : false}
                                             />
+                                            <div className='flex flex-row justify-between items-center'>
+                                                <Input50PercentWithTitle 
+                                                    name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
+                                                    type={"number"}
+                                                    placeholder={commStage && commStage.first.low ? commStage.first.low : ""}
+                                                    setter={setLowSideFirst}
+                                                    disabled={commStage && commStage.first.date_time ? true : false}
+                                                />
+                                                <Select50PercentWithTitle 
+                                                    name={"Reading Unit"}
+                                                    type={"number"}
+                                                    elements={unitOfCost}
+                                                    placeholder={commStage && commStage.first.low_unit ? commStage.first.low_unit : ""}
+                                                    setter={setLowSideFirstUnit}
+                                                    disabled={commStage && commStage.first.date_time ? true : false}
+                                                />
+                                            </div>
+                                            {
+                                                meterType === "Compound" &&
+                                                <div className='flex flex-row justify-between items-center'>
+                                                    <Input50PercentWithTitle 
+                                                        name={"High Side Meter Reading"}
+                                                        type={"number"}
+                                                        placeholder={commStage && commStage.first.high ? commStage.first.high : ""}
+                                                        setter={setHighSideFirst}
+                                                        disabled={commStage && commStage.first.date_time ? true : false}
+                                                    />
+                                                    <Select50PercentWithTitle 
+                                                        name={"Reading Unit"}
+                                                        type={"select"}
+                                                        elements={unitOfCost}
+                                                        placeholder={commStage && commStage.first.high_unit ? commStage.first.high_unit : ""}
+                                                        setter={setHighSideFirstUnit}
+                                                        disabled={commStage && commStage.first.date_time ? true : false}
+                                                    />
+                                                </div>
+                                            }
+                                            <InputFullPercentWithTitle 
+                                                name={"Submit Meter Photo"}
+                                                type={"file"}
+                                                placeholder={"Select File"}
+                                                setter={setPicFirst}
+                                                disabled={commStage && commStage.first.date_time ? true : false}
+                                            />
+                                        
+                                            <button 
+                                                className=" md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
+                                                onClick={()=> onSubmitFirst()}
+                                            >
+                                                Submit
+                                            </button>
+                                        </>
+                                        :
+                                        <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
+                                            <div className='w-full flex items-center justify-start'>
+                                                <Image 
+                                                    src={successTick}
+                                                    alt="Success Tick"
+                                                    className='scale-[75%]'
+                                                />
+                                                <div className='w-full flex flex-col md:flex-row justify-start items-center'>
+                                                    <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                                    <p className='w-fullxs ml-[0.5rem] font-normal text-[1rem] text-start text-dark-grey'>{dateFirst && new Date(dateFirst.utc_time).toLocaleString('en-US', {timeZone: dateFirst.timezone}) + ` (${dateFirst.timezone.replaceAll('_', ' ')} time)`}</p>
+                                                </div>
+                                            </div>
+                                            <div className='w-full flex flex-col justify-between mt-[1rem] mb-[0.5rem]'>
+                                                <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Low Side Meter Reading:</b> {commStage && commStage.first.date_time && Number(commStage.first.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.first.date_time && commStage.first.low_unit}</p>
+                                            </div>
+                                            {
+                                                commStage && commStage.first.high &&
+                                                <div className='w-full flex flex-col justify-between mb-[0.5rem]'>
+                                                    <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>High Side Meter Reading:</b> {commStage && commStage.first.date_time && Number(commStage.first.high).toLocaleString('en-US',  {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.first.date_time && commStage.first.high_unit}</p>
+                                                </div>
+                                            }
+                                                <div className='w-full flex flex-col justify-between'>
+                                                    <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.first.date_time && commStage.first.pic}>Click here</a></p>
+                                                </div>
+                                            <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Please remember to take your second readings as close to 6 hour gaps after these first readings and after having used at least 10m3 (or it's equivalent) of water.</p>
                                         </div>
                                     }
-                                    <InputFullPercentWithTitle 
-                                        name={"Submit Meter Photo"}
-                                        type={"file"}
-                                        placeholder={"Select File"}
-                                        setter={setPicSecond}
-                                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
-                                    />
-                                    {
-                                        commStage && !commStage.second.date_time && commStage.first.date_time &&
-                                        <button 
-                                            className="md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
-                                            onClick={()=> onSubmitSecond()}
-                                        >
-                                            Submit
-                                        </button>
-                                    }
-                                </>
-                                :
-                                commStage && commStage.second.date_time &&
-                                <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[13.75rem]'>
-                                    <div className='w-full flex items-center justify-start'>
-                                        <Image 
-                                            src={successTick}
-                                            alt="Success Tick"
-                                            className='scale-[75%]'
-                                        />
-                                        <div className='w-full flex flex-col md:flex-row justify-start items-center'>
-                                            <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
-                                            <p className='w-fullxs ml-[0.5rem] font-normal text-[1rem] text-start text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-full flex flex-col justify-between ml-[0rem] mt-[1rem]'>
-                                        <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>Low Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.low_unit}</p>
-                                    </div>
-                                    {
-                                        commStage && commStage.second.high &&
-                                        <div className='w-full flex flex-col justify-between ml-[0rem]'>
-                                            <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>High Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.high).toLocaleString('en-US',  {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.high_unit}</p>
-                                        </div>
-                                    }
-                                        <div className='w-full flex flex-col justify-between ml-[0rem]'>
-                                            <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.second.date_time && commStage.second.pic}>Click here</a></p>
-                                        </div>
-                                    <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Your readings are complete! You will be contacted by one of our representatives once the calibration process is finished.</p>
                                 </div>
-                            }
+                                <div className='w-full flex flex-col md:ml-[1rem] md:mt-0 mt-[2rem]'>
+                                    <div className='flex flex-row items-start justify-between w-full'>
+                                        <p className={`${commStage && !commStage.second.date_time && commStage.first.date_time ? `text-dark-grey` : `text-grey`} font-bold text-[1.2rem] md:text-[1.5rem] mb-[1rem]`}>Enter final meter readings</p>
+                                        {
+                                            commStage && commStage.stage === "second reading" &&
+                                            <Image
+                                                src={EditButton}
+                                                alt="Edit readings"
+                                                className='fill-blue-hard scale-[80%] cursor-pointer hover:fill-grey'
+                                                onClick={()=> setCommStage({"stage": "first reading", "first": commStage.first, "second": {}})}
+                                            />
+                                        }
+                                    </div>
+                                    {   commStage && !commStage.second.date_time ?
+                                        <>
+                                            <InputFullPercentWithTitle 
+                                                name={"Date and Time"}
+                                                type={"datetime-local"}
+                                                placeholder={commStage && commStage.second.date_time ? commStage.second.date_time : ""}
+                                                setter={setDateSecond}
+                                                disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                            />
+                                            <div className='flex flex-row justify-between items-center'>
+                                                <Input50PercentWithTitle 
+                                                    name={meterType === "Single" ? "Meter Reading" : "Low Side Meter Reading"}
+                                                    type={"number"}
+                                                    placeholder={commStage && commStage.second.low ? commStage.second.low : ""}
+                                                    setter={setLowSideSecond}
+                                                    disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                                />
+                                                <Select50PercentWithTitle 
+                                                        name={"Reading Unit"}
+                                                        type={"select"}
+                                                        elements={unitOfCost}
+                                                        placeholder={commStage && commStage.second.low_unit ? commStage.second.low_unit : ""}
+                                                        setter={setLowSideSecondUnit}
+                                                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                                />
+                                            </div>
+                                            {
+                                                meterType === "Compound" &&
+                                                <div className='flex flex-row justify-between items-center'>
+                                                    <Input50PercentWithTitle 
+                                                        name={"High Side Meter Reading"}
+                                                        type={"number"}
+                                                        placeholder={commStage && commStage.second.high ? commStage.second.high : ""}
+                                                        setter={setHighSideSecond}
+                                                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                                    />
+                                                    <Select50PercentWithTitle 
+                                                        name={"Reading Unit"}
+                                                        type={"select"}
+                                                        elements={unitOfCost}
+                                                        placeholder={commStage && commStage.second.high_unit ? commStage.second.high_unit : ""}
+                                                        setter={setHighSideSecondUnit}
+                                                        disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                                    />
+                                                </div>
+                                            }
+                                            <InputFullPercentWithTitle 
+                                                name={"Submit Meter Photo"}
+                                                type={"file"}
+                                                placeholder={"Select File"}
+                                                setter={setPicSecond}
+                                                disabled={commStage && !commStage.second.date_time && commStage.first.date_time ? false : true}
+                                            />
+                                            {
+                                                commStage && !commStage.second.date_time && commStage.first.date_time &&
+                                                <button 
+                                                    className="md:mt-0 w-full button-small text-[1rem] h-[2.5rem]"
+                                                    onClick={()=> onSubmitSecond()}
+                                                >
+                                                    Submit
+                                                </button>
+                                            }
+                                        </>
+                                        :
+                                        commStage && commStage.second.date_time &&
+                                        <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[13.75rem]'>
+                                            <div className='w-full flex items-center justify-start'>
+                                                <Image 
+                                                    src={successTick}
+                                                    alt="Success Tick"
+                                                    className='scale-[75%]'
+                                                />
+                                                <div className='w-full flex flex-col md:flex-row justify-start items-center'>
+                                                    <p className='ml-[0.5rem] font-semibold text-[1rem] text-dark-grey'>Readings successfully submitted at:</p>
+                                                    <p className='w-fullxs ml-[0.5rem] font-normal text-[1rem] text-start text-dark-grey'>{dateSecond && new Date(dateSecond.utc_time).toLocaleString('en-US', {timeZone: dateSecond.timezone}) + ` (${dateSecond.timezone.replaceAll('_', ' ')} time)`}</p>
+                                                </div>
+                                            </div>
+                                            <div className='w-full flex flex-col justify-between ml-[0rem] mt-[1rem]'>
+                                                <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>Low Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.low).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.low_unit}</p>
+                                            </div>
+                                            {
+                                                commStage && commStage.second.high &&
+                                                <div className='w-full flex flex-col justify-between ml-[0rem]'>
+                                                    <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey mb-[0.5rem]'><b>High Side Meter Reading:</b> {commStage && commStage.second.date_time && Number(commStage.second.high).toLocaleString('en-US',  {minimumFractionDigits: 2, maximumFractionDigits: 2})} {commStage && commStage.second.date_time && commStage.second.high_unit}</p>
+                                                </div>
+                                            }
+                                                <div className='w-full flex flex-col justify-between ml-[0rem]'>
+                                                    <p className='w-fullxs ml-[1.5rem] font-normal text-[0.9rem] text-dark-grey'><b>Picture:</b> <a target="_blank" href={commStage && commStage.second.date_time && commStage.second.pic}>Click here</a></p>
+                                                </div>
+                                            <p className='text-dark-grey font-light text-[1rem] mt-[1rem]'>Your readings are complete! You will be contacted by one of our representatives once the calibration process is finished.</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                }
                 
             </>
         }
