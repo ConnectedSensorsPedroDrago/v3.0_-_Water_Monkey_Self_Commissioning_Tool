@@ -127,25 +127,8 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     <hr className='mt-[-0.25rem] w-[16rem] bg-gradient-to-r from-dark-grey h-[0.05rem] border-none'/>
                 </div>
                 <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
-                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Daily Consumption</p>
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Rolling Daily Consumption</p>
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
-                        {metric === "liters" ? 
-                            (cubic ?
-                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value) ? (lastValues.metric_average_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
-                                :
-                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value)? lastValues.metric_average_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
-                            )
-                            : 
-                            (cubic ?
-                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? (lastValues.metric_average_daily_gal.value*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0.00 f3" 
-                                :
-                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? lastValues.metric_average_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
-                        )}
-                    </p>
-                </div>
-                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
-                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Max. Recorded Daily Consumption</p>
-                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">
                         {metric === "liters" ? 
                             (cubic ?
                                 ((lastValues.metric_max_daily_l && lastValues.metric_max_daily_l.value)? (lastValues.metric_max_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
@@ -157,6 +140,24 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                 (lastValues.metric_max_daily_gal && lastValues.metric_max_daily_gal.value) ? (lastValues.metric_max_daily_gal.value*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
                                 :
                                 (lastValues.metric_max_daily_gal && lastValues.metric_max_daily_gal.value) ? lastValues.metric_max_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G" 
+                        )}
+                    </p>
+                </div>
+                <div className="mb-[0.75rem] flex flex-col items-center lg:items-start">
+                    <p className="mb-[-0.3rem] text-dark-grey font-semibold text-[0.75rem]">Avg. Actual Daily Consumption</p>
+                    <p className="text-blue-hard font-bold text-[1.75rem] tracking-wider">
+                        
+                        {metric === "liters" ? 
+                            (cubic ?
+                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value) ? (lastValues.metric_average_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
+                                :
+                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value)? lastValues.metric_average_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
+                            )
+                            : 
+                            (cubic ?
+                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? (lastValues.metric_average_daily_gal.value*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0.00 f3" 
+                                :
+                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? lastValues.metric_average_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
                         )}
                     </p>
                 </div>
