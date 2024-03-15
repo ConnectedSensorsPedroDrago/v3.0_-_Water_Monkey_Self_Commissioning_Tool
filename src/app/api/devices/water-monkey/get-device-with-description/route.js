@@ -1,7 +1,6 @@
 export async function GET(req){
 
     let code = req.nextUrl.searchParams.get("code")
-    console.log(code)
 
     try{
         let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?description=${code}`, {

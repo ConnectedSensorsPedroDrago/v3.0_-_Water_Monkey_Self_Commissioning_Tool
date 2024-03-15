@@ -46,7 +46,6 @@ const CommToolHome = () => {
                     }else if(data.status === 'ok'){
                         param = data.device.label
                         setLabel(data.device.label)
-                        console.log(data.device.properties)
                         if(data.device.properties.commission_stage){
                             setLoader(false)
                             setModal(true)
