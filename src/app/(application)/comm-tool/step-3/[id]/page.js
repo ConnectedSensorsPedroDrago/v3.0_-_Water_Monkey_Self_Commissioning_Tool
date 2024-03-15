@@ -50,6 +50,7 @@ const Step3 = ({params}) => {
     const [deviceId, setDeviceId] = useState()
     const [recalibrate, setRecalibrate] = useState()
     const [rsrp, setRsrp] = useState()
+    const [calibration, setCalibration] = useState()
     
     useEffect(()=>{
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
@@ -75,10 +76,17 @@ const Step3 = ({params}) => {
                 fetch(`/api/dashboard/water-monkey/get-last-values/?device=~${params.id}`)
                     .then(res => res.json())
                     .then(data => {
-                        if(data.status === 'ok'){ 
+                        if(data.status === 'ok'){  
+                            console.log(data.data.cal_h.value)
+                            console.log(data.data.cal_l.value)                          
                             data.data.rsrp && data.data.rsrp.value && setRsrp(data.data.rsrp.value)
                             data.data.rc && data.data.rc.value && setRecalibrate(data.data.rc.value === 0 ? 'no' : data.data.rc.value)
                             data.data.rc && (data.data.rc.value === 1) && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
+                            if(data.data.cal_h.value && data.data.cal_l.value){
+                                Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8 && setCalibration('The Calibration of your device seems to be faulty and will require relocation and/or recalibration. Please contact support for more assistance.')
+                            }else{
+                                setCalibration('There is no data to ensure the proper calibration of your Water Monkey device and it will require Recalibration. Please contact support for more information.')
+                            }
                         }else{
                             setError('There was an error requesting the activation status of your Water Monkey. Please refresh the page to try again or contact support.')
                         }
@@ -304,6 +312,13 @@ const Step3 = ({params}) => {
         {
             message &&
             <Message message={message} setMessage={()=> setMessage()} time={100000} type={'error'}/>
+        }
+        {
+            calibration &&
+            <ModalSingleButton 
+                message={calibration} 
+                action={()=> setCalibration()}
+            />
         }
         {
             rsrp && rsrp < 25 &&
