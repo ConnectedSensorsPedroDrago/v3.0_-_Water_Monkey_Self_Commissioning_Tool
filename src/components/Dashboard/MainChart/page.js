@@ -7,6 +7,8 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterType, metric, cubic }) => {
 
+    console.log(mainChartValues)
+
     var donutChartConfig = {
         series: [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ],
         labels: ['Leaked Water', 'Consumed Water'],
@@ -71,15 +73,15 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
                         {metric === "liters" ? 
                             (cubic ?
-                                (mainChartValues.water_consumption_per_update ? ((mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update)/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
+                                (mainChartValues.actual_consumption_per_update && mainChartValues.leak_volume_per_update ? ((mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update)/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
                                 :
-                                (mainChartValues.water_consumption_per_update ? (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
+                                (mainChartValues.actual_consumption_per_update && mainChartValues.leak_volume_per_update ? (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
                             )
                             : 
                             (cubic ?
-                                mainChartValues.water_consumption_per_update_g ? ((mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
+                                mainChartValues.actual_consumption_per_update_g && mainChartValues.leak_volume_per_update_g ? ((mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
                                 :
-                                mainChartValues.water_consumption_per_update_g ? (mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
+                                mainChartValues.actual_consumption_per_update_g && mainChartValues.leak_volume_per_update_g ? (mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
                         )}
                     </p>
                 </div>
@@ -191,8 +193,8 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                         <div className="fixed flex flex-row w-[52%] items-center justify-between top-[20%] md:top-[15%]">
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
-                                    lastValues.low_flow_percentage && lastValues.low_flow_percentage.value ? 
-                                        (lastValues.low_flow_percentage.value >= 50 && lastValues.low_flow_percentage.value < 75) ? 
+                                    mainChartValues.low_flow_percentage ? 
+                                        (mainChartValues.low_flow_percentage >= 50 && mainChartValues.low_flow_percentage < 75) ? 
                                             'text-[#F38007]' 
                                             : 
                                             (lastValues.low_flow_percentage.value >= 75) ? 
@@ -202,24 +204,24 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                     :
                                     'text-yellow'
                                 }`}
-                            >{lastValues.low_flow_percentage.value ? lastValues.low_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) + '%*' : 'Not Found'}</p>
+                            >{mainChartValues.low_flow_percentage ? mainChartValues.low_flow_percentage.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) + '%*' : 'Not Found'}</p>
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
-                                    lastValues.high_flow_percentage && lastValues.high_flow_percentage.value ? 
-                                        (lastValues.high_flow_percentage.value >= 50 && lastValues.high_flow_percentage.value < 75) ? 
+                                    mainChartValues.high_flow_percentage ? 
+                                        (mainChartValues.high_flow_percentage >= 50 && mainChartValues.high_flow_percentage < 75) ? 
                                             'text-[#F38007]' 
                                             : 
-                                            (lastValues.high_flow_percentage.value >= 75) ? 
+                                            (mainChartValues.high_flow_percentage >= 75) ? 
                                                 'text-red-shine' 
                                                 : 
                                                 'text-yellow'
                                     :
                                     'text-yellow'
-                                }`}>{lastValues.high_flow_percentage.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
+                                }`}>{mainChartValues.high_flow_percentage.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                         </div>
                         <div className="fixed flex flex-row w-[56%] md:w-[51.5%] items-center justify-between top-[52%]">
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading.value ? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading.value ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading ? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
                         </div>
                     </div>
                 </div>

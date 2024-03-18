@@ -1,6 +1,8 @@
+import { toTimestamp } from "@/src/functions/toTimestamp"
+
 export async function POST(req){
 
-    const { device, start, end, variables } = await req.json()
+    const { device, start, end, variables, flow_variables } = await req.json()
 
     let values = {}
 
@@ -11,7 +13,7 @@ export async function POST(req){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the aggregated variables: some variables were not found, only " + variables.length + " out of 9" }))
         }else{
             let count = 0
-            for(let i = 0; i <= variables.length; i++){
+            for(let i = 0; i < variables.length; i++){
                 try{
                     let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/variables/${variables[i].id}/statistics/sum/${start}/${end}`, {
                         headers: {
@@ -24,8 +26,28 @@ export async function POST(req){
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the aggregated variables: " + e}))
                 }finally{
                     count = count + 1
-                    if(count === variables.length){
-                        return new Response(JSON.stringify({"status": "ok", "data": values}))
+                    if(count === variables.length-1){
+                        let count1 = 0
+                        let timestamp_end = toTimestamp(new Date())
+                        let timestamp_start =  Number(timestamp_end) - 2592000000
+                        for(let i = 0; i <= flow_variables.length; i++){
+                            try{
+                                let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/variables/${flow_variables[i].id}/statistics/mean/${timestamp_start}/${timestamp_end}`, {
+                                    headers: {
+                                        "X-Auth-Token": process.env.UBIDOTS_AUTHTOKEN
+                                    }
+                                })
+                                let data = await response.json()
+                                values[flow_variables[i].label] = data.mean
+                            }catch(e){
+                                return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the average variables: " + e}))
+                            }finally{
+                                count1 = count1 + 1
+                                if(count1 === flow_variables.length){
+                                    return new Response(JSON.stringify({"status": "ok", "data": values}))
+                                }
+                            }
+                        }
                     }
                 }
             }

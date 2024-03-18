@@ -63,6 +63,7 @@ const Dashboard = ({ params }) => {
                     "start": timeRangeStart,
                     "end": timeRangeEnd,
                     "variables": device.variables,
+                    "flow_variables": device.flow_variables,
                   })
 
                 })
