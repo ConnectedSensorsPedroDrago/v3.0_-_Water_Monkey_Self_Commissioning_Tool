@@ -23,15 +23,17 @@ select::-ms-expand {
     -webkit-text-stroke: 0.175px #292561;
   }
   .input-date-reset {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    /* -webkit-appearance: none;
+    -moz-appearance: none; */
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
   }
   input {
     outline: 0;
-    -webkit-appearance: none;
+    /* -webkit-appearance: none;
     -moz-appearance: none;
     -webkit-appearance: textfield;
-    -moz-appearance: textfield;
+    -moz-appearance: textfield; */
   }
 }
 
