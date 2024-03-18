@@ -28,6 +28,10 @@ select::-ms-expand {
   }
   input {
     outline: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
   }
 }
 
