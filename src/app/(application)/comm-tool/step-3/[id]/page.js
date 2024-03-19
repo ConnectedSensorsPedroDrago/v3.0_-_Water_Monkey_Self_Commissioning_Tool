@@ -82,8 +82,10 @@ const Step3 = ({params}) => {
                             data.data.rc && (data.data.rc.value === 1) && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
                             if(data.data.cal_h.value && data.data.cal_l.value){
                                 Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8 && setCalibration('The Calibration of your device seems to be faulty and will require relocation and/or recalibration. Please contact support for more assistance.')
+                                setMessage()
                             }else{
                                 setCalibration('There is no data to ensure the proper calibration of your Water Monkey device and it will require Recalibration. Please contact support for more information.')
+                                setMessage()
                             }
                         }else{
                             setError('There was an error requesting the activation status of your Water Monkey. Please refresh the page to try again or contact support.')
@@ -333,7 +335,7 @@ const Step3 = ({params}) => {
                 />
                 {
                     recalibrate !== "no" ?
-                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] `}>
+                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] ${commStage.first.date_time ? 'order-1' : 'order-2'}`}>
                             <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard mb-[1.5rem] md:mb-[1.5rem]">{commStage && commStage.first.date_time ? 'With your Water Monkey already installed, now its time to take the readings' : 'After successful install...'}</h1>
                             {
                                 commStage && commStage.stage === 'failed' &&
@@ -558,11 +560,11 @@ const Step3 = ({params}) => {
                             </div>
                         </div>
                         :
-                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] `}>
-                            <p class="error-message">No value detected for "RC", please contact support.</p>
+                        <div className={`flex flex-col w-full items-center justify-around mb-[4rem] ${commStage.first.date_time ? 'order-1' : 'order-2'}`}>
+                            <p class="error-message">No value detected for "RC", please make sure your device is activated before taking your first readings. If your device is online and the problem persists please contact support.</p>
                         </div>
                 }
-                <div className={`flex flex-col w-full items-center justify-around mb-[2rem] `}>
+                <div className={`flex flex-col w-full items-center justify-around mb-[2rem] ${commStage.first.date_time ? 'order-2' : 'order-1'}`}>
                     <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">{commStage && commStage.first.date_time ? 'Review the Water Monkey Installation Guides' : 'First, install your Water Monkey following the Installation Guides'}</h1>
                     <div className='flex flex-col md:flex-row justify-center items-center w-full mt-[1.5rem] md:mt-[1.5rem]'>
                         <div className='flex flex-col items-center w-full justify-center'>
