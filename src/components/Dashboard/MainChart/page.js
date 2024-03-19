@@ -71,15 +71,15 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                     <p className="text-dark-grey font-thin text-[1.75rem] tracking-wider">
                         {metric === "liters" ? 
                             (cubic ?
-                                (mainChartValues.actual_consumption_per_update && mainChartValues.leak_volume_per_update ? ((mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update)/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
+                                ((mainChartValues.actual_consumption_per_update > -1 && mainChartValues.leak_volume_per_update > -1) ? ((mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update)/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
                                 :
-                                (mainChartValues.actual_consumption_per_update && mainChartValues.leak_volume_per_update ? (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
+                                ((mainChartValues.actual_consumption_per_update > -1 && mainChartValues.leak_volume_per_update > -1) ? (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
                             )
                             : 
                             (cubic ?
-                                mainChartValues.actual_consumption_per_update_g && mainChartValues.leak_volume_per_update_g ? ((mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
+                                (mainChartValues.actual_consumption_per_update_g > -1 && mainChartValues.leak_volume_per_update_g > -1) ? ((mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g)*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
                                 :
-                                mainChartValues.actual_consumption_per_update_g && mainChartValues.leak_volume_per_update_g ? (mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
+                                (mainChartValues.actual_consumption_per_update_g > -1 && mainChartValues.leak_volume_per_update_g > -1) ? (mainChartValues.actual_consumption_per_update_g + mainChartValues.leak_volume_per_update_g).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
                         )}
                     </p>
                 </div>
