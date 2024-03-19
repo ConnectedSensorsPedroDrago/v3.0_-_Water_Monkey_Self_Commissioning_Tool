@@ -27,13 +27,15 @@ const HomeOrganization = ({org}) => {
                     <label className='text-sm w-1/4 lg:w-32 text-grey font-semibold text-center'>Leak %</label>
                     </div>
                 </div>
-                { org.monkeys !== undefined ? 
-                    org.monkeys.map(monkey =>
-                        <HomeMonkey monkey={monkey} key={monkey.id}/>
-                    )
-                    :
-                    <p className='w-full h-14 flex flex-row items-center justify-between border-b-[0.5px] border-grey home-text'>You do not have any Water Monkeys in this organization</p>
-                }
+                <div className='w-full flex flex-col'>
+                    { org.monkeys !== undefined ? 
+                        org.monkeys.map(monkey =>
+                            <HomeMonkey monkey={monkey} key={monkey.id}/>
+                        )
+                        :
+                        <p className='w-full h-14 flex flex-row items-center justify-between border-b-[0.5px] border-grey home-text'>You do not have any Water Monkeys in this organization</p>
+                    }
+                </div>
             </div>
         }
     </div>

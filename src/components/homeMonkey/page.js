@@ -27,7 +27,7 @@ const HomeMonkey = ({ monkey }) => {
     }, [monkey])
 
   return (
-    <div className='w-full h-30 md:max-h30 flex flex-row items-center justify-between border-b-[0.5px] border-grey flex-wrap lg:p-1'>
+    <div className={`w-full h-30 md:max-h30 flex flex-row items-center justify-between border-b-[0.5px] border-grey flex-wrap lg:p-1 ${commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? 'order-0' : 'order-1'}`}>
         <div className="flex flex-row justify-center md:justify-start items-center w-full md:w-1/2">
             <Image 
                 src={HomeMonkeyLogo}
@@ -47,8 +47,8 @@ const HomeMonkey = ({ monkey }) => {
             </div>
             :
             (!monkey.properties || !monkey.properties.address) ?
-            <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
-                <p className="text-center md:text-end w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">Commissioning Stage: Pending Water Monkey Details</p>
+            <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-center">
+                <p className="text-center md:text-center w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">Commissioning Stage: Pending Water Monkey Details</p>
             </div>
             :
             <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
