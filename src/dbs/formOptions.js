@@ -39,6 +39,7 @@ export const metBrand = [
 
 export const sideSizes = [
     {value: `5/8"`, displayValue: `5/8"`},
+    {value: `2/3"`, displayValue: `2/3"`},
     {value: `3/4"`, displayValue: `3/4"`},
     {value: `1"`, displayValue: `1"`},
     {value: `1 1/2"`, displayValue: `1 1/2"`},

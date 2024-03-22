@@ -1,5 +1,3 @@
-import { toTimestamp } from "@/src/functions/toTimestamp"
-
 export async function POST(req){
     const { meterType, label, commStage } = await req.json()    
 

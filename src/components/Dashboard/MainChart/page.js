@@ -202,7 +202,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                     :
                                     'text-yellow'
                                 }`}
-                            >{mainChartValues.low_flow_percentage ? mainChartValues.low_flow_percentage.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) + '%*' : 'Not Found'}</p>
+                            >{mainChartValues.low_flow_percentage ? mainChartValues.low_flow_percentage.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) + '%*' : 'N/A'}</p>
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
                                     mainChartValues.high_flow_percentage ? 
@@ -218,8 +218,8 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                                 }`}>{mainChartValues.high_flow_percentage.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0})}%*</p>
                         </div>
                         <div className="fixed flex flex-row w-[56%] md:w-[51.5%] items-center justify-between top-[52%]">
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.low_flow_water_meter_reading ? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
-                            <p className="text-center w-[85px] font-semibold text-white">{lastValues.high_flow_water_meter_reading ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{(lastValues.low_flow_water_meter_reading && lastValues.low_flow_water_meter_reading.value)? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{(lastValues.high_flow_water_meter_reading && lastValues.high_flow_water_meter_reading.valu) ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
                         </div>
                     </div>
                 </div>

@@ -6,6 +6,8 @@ export async function POST(req){
 
     let readingsVariables = []
 
+    let pulseVolumePerVars = []
+
     let firstLowToCompare = commStage.first.low_unit === "m3" ? Number(commStage.first.low) : commStage.first.low_unit === "liters" ? Number(commStage.first.low)*0.001 : commStage.first.low_unit === "gallons" && Number(commStage.first.low)*0.00378541
 
     let secondLowToCompare = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(lowSideSecond)*0.00378541
@@ -25,7 +27,7 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "Not enough water has flown through the meter. Please let more time go by and make sure that at least 10m3 (or it's equivalent) of water has flown through the meter. If the meter is Compound, 10m3 (or it's equivalent) should flow per side."}))
     }else{
         try{
-            let response = await fetch(`https://cs.ubidots.site/api/v2.0/variables/?label__in=initial_meter_reading_primary,initial_meter_reading_secondary,final_meter_reading_primary,final_meter_reading_secondary,&fields=id,label&device__label__in=${params.id}`, {
+            let response = await fetch(`https://cs.ubidots.site/api/v2.0/variables/?label__in=initial_meter_reading_primary,initial_meter_reading_secondary,final_meter_reading_primary,final_meter_reading_secondary,pulse_volume_per_primary,pulse_volume_per_secondary&fields=id,label&device__label__in=${params.id}`, {
                 method: 'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -34,9 +36,13 @@ export async function POST(req){
             })
             let data = await response.json()
             if(data.results){
-                data.results.forEach(variable => 
-                    readingsVariables.push([variable.id, variable.label])
-                )
+                data.results.forEach(variable => {
+                    if(variable.label === "pulse_volume_per_primary" || variable.label === "pulse_volume_per_secondary"){
+                        pulseVolumePerVars.push(variable.id)
+                    }else{
+                        readingsVariables.push([variable.id, variable.label])
+                    }
+                })
                 for(let i = 0; i <= readingsVariables.length; i++){
                     try{
                         let response = fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 120000}`, {
@@ -197,62 +203,82 @@ export async function POST(req){
                                             if(!data2.final_meter_reading_primary){
                                                 return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                             }else{
-                                                try{
-                                                    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                                                        method: 'PATCH',
-                                                        headers:{
-                                                            'Content-Type':'application/json',
-                                                            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-                                                        },
-                                                        body: JSON.stringify({
-                                                            "properties": {
-                                                                "commission_stage": JSON.stringify({
-                                                                    "stage": "second reading",
-                                                                    "first": commStage.first,
-                                                                    "second": meterType === "Single" ? 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
-                                                                        : 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
-                                                                })
+                                                for(let i = 0; i <= (pulseVolumePerVars.length - 1); i++){
+                                                    try{
+                                                        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${pulseVolumePerVars[i]}/_/values/delete/?startDate=1546300800000&endDate=${Number(dateSecond.timestamp) - 30000}`, {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'Content-Type':'application/json',
+                                                                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                                                             }
                                                         })
-                                                    })
-                                                    let data = await response.json()
-                                                    if(data.label == params.id){
-                                                        for(let i = 0; i <= readingsVariables.length; i++){
+                                                        let data = await response.json()
+                                                        if(!data.task){
+                                                            return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + pulseVolumePerVars[i] + " varaible. Please try again or contact support"})
+                                                        }
+                                                    }catch(e){
+                                                        return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + pulseVolumePerVars[i] + " varaible: " + e + ". Please try again or contact support"})
+                                                    }finally{
+                                                        if((pulseVolumePerVars.length - 1) === i){
                                                             try{
-                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
-                                                                    method: 'POST',
-                                                                    headers: {
+                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                                                                    method: 'PATCH',
+                                                                    headers:{
                                                                         'Content-Type':'application/json',
                                                                         'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-                                                                    }
+                                                                    },
+                                                                    body: JSON.stringify({
+                                                                        "properties": {
+                                                                            "commission_stage": JSON.stringify({
+                                                                                "stage": "second reading",
+                                                                                "first": commStage.first,
+                                                                                "second": meterType === "Single" ? 
+                                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                                    : 
+                                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                            })
+                                                                        }
+                                                                    })
                                                                 })
                                                                 let data = await response.json()
-                                                                if(!data.task){
-                                                                    return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "varaible. Please try again or contact support"})
+                                                                if(data.label == params.id){
+                                                                    for(let i = 0; i <= readingsVariables.length; i++){
+                                                                        try{
+                                                                            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
+                                                                                method: 'POST',
+                                                                                headers: {
+                                                                                    'Content-Type':'application/json',
+                                                                                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+                                                                                }
+                                                                            })
+                                                                            let data = await response.json()
+                                                                            if(!data.task){
+                                                                                return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "varaible. Please try again or contact support"})
+                                                                            }
+                                                                        }catch(e){
+                                                                            return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "variable: " + e + ". Please try again or contact support"})
+                                                                        }finally{
+                                                                            if(i == readingsVariables.length){
+                                                                                let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
+                                                                                    "stage": "second reading",
+                                                                                    "first": commStage.first,
+                                                                                    "second": meterType === "Single" ? 
+                                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                                        : 
+                                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                                }})
+                                                                                return new Response(responseObject)
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                                                 }
                                                             }catch(e){
-                                                                return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "variable: " + e + ". Please try again or contact support"})
-                                                            }finally{
-                                                                if(i == readingsVariables.length){
-                                                                    let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
-                                                                        "stage": "second reading",
-                                                                        "first": commStage.first,
-                                                                        "second": meterType === "Single" ? 
-                                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
-                                                                            : 
-                                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
-                                                                    }})
-                                                                    return new Response(responseObject)
-                                                                }
+                                                                return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: " + e + ". Please try again or contact support."}))
                                                             }
                                                         }
-                                                    }else{
-                                                        return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                                     }
-                                                }catch(e){
-                                                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: " + e + ". Please try again or contact support."}))
                                                 }
                                             }
                                         }catch(e){
@@ -352,62 +378,82 @@ export async function POST(req){
                                             if(!data2.final_meter_reading_primary){
                                                 return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                             }else{
-                                                try{
-                                                    let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
-                                                        method: 'PATCH',
-                                                        headers:{
-                                                            'Content-Type':'application/json',
-                                                            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-                                                        },
-                                                        body: JSON.stringify({
-                                                            "properties": {
-                                                                "commission_stage": JSON.stringify({
-                                                                    "stage": "second reading",
-                                                                    "first": commStage.first,
-                                                                    "second": meterType === "Single" ? 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
-                                                                        : 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
-                                                                })
+                                                for(let i = 0; i <= (pulseVolumePerVars.length - 1); i++){
+                                                    try{
+                                                        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${pulseVolumePerVars[i]}/_/values/delete/?startDate=1546300800000&endDate=${Number(dateSecond.timestamp) - 30000}`, {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'Content-Type':'application/json',
+                                                                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
                                                             }
                                                         })
-                                                    })
-                                                    let data = await response.json()
-                                                    if(data.label === params.id){
-                                                        for(let i = 0; i <= readingsVariables.length; i++){
+                                                        let data = await response.json()
+                                                        if(!data.task){
+                                                            return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + pulseVolumePerVars[i] + " varaible. Please try again or contact support"})
+                                                        }
+                                                    }catch(e){
+                                                        return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + pulseVolumePerVars[i] + " varaible: " + e + ". Please try again or contact support"})
+                                                    }finally{
+                                                        if((pulseVolumePerVars.length - 1) === i){
                                                             try{
-                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
-                                                                    method: 'POST',
-                                                                    headers: {
+                                                                let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
+                                                                    method: 'PATCH',
+                                                                    headers:{
                                                                         'Content-Type':'application/json',
                                                                         'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-                                                                    }
+                                                                    },
+                                                                    body: JSON.stringify({
+                                                                        "properties": {
+                                                                            "commission_stage": JSON.stringify({
+                                                                                "stage": "second reading",
+                                                                                "first": commStage.first,
+                                                                                "second": meterType === "Single" ? 
+                                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                                    : 
+                                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                            })
+                                                                        }
+                                                                    })
                                                                 })
                                                                 let data = await response.json()
-                                                                if(!data.task){
-                                                                    return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "varaible. Please try again or contact support"})
+                                                                if(data.label == params.id){
+                                                                    for(let i = 0; i <= readingsVariables.length; i++){
+                                                                        try{
+                                                                            let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/variables/${readingsVariables[i][0]}/_/values/delete/?startDate=1546300800000&endDate=${Number(commStage.first.date_time.timestamp) - 10000}`, {
+                                                                                method: 'POST',
+                                                                                headers: {
+                                                                                    'Content-Type':'application/json',
+                                                                                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+                                                                                }
+                                                                            })
+                                                                            let data = await response.json()
+                                                                            if(!data.task){
+                                                                                return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "varaible. Please try again or contact support"})
+                                                                            }
+                                                                        }catch(e){
+                                                                            return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "variable: " + e + ". Please try again or contact support"})
+                                                                        }finally{
+                                                                            if(i == readingsVariables.length){
+                                                                                let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
+                                                                                    "stage": "second reading",
+                                                                                    "first": commStage.first,
+                                                                                    "second": meterType === "Single" ? 
+                                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                                        : 
+                                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                                }})
+                                                                                return new Response(responseObject)
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                                                 }
                                                             }catch(e){
-                                                                return new Response({"status": "error", "message": "There was an error clearing the previous data of your " + readingsVariables[i][1] + "variable: " + e + ". Please try again or contact support"})
-                                                            }finally{
-                                                                if(i == readingsVariables.length){
-                                                                    let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
-                                                                        "stage": "second reading",
-                                                                        "first": commStage.first,
-                                                                        "second": meterType === "Single" ? 
-                                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
-                                                                            : 
-                                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
-                                                                    }})
-                                                                    return new Response(responseObject)
-                                                                }
+                                                                return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: " + e + ". Please try again or contact support."}))
                                                             }
                                                         }
-                                                    }else{
-                                                        return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                                     }
-                                                }catch(e){
-                                                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings: " + e + ". Please try again or contact support."}))
                                                 }
                                             }
                                         }catch(e){
