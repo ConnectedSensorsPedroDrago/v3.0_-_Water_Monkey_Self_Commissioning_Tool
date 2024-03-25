@@ -8,7 +8,7 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterType, metric, cubic }) => {
 
     var donutChartConfig = {
-        series: [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ],
+        series: (mainChartValues.leak_cost_per_update && mainChartValues.actual_cost_per_update) ? [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ] : [ (mainChartValues.leak_volume_per_update / (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update))*100, 100 -((mainChartValues.leak_volume_per_update / (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update))*100) ],
         labels: ['Leaked Water', 'Consumed Water'],
         chart: {
             type: 'donut',
@@ -36,7 +36,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
             <div className="flex items-center justify-center">
                 <Chart type="donut" options={donutChartConfig} series={donutChartConfig.series} width={300} height={300}/>
                 <div className="absolute z-10 w-[320px] h-[320px] flex flex-col justify-center items-center">
-                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem] font-outline">{mainChartValues.leak_cost_per_update && mainChartValues.actual_cost_per_update ? ((mainChartValues.leak_cost_per_update / (mainChartValues.leak_cost_per_update + mainChartValues.actual_cost_per_update))*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "0"}%</p>
+                    <p className="text-yellow font-bold text-[4rem] mb-[-1.5rem] font-outline">{(mainChartValues.leak_cost_per_update && mainChartValues.actual_cost_per_update ) ? ((mainChartValues.leak_cost_per_update / (mainChartValues.leak_cost_per_update + mainChartValues.actual_cost_per_update))*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : (mainChartValues.leak_volume_per_update && mainChartValues.actual_consumption_per_update ) ? ((mainChartValues.leak_volume_per_update / (mainChartValues.leak_volume_per_update + mainChartValues.actual_consumption_per_update))*100).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : '0'}%</p>
                     <p className="text-yellow font-bold text-[1.5rem] font-outline">LEAK</p>
                 </div>
             </div>  
@@ -147,15 +147,15 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                         
                         {metric === "liters" ? 
                             (cubic ?
-                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value) ? (lastValues.metric_average_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0.00 m3") 
+                                ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value) ? (lastValues.metric_average_daily_l.value/1000).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " m3": "0 m3") 
                                 :
                                 ((lastValues.metric_average_daily_l && lastValues.metric_average_daily_l.value)? lastValues.metric_average_daily_l.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " L": "0.00 L") 
                             )
                             : 
                             (cubic ?
-                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? (lastValues.metric_average_daily_gal.value*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0.00 f3" 
+                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? (lastValues.metric_average_daily_gal.value*0.133681).toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " f3": "0 f3" 
                                 :
-                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? lastValues.metric_average_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0.00 G" 
+                                (lastValues.metric_average_daily_gal && lastValues.metric_average_daily_gal.value) ? lastValues.metric_average_daily_gal.value.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + " G": "0 G" 
                         )}
                     </p>
                 </div>
@@ -219,7 +219,7 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                         </div>
                         <div className="fixed flex flex-row w-[56%] md:w-[51.5%] items-center justify-between top-[52%]">
                             <p className="text-center w-[85px] font-semibold text-white">{(lastValues.low_flow_water_meter_reading && lastValues.low_flow_water_meter_reading.value)? lastValues.low_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
-                            <p className="text-center w-[85px] font-semibold text-white">{(lastValues.high_flow_water_meter_reading && lastValues.high_flow_water_meter_reading.valu) ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
+                            <p className="text-center w-[85px] font-semibold text-white">{(lastValues.high_flow_water_meter_reading && lastValues.high_flow_water_meter_reading.value) ? lastValues.high_flow_water_meter_reading.value.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0}) : "Not Found"}</p>
                         </div>
                     </div>
                 </div>
