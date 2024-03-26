@@ -40,13 +40,14 @@ const CommToolHome = () => {
             fetch(`/api/devices/water-monkey/get-device-with-description?code=${code}`)
                 .then(resp => resp.json())
                 .then(data => {
+                    console.log(data.device.properties)
                     if(data.status === "error"){
                         setLoader(false)
                         setError(data.message)
                     }else if(data.status === 'ok'){
                         param = data.device.label
                         setLabel(data.device.label)
-                        if(data.device.properties.commission_stage){
+                        if(data.device.properties.commission_stage.stage){
                             setLoader(false)
                             setModal(true)
                         }else{

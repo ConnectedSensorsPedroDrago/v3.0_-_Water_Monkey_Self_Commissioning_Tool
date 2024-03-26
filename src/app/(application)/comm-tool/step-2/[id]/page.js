@@ -269,7 +269,7 @@ const Step2 = ({ params }) => {
       <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">
         Enter <strong className="text-purple">Property</strong> and <strong className="text-purple">Meter</strong> Details
       </h1>
-      {commStage &&
+      {commStage && commStage.stage &&
         <Message 
           message={`It seems that the Property and Meter Details of this Water Monkey were previously added. Please be aware that updating this properties will reset the commissioning process. If you got here pressing "Back" on Step 3, just click on the "Back" button of the Browser to go back to Step 3 and continue commissioning if you do not wish to reset the process.`}
           setMessage={setCommStage}

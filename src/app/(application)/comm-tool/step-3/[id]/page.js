@@ -57,6 +57,7 @@ const Step3 = ({params}) => {
         fetch(`/api/devices/water-monkey/get-device?id=~${params.id}`)
             .then(res => res.json())
             .then(data => {
+                console.log(data)
                 setLoad(false)
                 if(data.status === "ok"){
                     let commissionStage = JSON.parse(data.device.properties.commission_stage)
@@ -77,12 +78,15 @@ const Step3 = ({params}) => {
                 fetch(`/api/dashboard/water-monkey/get-last-values/?device=~${params.id}`)
                     .then(res => res.json())
                     .then(data => {
+                        console.log(data)
                         if(data.status === 'ok'){                           
                             data.data.rsrp && data.data.rsrp.value && setRsrp(data.data.rsrp.value)
                             data.data.rc && data.data.rc.value && setRecalibrate(data.data.rc.value === 0 ? 'no' : data.data.rc.value)
-                            data.data.rc && (data.data.rc.value === 1) && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
-                            if(data.data.cal_h.value && data.data.cal_l.value){
-                               if(Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8){
+                            data.data.rc && (data.data.rc.value === 1) && commStage && commStage.stage === 'none' && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
+                            // if(data.data.cal_h.value && data.data.cal_l.value){
+                            if(!data.data.cal_h.value && !data.data.cal_l.value){    
+                            //    if(Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8){
+                                if(data.data.cal_h.value){
                                     setCalibration("Faulty")
                                     setMessage('The Calibration of your device seems to be faulty and will require relocation and/or recalibration. Please contact support for more assistance.')
                                }else{
@@ -145,12 +149,13 @@ const Step3 = ({params}) => {
                             })
                             .then(data => data.json())
                             .then(response => {
+                                console.log(response)
                                 if(response.status === "error"){
                                     setError(response.message)
                                     setLoad(false)
                                 }
                                 if(response.status === "ok"){
-                                    comm_stage = JSON.parse(response.commission_stage)
+                                    comm_stage = response.commission_stage
                                     fetch(`/api/auth/complete-user?user=${user.name}&email=${user.email}`)
                                     .then(res => res.json())
                                     .then(data => {

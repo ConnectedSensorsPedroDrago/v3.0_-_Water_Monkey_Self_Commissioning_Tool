@@ -17,14 +17,18 @@ const HomeMonkey = ({ monkey }) => {
     useEffect(()=>{
         monkey.properties.commission_stage !== undefined && setcommissionStage(monkey.properties.commission_stage)
 
+        console.log(monkey.properties.commission_stage)
+
         fetch(`/api/devices/water-monkey/get-alerts?device=${monkey.label}`)
         .then(res => res.json())
         .then(data => {
             if(data.status === "ok"){
                 setAlerts(data.alerts)
+            }else{
+                console.log(`There was an error getting the alerts for ${monkey.name}`)
             }
         })
-    }, [monkey])
+    }, [])
 
   return (
     <div className={`w-full h-30 md:max-h30 flex flex-row items-center justify-between border-b-[0.5px] border-grey flex-wrap lg:p-1 ${commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? 'order-0' : 'order-1'}`}>
