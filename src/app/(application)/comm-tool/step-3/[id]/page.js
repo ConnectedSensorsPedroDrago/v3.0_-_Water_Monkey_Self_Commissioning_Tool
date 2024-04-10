@@ -323,13 +323,6 @@ const Step3 = ({params}) => {
             message &&
             <Message message={message} setMessage={()=> setMessage()} time={100000} type={'error'}/>
         }
-        {/* {
-            calibration &&
-            <ModalSingleButton 
-                message={calibration} 
-                action={()=> setCalibration()}
-            />
-        } */}
         {
             rsrp && rsrp < 25 &&
             <ModalSingleButton 
@@ -343,7 +336,7 @@ const Step3 = ({params}) => {
                     title={"Step 3"}
                     back={`/comm-tool/step-2/${params.id}`}
                 />
-                { rsrp && calibration &&
+                { calibration && rsrp &&
                     <HealthCheck 
                         rsrp={rsrp && rsrp}
                         calibration={calibration && calibration}
