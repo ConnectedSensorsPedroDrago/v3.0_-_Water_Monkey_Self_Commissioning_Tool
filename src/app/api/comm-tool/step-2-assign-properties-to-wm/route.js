@@ -23,26 +23,27 @@ export async function POST(req){
             "low_side": props.low_side.value,
             "high_side": props.high_side.value,
             "commission_stage": props.commission_stage.value,
-            "added": props.added.value
+            "added": props.added.value,
+            "secondary_enable": meterType == 1 ? 0 : 1
         }
     }
-    try{
-        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
-            method: 'PATCH',
-            headers:{
-                'Content-Type':'application/json',
-                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-            },
-            body: JSON.stringify({
-                "properties": {
-                    props
-                }
-            })
-        })
-        let data = await response.json()
-        if(!data.properties){
-            return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}))
-        }
+    // try{
+    //     let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+    //         method: 'PATCH',
+    //         headers:{
+    //             'Content-Type':'application/json',
+    //             'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+    //         },
+    //         body: JSON.stringify({
+    //             "properties": {
+    //                 props
+    //             }
+    //         })
+    //     })
+    //     let data = await response.json()
+    //     if(!data.properties){
+    //         return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}))
+    //     }
         try{
             let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
                 method: 'PATCH',
@@ -92,8 +93,8 @@ export async function POST(req){
         }catch(e){
             return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
         }
-    }catch(e){
-        return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
-    }
+    // }catch(e){
+    //     return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
+    // }
 }
 
