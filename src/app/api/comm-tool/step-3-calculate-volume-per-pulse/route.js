@@ -36,8 +36,6 @@ export async function POST(req){
                         let data = await response.json()
                         if(data.wu_s){
                             return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse}}))
-                            // console.log(((JSONCommStage.second.low_unit === "gallons" ? Number(JSONCommStage.second.low)*3.78541 : JSONCommStage.second.low_unit === "liters" ? Number(JSONCommStage.second.low) : JSONCommStage.second.low_unit === "m3" && Number(JSONCommStage.second.low)*1000) + " - " + (JSONCommStage.first.low_unit === "gallons" ? Number(JSONCommStage.first.low)*3.78541 : JSONCommStage.first.low_unit === "liters" ? Number(JSONCommStage.first.low) : JSONCommStage.first.low_unit === "m3" && Number(JSONCommStage.first.low)*1000)) + " / " + wu_p_sum)
-                            // return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": 1.23}}))
                         }else{
                             return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s calculating the volume per pulse. Please try again or contact support"}))
                         }

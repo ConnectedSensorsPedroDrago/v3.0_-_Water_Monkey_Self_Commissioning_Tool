@@ -83,8 +83,8 @@ const Step3 = ({params}) => {
                             data.data.rsrp && data.data.rsrp.value && setRsrp(data.data.rsrp.value)
                             data.data.rc && data.data.rc.value && setRecalibrate(data.data.rc.value === 0 ? 'no' : data.data.rc.value)
                             data.data.rc && (data.data.rc.value === 1) && commStage && commStage.stage === 'none' && setMessage("Your Water Monkey is now configured and assigned to your organization and is ready to install. In this step, you will be required to first install and activate your device to then take your first reading. You will find our Video and PDF Install Guides bellow to guide you through the installation process. Once you have properly installed and activated it, and we have detected your device came online, in this same page you will find the input forms for your first reading.")
-                            if(data.data.cal_h.value && data.data.cal_l.value){    
-                               if(Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8){
+                            if((data.data.cal_h.value && data.data.cal_l.value) || (commStage && !commStage.second.date_time)){    
+                               if((Math.abs(data.data.cal_h.value - data.data.cal_l.value) <= 8) && commStage.first.date_time){
                                     setCalibration("Faulty")
                                     setMessage('The Calibration of your device seems to be faulty and will require relocation and/or recalibration. Please contact support for more assistance.')
                                }else{
@@ -92,7 +92,7 @@ const Step3 = ({params}) => {
                                }
                             }else{
                                 setCalibration("No data")
-                                setMessage('There is no data to ensure the proper calibration of your Water Monkey device and it will require Recalibration. Please contact support for more information.')
+                                setMessage('There is still no data to ensure the proper calibration of your Water Monkey device. Make sure your Water Monkey is active and with water flow. If you just activated it, please wait until we have received a cloud update to submit your second readings. If 12 hours have passed since you activated it and there is still no calibration data, it may require recalibration, in that case please contact support for more information')
                             }
                         }else{
                             setError('There was an error requesting the activation status of your Water Monkey. Please refresh the page to try again or contact support.')

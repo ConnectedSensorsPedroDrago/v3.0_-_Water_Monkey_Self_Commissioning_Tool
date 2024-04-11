@@ -24,77 +24,62 @@ export async function POST(req){
             "high_side": props.high_side.value,
             "commission_stage": props.commission_stage.value,
             "added": props.added.value,
-            "secondary_enable": meterType == 1 ? 0 : 1
+            "secondary_enable": meterType == 1 ? 0 : 1,
+            "initial_meter_reading_primary": null,
+            "secondary_meter_reading_primary": null,
+            "initial_meter_reading_secondary": null,
+            "secondary_meter_reading_secondary": null,
+            "primary_pulse_volume": null
         }
     }
-    // try{
-    //     let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
-    //         method: 'PATCH',
-    //         headers:{
-    //             'Content-Type':'application/json',
-    //             'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-    //         },
-    //         body: JSON.stringify({
-    //             "properties": {
-    //                 props
-    //             }
-    //         })
-    //     })
-    //     let data = await response.json()
-    //     if(!data.properties){
-    //         return new Response(JSON.stringify({"status": "error", "message": "There was an error updating the properties of this Water Monkey. Please try again or contact support"}))
-    //     }
-        try{
-            let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
-                method: 'PATCH',
-                headers:{
-                    'Content-Type':'application/json',
-                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
-                },
-                body: JSON.stringify(payload)
-            })
-            let data1 = await response1.json()
-            if(data1.properties){
-                if(meterType == 1 || meterType == 0){
-                    let now = toTimestamp(new Date())
-                    try{
-                        let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${id}/`, {
-                            method: 'POST',
-                            headers:{
-                                'Content-Type':'application/json',
-                                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+    try{
+        let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+            method: 'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+            },
+            body: JSON.stringify(payload)
+        })
+        let data1 = await response1.json()
+        if(data1.properties){
+            if(meterType == 1 || meterType == 0){
+                let now = toTimestamp(new Date())
+                try{
+                    let response = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/${id}/`, {
+                        method: 'POST',
+                        headers:{
+                            'Content-Type':'application/json',
+                            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN,
+                        },
+                        body: JSON.stringify({
+                            "meter_type": {
+                                "timestamp": now,
+                                "value": meterType
                             },
-                            body: JSON.stringify({
-                                "meter_type": {
-                                    "timestamp": now,
-                                    "value": meterType
-                                },
-                                "se": {
-                                    "timestamp": now,
-                                    "value": meterType == 1 ? 0 : 1
-                                }
-                            })
+                            "se": {
+                                "timestamp": now,
+                                "value": meterType == 1 ? 0 : 1
+                            }
                         })
-                        let data = await response.json()
-                        if(data.meter_type){
-                            return new Response(JSON.stringify({"status": "ok"}))
-                        }else{
-                            return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
-                        }
-                    }catch(e){
-                        return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property" + e +  ". Please try again or contact support"}))
+                    })
+                    let data = await response.json()
+                    if(data.meter_type){
+                        return new Response(JSON.stringify({"status": "ok"}))
+                    }else{
+                        return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
                     }
-                }else{
-                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
+                }catch(e){
+                    return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property" + e +  ". Please try again or contact support"}))
                 }
             }else{
-                return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}))
+                return new Response(JSON.stringify({"status": "error", "message": "There was an error writing the meter type property. Please try again or contact support"}))
             }
-        }catch(e){
-            return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
+        }else{
+            return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey. Please try again or contact support"}))
         }
-    // }catch(e){
-    //     return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
-    // }
+    }catch(e){
+        return new Response(JSON.stringify({"status": "error", "message": "There was an error assigning the properties to the Water Monkey: " + e + ". Please try again or contact support"}))
+    }
 }
 
