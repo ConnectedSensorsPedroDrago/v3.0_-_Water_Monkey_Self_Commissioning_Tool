@@ -194,7 +194,7 @@ export async function POST(req){
                                                 "secondary_pulse_volume": data1.data.secondary_volume_per_pulse,
                                             }
                                         }
-                                        let response2 = await fetch(`https://cs.api.ubidots.com/api/v1.6/devices/~${params.id}/`, {
+                                        let response2 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${params.id}/`, {
                                             method: 'PATCH',
                                             headers:{
                                                 'Content-Type':'application/json',
@@ -203,6 +203,7 @@ export async function POST(req){
                                             body: JSON.stringify(payload)
                                         })
                                         let data2 = await response2.json()
+                                        console.log(data2)
                                         if(!data2.label || (data2.label !== params.id)){
                                             return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                         }else{
@@ -227,6 +228,7 @@ export async function POST(req){
                                                     })
                                                 })
                                                 let data = await response.json()
+                                                console.log(data)
                                                 if(data.label == params.id){
                                                     let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
                                                         "stage": "second reading",
