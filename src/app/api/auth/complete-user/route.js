@@ -37,7 +37,7 @@ export async function GET(req, res){
         if(userInfo.organizations && userInfo.organizations.length > 0){
             for(let i = 0; i < userInfo.organizations.length; i++){
                 let users = []
-                let device_types = ["watermonkeyv3.0"]
+                let device_types = ["watermonkeyv3.0", "watermonkeyv3.0single"]
                 let org_monkeys = []
                 for(let a = 0; a <= (device_types.length - 1); a++){
                     console.log(device_types[a] + ' ' + userInfo.organizations[i].name)

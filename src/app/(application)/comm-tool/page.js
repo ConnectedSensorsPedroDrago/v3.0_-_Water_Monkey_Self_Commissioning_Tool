@@ -18,9 +18,9 @@ const CommToolHome = () => {
     const [org, setOrg] = useState()
     const [loader, setLoader] = useState(false)
     const [error, setError] = useState()
-    const [modal, setModal] = useState(false)
-    const [label, setLabel] = useState()
-    
+    const [modalRecommission, setModalRecommission] = useState(false)
+    const [meterType, setMeterType] = useState()
+
     const router = useRouter()
 
     const onSubmit = () => {
@@ -32,6 +32,9 @@ const CommToolHome = () => {
         }else if(org == undefined){
             setError("Please choose an organization to assign the Water Monkey to.")
             setLoader(false)
+        }else if(meterType == undefined){
+            setError("Please choose a Meter Type.")
+            setLoader(false)
         }else if((code == undefined || code.length === 0) && org == undefined){
             setError("Please add the code and choose an organization to assign the Water Monkey to.")
             setLoader(false)
@@ -40,18 +43,16 @@ const CommToolHome = () => {
             fetch(`/api/devices/water-monkey/get-device-with-description?code=${code}`)
                 .then(resp => resp.json())
                 .then(data => {
-                    console.log(data.device.properties)
                     if(data.status === "error"){
                         setLoader(false)
                         setError(data.message)
                     }else if(data.status === 'ok'){
                         param = data.device.label
-                        setLabel(data.device.label)
-                        if(data.device.properties.commission_stage && data.device.properties.commission_stage){
+                        if(data.device.properties.commission_stage && JSON.stringify(data.device.properties.commission_stage).stage){
                             setLoader(false)
-                            setModal(true)
+                            setModalRecommission(true)
                         }else{
-                            fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}`)
+                            fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}&meter_type=${meterType}`)
                                 .then(resp => resp.json())
                                 .then(data => {
                                     if(data.status === "error"){
@@ -89,7 +90,7 @@ const CommToolHome = () => {
     }
 
     async function onSubmitRecommission(){
-        setModal(false)
+        setModalRecommission(false)
         setLoader(true)
         setError()
         let param
@@ -101,7 +102,7 @@ const CommToolHome = () => {
                     setError(data.message)
                 }else if(data.status === 'ok'){
                     param = data.device.label
-                    fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}`)
+                    fetch(`/api/comm-tool/step-1-assign-wm-to-org?label=${param}&org=${org}&meter_type=${meterType}`)
                         .then(resp => resp.json())
                         .then(data => {
                             if(data.status === "error"){
@@ -139,7 +140,7 @@ const CommToolHome = () => {
   return (
     <div className='container-pages h-fit'>
         {
-            modal && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> onSubmitRecommission()}/>
+            modalRecommission && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> onSubmitRecommission()}/>
         }
         {
             loader && <Loader />
@@ -158,7 +159,7 @@ const CommToolHome = () => {
             title={"Step 1"} 
             back={'/home'} 
         />
-        <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">Scan the QR Code in your <strong className="text-purple">Water Monkey</strong> and input it in the box below</h1>
+        <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple">Scan the QR Code in your Water Monkey and input it in the box below</h1>
         <div className="flex justify-between w-full pt-[1rem] md:pt-[3rem]">
             <div className="hidden md:w-[45vw] md:flex flex-col justify-end">
                 <Image 
@@ -180,6 +181,17 @@ const CommToolHome = () => {
                         onChange={e => setCode(e.target.value)}
                         placeholder="CODE" 
                     />
+                </div>
+                <div className="mt-[1rem] md:mt-[2rem] w-full">
+                    <p className="font-bold text-dark-grey w-full text-center">Choose your Meter Type</p>
+                    <select 
+                        onChange={(e) => setMeterType(e.target.value)}
+                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer"
+                    >
+                        <option>Choose Meter Type</option>
+                        <option value="Single">Single</option>
+                        <option value="Compound">Compound</option>
+                    </select>
                 </div>
                 <div className="mt-[1rem] md:mt-[2rem] w-full mb-[2rem]">
                     <p className="font-bold text-dark-grey w-full text-center">Assign to an organization</p>

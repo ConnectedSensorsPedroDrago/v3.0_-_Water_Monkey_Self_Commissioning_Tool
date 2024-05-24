@@ -122,13 +122,6 @@ const Step2 = ({ params }) => {
           "value": propertyType,
           "description": "Property Type"
         },
-        "meter_type": {
-          "key": "meter_type",
-          "text": "Meter Type",
-          "type": "text",
-          "value": meterType,
-          "description": "Meter Type"
-        },
         "cost_per_unit": {
           "key": "cost_per_unit",
           "text": "Cost Per Unit",
@@ -208,16 +201,14 @@ const Step2 = ({ params }) => {
       (!address || address.length < 1) ? setError("Please complete the Address field") :
       (!buildingName || buildingName.length < 1) ? setError("Please complete the Building Name field") :
       (!propertyType || propertyType.length < 1) ? setError("Please complete the Property Type field") :
-      (!meterType || meterType.length < 1) ? setError("Please complete the Meter Type field") :
       (!costPerUnit || costPerUnit.length < 1) ? setError("Please complete the Cost Per Unit field") :
       (!costUnit || costUnit.length < 1) ? setError("Please complete the Cost Unit field") :
       (!meterBrand || meterBrand.length < 1) ? setError("Please complete the Meter Brand field") :
       (!meterModel || meterModel.length < 1) ? setError("Please complete the Meter Model field") :
       (!lowSideSize || lowSideSize.length < 1) ? setError("Please complete the Low Side Size field") :
       ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && (!highSideSize  || highSideSize.length < 1)) && false) ? setError("Please complete the High Side Size field") :
-      (!floor || floor.length < 1) ? setError(`Please complete the Floor field. If it is your basement, you can add "-1"`) :
+      (!floor || floor.length < 1) ? setError(`Please complete the Floor field. If it is on your basement, you can enter "-1" to that field`) :
       (!roomDetails || roomDetails.length < 1) && setError("Please complete the Room Details field")
-      // setError("Please complete all the required fields")
     }else{
         setLoader(true)
         fetch('/api/comm-tool/step-2-assign-properties-to-wm', {
@@ -266,8 +257,8 @@ const Step2 = ({ params }) => {
         <Loader />
       }
       <CommToolTop title={"Step 2"} back={"/comm-tool"} />
-      <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-blue-hard">
-        Enter <strong className="text-purple">Property</strong> and <strong className="text-purple">Meter</strong> Details
+      <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple">
+        Enter Property and Meter Details
       </h1>
       {commStage && commStage.stage &&
         <Message 
@@ -287,7 +278,7 @@ const Step2 = ({ params }) => {
       <div className="w-full flex flex-col md:flex-row mb-[1rem]">
         <div className="w-full mr-[0.5rem]">
           <div className="flex flex-row justify-between">
-            <Select50PercentWithTitle 
+            <SelectFullPercentWithTitle 
               name={"Country"} 
               placeholder={country !== undefined ? country : ""} 
               type={"text"} 
@@ -295,7 +286,9 @@ const Step2 = ({ params }) => {
               setter={setCountry}
               elements={countries}
             />
-            <Select50PercentWithTitle 
+          </div>
+          <div className="flex flex-row justify-between">
+            <SelectFullPercentWithTitle 
               name={"State"} 
               placeholder={state !== undefined ? state : ""} 
               type={"text"} 
@@ -343,16 +336,6 @@ const Step2 = ({ params }) => {
             setter={setPropertyType}
             elements={propType}
           />
-          <div className="flex flex-row justify-between">
-            <SelectFullPercentWithTitle 
-              name={"Meter Type"} 
-              placeholder={meterType !== undefined ? meterType : ""} 
-              type={"text"} 
-              disabled={false} 
-              setter={setMeterType}
-              elements={metType}
-            />
-          </div>
         </div>
         <div className="w-full md:ml-[0.5rem]">
           <div className="flex flex-row justify-between">

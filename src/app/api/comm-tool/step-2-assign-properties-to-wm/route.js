@@ -13,7 +13,6 @@ export async function POST(req){
             "address": props.address.value,
             "building_name": props.building_name.value,
             "property_type":  props.property_type.value,
-            "meter_type": props.meter_type.value,
             "cost_per_unit": props.cost_per_unit.value,
             "cost_unit": props.cost_unit.value,
             "room_details": props.room_details.value,
@@ -33,7 +32,7 @@ export async function POST(req){
         }
     }
     try{
-        let response1 = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
+        let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
             method: 'PATCH',
             headers:{
                 'Content-Type':'application/json',
@@ -41,8 +40,8 @@ export async function POST(req){
             },
             body: JSON.stringify(payload)
         })
-        let data1 = await response1.json()
-        if(data1.properties){
+        let data = await response.json()
+        if(data.properties){
             if(meterType == 1 || meterType == 0){
                 let now = toTimestamp(new Date())
                 try{
