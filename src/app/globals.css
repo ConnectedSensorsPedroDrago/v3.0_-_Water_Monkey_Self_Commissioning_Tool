@@ -24,18 +24,15 @@ select::-ms-expand {
     -webkit-text-stroke: 0.175px #292561;
   }
   .input-date-reset {
-    /* -webkit-appearance: none;
-    -moz-appearance: none; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
   }
-  input {
-    outline: 0;
-    -webkit-user-select: text; /* Chrome, Opera, Safari */
-    -moz-user-select: text; /* Firefox 2+ */
-    -ms-user-select: text; /* IE 10+ */
-    user-select: text; /* Standard syntax */
-  }
+  /* input {
+
+  } */
 }
 
 @layer components {
