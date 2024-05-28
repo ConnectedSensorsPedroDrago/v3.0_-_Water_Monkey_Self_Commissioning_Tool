@@ -10,6 +10,8 @@ import MainChart from "@/src/components/Dashboard/MainChart/page"
 import LowerChartContainer from "@/src/components/Dashboard/LowerChartContainer/page"
 import Message from "@/src/components/Message/page"
 import CSVModal from "@/src/components/CSVModal/page"
+import Calendar from '@/public/calendar.svg'
+import Image from "next/image"
 
 const Dashboard = ({ params }) => {
 
@@ -273,6 +275,17 @@ const Dashboard = ({ params }) => {
         {
           error &&
           <p className="error-message">{error}</p>
+        }
+        {
+          !timeRangeStart && !timeRangeEnd && !loader && !mainChartValues &&
+          <div className="mt-[2rem] flex flex-col items-center justify-center w-[100%] h-[100%] grow">
+            <Image 
+              src={Calendar}
+              alt="calednar icon"
+              className="scale-[0.7]"
+            />
+            <p className="text-[1.2rem] md:text-[1.7rem] font-semibold text-grey text-center">Select a quick report or a start and end date above</p>
+          </div>
         }
       </div>
     </>

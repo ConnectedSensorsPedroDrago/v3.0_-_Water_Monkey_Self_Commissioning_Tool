@@ -11,7 +11,7 @@ const UserTable = ({users, action, seeUser}) => {
             users &&
             users[0].map(user =>
                 <div   
-                    className="w-full border-b-[0.5px] border-dark-grey h-10 flex flex-row justify-between items-center hover:bg-light-purple cursor-pointer hover:font-semibold pl-1 pr-1"
+                    className="w-full border-b-[0.5px] border-dark-grey h-10 flex flex-row grow justify-between items-center hover:bg-light-purple cursor-pointer hover:font-semibold pl-1 pr-1 "
                     key={user.id}
                 >
                     <p 

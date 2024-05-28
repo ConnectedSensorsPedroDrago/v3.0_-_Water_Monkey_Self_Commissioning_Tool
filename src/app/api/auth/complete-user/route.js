@@ -40,7 +40,6 @@ export async function GET(req, res){
                 let device_types = ["watermonkeyv3.0", "watermonkeyv3.0single"]
                 let org_monkeys = []
                 for(let a = 0; a <= (device_types.length - 1); a++){
-                    console.log(device_types[a] + ' ' + userInfo.organizations[i].name)
                     try{
                         let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/?deviceType=${device_types[a]}&organization__id=${userInfo.organizations[i].id}&page_size=50000`, {
                             method: 'GET',

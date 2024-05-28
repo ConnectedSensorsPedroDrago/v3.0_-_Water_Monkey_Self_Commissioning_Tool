@@ -97,7 +97,7 @@ const ReadingsInputs = ({commStage, setCommStage, setDateFirst, setLowSideFirst,
                         </button>
                     </>
                     :
-                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12rem]'>
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12.35rem]'>
                         <div className='w-full flex items-center justify-start'>
                             <Image 
                                 src={successTick}
@@ -203,7 +203,7 @@ const ReadingsInputs = ({commStage, setCommStage, setDateFirst, setLowSideFirst,
                     </>
                     :
                     commStage && commStage.second.date_time &&
-                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[13.75rem]'>
+                    <div className='w-full border-grey border-[0.05rem] bg-light-yellow rounded p-3 min-h-[12.35rem]'>
                         <div className='w-full flex items-center justify-start'>
                             <Image 
                                 src={successTick}

@@ -4,7 +4,6 @@
 
 * {
   font-family: var(--font-firasans);
-  /* font-family: Avenir; */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -23,6 +22,7 @@ select::-ms-expand {
   .font-outline {
     -webkit-text-stroke: 0.175px #292561;
   }
+  input,
   .input-date-reset {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -30,9 +30,6 @@ select::-ms-expand {
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
   }
-  /* input {
-
-  } */
 }
 
 @layer components {

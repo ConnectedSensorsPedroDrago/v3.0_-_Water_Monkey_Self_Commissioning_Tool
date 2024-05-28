@@ -58,7 +58,9 @@ export const options = {
                                 name: credentials.user,
                                 email: data.email,
                                 firstName: data.firstName,
-                                lastName: data.lastName
+                                lastName: data.lastName,
+                                access_token: data.access_token,
+                                id: data.id
                             }
                             return user
                         } catch(e){
