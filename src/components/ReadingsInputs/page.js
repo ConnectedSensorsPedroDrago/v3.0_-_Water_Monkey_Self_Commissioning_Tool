@@ -7,7 +7,7 @@ import { unitOfCost } from '@/src/dbs/formOptions'
 import successTick from '@/public/successTick.svg'
 import Image from 'next/image'
 
-const ReadingsInputs = ({commStage, setCommStage, setDateFirst, setLowSideFirst, setLowSideFirstUnit, setHighSideFirst, setHighSideFirstUnit, setPicFirst, onSubmitFirst, dateFirst, setDateSecond, setLowSideSecond, setLowSideSecondUnit, setHighSideSecond, setPicSecond, onSubmitSecond, meterType, resetReadings}) => {
+const ReadingsInputs = ({commStage, setCommStage, setDateFirst, setLowSideFirst, setLowSideFirstUnit, setHighSideFirst, setHighSideFirstUnit, setPicFirst, onSubmitFirst, dateFirst, setDateSecond, setLowSideSecond, setLowSideSecondUnit, setHighSideSecond, setPicSecond, onSubmitSecond, meterType, resetReadings, setHighSideSecondUnit}) => {
   return (
     <div className={`flex flex-col w-full items-center justify-around mb-[4rem] ${commStage.first.date_time ? 'order-1' : 'order-2'}`}>
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple mb-[1.5rem] md:mb-[1.5rem]">{commStage && commStage.first.date_time ? 'With your Water Monkey already installed, now its time to take the readings' : 'After successful install...'}</h1>
