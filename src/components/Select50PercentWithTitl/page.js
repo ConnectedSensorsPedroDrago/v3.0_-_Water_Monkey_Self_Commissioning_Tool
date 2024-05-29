@@ -1,6 +1,6 @@
 const Select50PercentWithTitle = ({name, setter, placeholder, type, disabled, elements}) => {
   return (
-    <div className="flex flex-col justify-start w-full md:w-[49%]">
+    <div className="flex flex-col justify-start w-[49%]">
         <p className={`${disabled === true && 'text-grey'} text-dark-grey text-sm font-medium`}>{name}</p>
         <select 
           className={`${disabled === false && "cursor-pointer"} w-full bg-white input-small ${disabled === true && `text-grey bg-white font-semibold`}`}
