@@ -12,7 +12,7 @@ const Error = ({ params }) => {
         alt="Warning" 
       />
       <p className="error-message">
-        There has been an error, please refresh the page.
+        There has been an error, please refresh the page. If the problem persists, try navigating Home clicking the Connected Sensors logo on top and entering again.
       </p>
     </div>
     

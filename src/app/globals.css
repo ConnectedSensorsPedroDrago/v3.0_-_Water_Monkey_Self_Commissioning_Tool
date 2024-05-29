@@ -22,8 +22,15 @@ select::-ms-expand {
   .font-outline {
     -webkit-text-stroke: 0.175px #292561;
   }
-  input,
   .input-date-reset {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  input[type="date"] {
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

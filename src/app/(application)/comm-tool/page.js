@@ -186,7 +186,7 @@ const CommToolHome = () => {
                     <p className="font-bold text-dark-grey w-full text-center">Choose your Meter Type</p>
                     <select 
                         onChange={(e) => setMeterType(e.target.value)}
-                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer"
+                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
                     >
                         <option>Choose Meter Type</option>
                         <option value="Single">Single</option>
@@ -197,7 +197,7 @@ const CommToolHome = () => {
                     <p className="font-bold text-dark-grey w-full text-center">Assign to an organization</p>
                     <select 
                         onChange={(e) => setOrg(e.target.value)}
-                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer"
+                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
                     >
                         <option>Choose an organization</option>
                         {
