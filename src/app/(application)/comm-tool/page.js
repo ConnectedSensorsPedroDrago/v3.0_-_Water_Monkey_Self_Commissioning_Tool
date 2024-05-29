@@ -138,89 +138,96 @@ const CommToolHome = () => {
     }
 
   return (
-    <div className='container-pages h-fit'>
+    <>
         {
-            modalRecommission && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> onSubmitRecommission()}/>
-        }
-        {
-            loader && <Loader />
-        }
-        {
-            error &&
-            <Message
-                message={error}
-                time={100000}
-                setMessage={setError}
-                type={"error"}
+            user && user.organizations ?
+            <div className='container-pages h-fit'>
+                {
+                    modalRecommission && <ModalSingleButton message={"It appears that the device you're configuring is undergoing recommissioning. The preparation for recommissioning involves erasing the historical data on your device. This process has already commenced and will require some time to finish, depending on how extensively the device was utilized in its previous operation. You may proceed to the next stage to input the necessary information, but it is advisable to wait a day before submitting your initial readings for convenience."} action={()=> onSubmitRecommission()}/>
+                }
+                {
+                    loader && <Loader />
+                }
+                {
+                    error &&
+                    <Message
+                        message={error}
+                        time={100000}
+                        setMessage={setError}
+                        type={"error"}
 
-            />
-        }
-        <CommToolTop 
-            title={"Step 1"} 
-            back={'/home'} 
-        />
-        <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple">Scan the QR Code in your Water Monkey and input it in the box below</h1>
-        <div className="flex justify-between w-full pt-[1rem] md:pt-[3rem]">
-            <div className="hidden md:w-[45vw] md:flex flex-col justify-end">
-                <Image 
-                    src={Devices}
-                    className="absolute bottom-0 w-[45vw]"
-                    alt="devices"
-                />
-            </div>
-            <div className="w-full md:w-[45vw] flex flex-col items-center justify-between">
-                <WarningSign 
-                    head={"WARNING!"} 
-                    text={"Keep the provided magnet away from the Water Monkey until time of activation"}
-                />
-                <div className="mt-[1rem] md:mt-[2rem] w-full">
-                    <p className="font-bold text-dark-grey w-full text-center">Enter the code here</p>
-                    <input 
-                        type="text" 
-                        className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[2rem] md:text-[5rem] text-grey text-center font-light"
-                        onChange={e => setCode(e.target.value)}
-                        placeholder="CODE" 
                     />
+                }
+                <CommToolTop 
+                    title={"Step 1"} 
+                    back={'/home'} 
+                />
+                <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple">Scan the QR Code in your Water Monkey and input it in the box below</h1>
+                <div className="flex justify-between w-full pt-[1rem] md:pt-[3rem]">
+                    <div className="hidden md:w-[45vw] md:flex flex-col justify-end">
+                        <Image 
+                            src={Devices}
+                            className="absolute bottom-0 w-[45vw]"
+                            alt="devices"
+                        />
+                    </div>
+                    <div className="w-full md:w-[45vw] flex flex-col items-center justify-between">
+                        <WarningSign 
+                            head={"WARNING!"} 
+                            text={"Keep the provided magnet away from the Water Monkey until time of activation"}
+                        />
+                        <div className="mt-[1rem] md:mt-[2rem] w-full">
+                            <p className="font-bold text-dark-grey w-full text-center">Enter the code here</p>
+                            <input 
+                                type="text" 
+                                className="rounded border-[0.025rem] border-grey w-full h-[3rem] md:h-[8rem] text-[2rem] md:text-[5rem] text-grey text-center font-light"
+                                onChange={e => setCode(e.target.value)}
+                                placeholder="CODE" 
+                            />
+                        </div>
+                        <div className="mt-[1rem] md:mt-[2rem] w-full">
+                            <p className="font-bold text-dark-grey w-full text-center">Choose your Meter Type</p>
+                            <select 
+                                onChange={(e) => setMeterType(e.target.value)}
+                                className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
+                            >
+                                <option>Choose Meter Type</option>
+                                <option value="Single">Single</option>
+                                <option value="Compound">Compound</option>
+                            </select>
+                        </div>
+                        <div className="mt-[1rem] md:mt-[2rem] w-full mb-[2rem]">
+                            <p className="font-bold text-dark-grey w-full text-center">Assign to an organization</p>
+                            <select 
+                                onChange={(e) => setOrg(e.target.value)}
+                                className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
+                            >
+                                <option>Choose an organization</option>
+                                {
+                                    user.organizations.map(org =>
+                                        <option 
+                                            key={org.id} 
+                                            value={org.id}
+                                        >
+                                            {org.name}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
+                        <button 
+                            className="w-full button-small text-[1rem] h-[2rem]"
+                            onClick={()=> onSubmit()}
+                        >
+                            Submit and move to Step 2
+                        </button>
+                    </div>
                 </div>
-                <div className="mt-[1rem] md:mt-[2rem] w-full">
-                    <p className="font-bold text-dark-grey w-full text-center">Choose your Meter Type</p>
-                    <select 
-                        onChange={(e) => setMeterType(e.target.value)}
-                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
-                    >
-                        <option>Choose Meter Type</option>
-                        <option value="Single">Single</option>
-                        <option value="Compound">Compound</option>
-                    </select>
-                </div>
-                <div className="mt-[1rem] md:mt-[2rem] w-full mb-[2rem]">
-                    <p className="font-bold text-dark-grey w-full text-center">Assign to an organization</p>
-                    <select 
-                        onChange={(e) => setOrg(e.target.value)}
-                        className="rounded border-[0.025rem] border-grey w-full h-[2rem] text-grey text-center font-light cursor-pointer p-[0.25rem] pl-[0.5rem]"
-                    >
-                        <option>Choose an organization</option>
-                        {
-                            user.organizations.map(org =>
-                                <option 
-                                    key={org.id} 
-                                    value={org.id}
-                                >
-                                    {org.name}
-                                </option>
-                            )
-                        }
-                    </select>
-                </div>
-                <button 
-                    className="w-full button-small text-[1rem] h-[2rem]"
-                    onClick={()=> onSubmit()}
-                >
-                    Submit and move to Step 2
-                </button>
             </div>
-        </div>
-    </div>
+            :
+            <Loader />
+        }
+    </>
   )
 }
 
