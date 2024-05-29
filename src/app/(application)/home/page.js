@@ -3,8 +3,8 @@
 import { userContext } from "@/src/context/userContext"
 import { useContext } from "react"
 import Loader from "@/src/components/loader/page"
-import Portfolio from "./home"
 import TermsAndConidtions from "@/src/components/TermsAndConditions/TermsAndConidtions"
+import Portfolio from "./home"
 
 const Home = () => {
 

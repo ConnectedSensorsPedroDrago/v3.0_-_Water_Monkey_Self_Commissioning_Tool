@@ -4,7 +4,7 @@ const DropDownMenuTextBig = ({ elements, setter, placeholder, buttonText, button
   return (
     <div className="flex flex-row mt-4">
         <select
-            className="border-grey border-[0.5px] p-1 rounded w-full h-8 text-sm text-dark-grey mr-2"
+            className="border-grey bg-white border-[0.5px] p-1 rounded w-full h-8 text-sm text-dark-grey mr-2"
             onChange={(e)=> setter(e.target.value)}
         >
         <option value="#">{placeholder}</option>
