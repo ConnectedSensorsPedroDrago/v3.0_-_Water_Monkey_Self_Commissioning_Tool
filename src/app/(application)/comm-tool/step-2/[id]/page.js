@@ -409,7 +409,7 @@ const Step2 = ({ params }) => {
       </div>
       <WarningSign 
         head={"BEFORE INSTALLATION"} 
-        text={`Keep the provided magnet away from the Water Monkey until time of activation. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`}
+        text={`Keep the provided magnet away from the Water Monkey until time of activation. Activate your Water Monkey before you take your first readings. Remember to take note and picture of your meter readings as accurately in time and value to the moment the Water Monkey was activated, you will be requested to enter them after the on-site installation. The accuracy of time and value of these readings are key to a successful calibration process.`}
       />
       <div className="w-full flex flex-col md:flex-row justify-end items-center mt-[1rem]">
         <button 
