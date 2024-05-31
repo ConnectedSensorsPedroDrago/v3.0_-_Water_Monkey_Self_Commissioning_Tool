@@ -356,6 +356,7 @@ const Step3 = ({params}) => {
                                 onSubmitSecond={onSubmitSecond}
                                 meterType={meterType && meterType}
                                 resetReadings={resetReadings}
+                                dateSecond={dateSecond}
                             />
                             :
                             <div className={`flex flex-col w-full items-center justify-around ${commStage.first.date_time ? 'order-1' : 'order-2'}`}>
