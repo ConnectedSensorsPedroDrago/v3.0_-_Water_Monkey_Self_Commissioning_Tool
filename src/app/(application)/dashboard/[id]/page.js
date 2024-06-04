@@ -46,7 +46,7 @@ const Dashboard = ({ params }) => {
           .then(resp => resp.json())
           .then(data => {
             if(data.status === 'ok'){
-              setMetric((data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 1) ? "gallons" : (data.data.volume_measurement_unit && data.data.volume_measurement_unit.value === 0) ? "liters" : "liters" )
+              setMetric((device && device.properties && device.properties.volume_measurement_unit && device.properties.volume_measurement_unit === 1) ? "gallons" : (device && device.properties && device.properties.volume_measurement_unit && device.properties.volume_measurement_unit === 0) ? "liters" : "liters" )
               setDeviceOfflineAlert((data.data.device_offline_alert && data.data.device_offline_alert.value) ? data.data.device_offline_alert.value : undefined)
               setHighUsageAlert((data.data.high_usage_alert && data.data.high_usage_alert.value) ? data.data.high_usage_alert.value : undefined)
               setLeakAlert((data.data.leak_alert && data.data.leak_alert.value) ? data.data.leak_alert.value : undefined)
@@ -117,7 +117,8 @@ const Dashboard = ({ params }) => {
           setMessage(`Metric successfully changed to ${newMetric === 0 ? "liters" : "gallons"}`)
           setRunReport(!runReport)
         }else{
-          setError(data.message)
+          setLoader(false)
+          setMessage(data.message)
         }
       })
     }
@@ -235,7 +236,7 @@ const Dashboard = ({ params }) => {
           <>
             <ActionsTab 
               alerts={[{name: "Device Offline", value: deviceOfflineAlert, setter: handleDeviceOfflineAlert, label: device.label}, {name: "High Usage", value: highUsageAlert, setter: handleHighUsageAlert, label: device.label}, {name: "Leak", value: leakAlert, setter: handleLeakAlert, label: device.label}, {name: "Leak %", value: leakPercentageAlert, setter: handleLeakPercentageAlert, label: device.label}]}
-              unit={{value1: "Liters", value2: "Gallons", value: lastValues.volume_measurement_unit.value, setter: setNewMetric}}
+              unit={{value1: "Liters", value2: "Gallons", value: metric === 'liters' ? 0 : 1 , setter: setNewMetric}}
               unitOrCubic={{liters: {value: cubic, value1: "L/G", value2: "m3/ft3", setter: handleCubic}, cubic: {value: 0, value1: "g", value2: "ft3", setter: handleCubic}}}
               device={device.label}
               consumption={mainChartValues && {liters: mainChartValues.water_consumption_per_update, gallons: mainChartValues.water_consumption_per_update}}
