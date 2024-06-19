@@ -1,8 +1,12 @@
+import { toTimestamp } from "@/src/functions/toTimestamp"
+
 export async function GET(req){
 
     let label = req.nextUrl.searchParams.get("label")
     let org = req.nextUrl.searchParams.get("org")
     let meter_type = req.nextUrl.searchParams.get("meter_type")
+
+    let now = new Date()
 
     try{
         let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${label}` , {

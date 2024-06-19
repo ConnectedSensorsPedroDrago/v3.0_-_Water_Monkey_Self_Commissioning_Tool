@@ -56,9 +56,12 @@ export async function POST(req){
                                 "timestamp": now,
                                 "value": meterType
                             },
-                            "se": {
-                                "timestamp": now,
-                                "value": meterType == 1 ? 0 : 1
+                            // "se": {
+                            //     "timestamp": now,
+                            //     "value": meterType == 1 ? 0 : 1
+                            // },
+                            "properties": {
+                                "secondary_enable": meterType == 1 ? 0 : 1
                             }
                         })
                     })

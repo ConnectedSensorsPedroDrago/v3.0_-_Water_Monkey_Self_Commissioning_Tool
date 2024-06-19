@@ -65,7 +65,7 @@ const SignIn = () => {
             <button className="button-big mb-2" onClick={(e)=> {
                 trySignIn(user, password, e)
             }}>Sign In</button>
-            <p className="auth-text">Forgot your password? <Link href='https://www.connectedwater.ca/accounts/password/reset/'><u className="hover:font-bold hover:text-blue">Reset it here</u></Link></p>
+            <p className="auth-text">Forgot your password? <Link href='/auth/reset_password/'><u className="hover:font-bold hover:text-blue">Reset it here</u></Link></p>
             <p className="error-message">{error}</p>
         </div>
         {processing &&
