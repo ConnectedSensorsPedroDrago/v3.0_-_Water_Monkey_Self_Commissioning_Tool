@@ -19,6 +19,8 @@ async function getUserFromEmail(email){
 export async function POST(req){
     const { email } = await req.json()
 
+    console.log(email)
+
     let check =  await getUserFromEmail(email)
     if(check.status === "ok"){
         try{
@@ -33,7 +35,7 @@ export async function POST(req){
                     "emails": email,
                     "bodyMessage": "Hi there. Please enter the following link to reset your password: https://main.d3cdq3qwwclosa.amplifyapp.com/auth/new_password/" + check.id,
                     "subject": "Connected Sensors | Password Reset",
-                    "format": "pdf",
+                    "format": "xlsx",
                     "timezone": "Canda/Eastern",
                     "context": {
                         "datetimeRange": {
