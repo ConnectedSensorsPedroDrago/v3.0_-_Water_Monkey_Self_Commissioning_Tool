@@ -17,7 +17,7 @@ export async function POST(req){
 
     if((propertyType !== "Residential - Single Family Home") && (secondLowToCompare - firstLowToCompare < 10)){
         return new Response(JSON.stringify({"status": "error", "message": "Not enough water has flown through the meter. Please let more time go by and make sure that at least 10m3 (or it's equivalent) of water has flown through the meter. If the meter is Compound, 10m3 (or it's equivalent) should flow per side."}))
-    }else if(meterType === 'Compound' && secondHighToCompare - firstHighToCompare < 10){
+    }else if((propertyType !== "Residential - Single Family Home") && (meterType === 'Compound') && secondHighToCompare - firstHighToCompare < 10){
         return new Response(JSON.stringify({"status": "error", "message": "Not enough water has flown through the meter. Please let more time go by and make sure that at least 10m3 (or it's equivalent) of water has flown through the meter. If the meter is Compound, 10m3 (or it's equivalent) should flow per side."}))
     }else{
         if((meterType === "Single" && lowSideSecond && dateSecond && lowSideSecondUnit && picSecond) || (meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond && picSecond)){
