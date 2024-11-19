@@ -50,7 +50,7 @@ const NavBar = ({session}) => {
       document.querySelector(".logo_small").style.height = "25px";
       document.querySelector(".user_image").style.height = "35px";
       document.querySelector(".user_image").style.width = "35px";
-      document.querySelector(".header").style.backgroundColor = "#ffffff99";
+      // document.querySelector(".header").style.backgroundColor = "#ffffff99";
       document.querySelector(".username").style.fontWeight = "500";
       document.querySelector(".username").style.color = "#333333";
     } else {
@@ -60,7 +60,7 @@ const NavBar = ({session}) => {
       document.querySelector(".logo_small").style.height = "50px";
       document.querySelector(".user_image").style.height = "60px";
       document.querySelector(".user_image").style.width = "60px";
-      document.querySelector(".header").style.backgroundColor = "#ffffff";
+      // document.querySelector(".header").style.backgroundColor = "#ffffff";
       document.querySelector(".username").style.fontWeight = "300";
       document.querySelector(".username").style.color = "#8E8E8E";
     }

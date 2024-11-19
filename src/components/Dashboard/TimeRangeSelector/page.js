@@ -70,13 +70,13 @@ const TimeRangeSelector = () => {
                 <p className='mr-1 text-white font-light text-[0.85rem] hidden md:flex'>Start:</p>
                 <input 
                     type="datetime-local" 
-                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] md:mr-0 w-[30%] md:w-[30%]'
+                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] md:mr-0 w-[35%] md:w-[30%]'
                     onChange={(e)=> setTimeRangeStart(toTimestamp(e.target.value))}
                 />
                 <p className='mr-1 text-white font-light text-[0.85rem] ml-[0.5rem] hidden md:flex'>End:</p>
                 <input 
                     type="datetime-local" 
-                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] w-[30%] md:w-[30%]'
+                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] w-[35%] md:w-[30%]'
                     onChange={(e)=> setTimeRangeEnd(toTimestamp(e.target.value))}
                 />
                 <button 
