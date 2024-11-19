@@ -5,18 +5,19 @@ import SwitchSingleText from "./SwitchSingleText/page"
 import SwitchDoubleText from "./SwitchDoubleText/page"
 import ExportDashboard from '@/public/Dashboard/WaterMonkey/ExportDashboard.svg'
 import ExportCSV from '@/public/Dashboard/WaterMonkey/ExportCSV.svg'
+import Recalibrate from '@/public/Dashboard/WaterMonkey/Recalibrate.svg'
 import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
 import { useState } from "react"
 import Link from "next/link"
 
-const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric, setCsvModal, exportDashbaord }) => {
+const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metric, setCsvModal, setRecalibrateModal, exportDashbaord }) => {
 
     const [open, setOpen] = useState(false)
     const [units, setUnits] = useState()
     const [levelOfConsumption, setLevelOfConsumption] = useState()
 
   return (
-    <div className='section-dashboard sticky md:static top-[6rem] md:top-4 md:initial z-20 md:z-auto'>
+    <div className='section-dashboard sticky top-[8.25rem] md:top-[6.25rem] z-20'>
         <div className=' w-full flex flex-row items-center justify-start'>
             <p className='text-blue-hard font-light text-[0.85rem]'>Actions</p>
             {
@@ -85,6 +86,19 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
+                        {/* <div 
+                            className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'
+                            onClick={()=> {
+                                setRecalibrateModal(true)
+                            }}
+                        >
+                            <Image 
+                                src={Recalibrate}
+                                alt="Export CSV"
+                                className='mr-[0.5rem]'
+                            />
+                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Recalibrate</p>
+                        </div> */}
                         <Link
                             href='/support'
                         >

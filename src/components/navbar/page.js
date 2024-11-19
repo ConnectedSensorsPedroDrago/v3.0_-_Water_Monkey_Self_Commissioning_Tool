@@ -43,6 +43,31 @@ const NavBar = ({session}) => {
    getSession()
   }, [reloadUser, session])
 
+  function scrollFunction() {
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+      document.querySelector(".header").style.height = "50px";
+      document.querySelector(".logo").style.height = "30px";
+      document.querySelector(".logo_small").style.height = "25px";
+      document.querySelector(".user_image").style.height = "35px";
+      document.querySelector(".user_image").style.width = "35px";
+      document.querySelector(".header").style.backgroundColor = "#ffffff99";
+      document.querySelector(".username").style.fontWeight = "500";
+      document.querySelector(".username").style.color = "#333333";
+    } else {
+      document.querySelector(".header").style.height = "90px";
+      document.querySelector(".logo").style.height = "50px";
+      document.querySelector(".logo").style.width = "170px";
+      document.querySelector(".logo_small").style.height = "50px";
+      document.querySelector(".user_image").style.height = "60px";
+      document.querySelector(".user_image").style.width = "60px";
+      document.querySelector(".header").style.backgroundColor = "#ffffff";
+      document.querySelector(".username").style.fontWeight = "300";
+      document.querySelector(".username").style.color = "#8E8E8E";
+    }
+  }
+
+  window.onscroll = function() {scrollFunction()};
+
   return (
     <>
       {
@@ -52,28 +77,28 @@ const NavBar = ({session}) => {
         </div>
       }
       { user && !error &&
-        <div className="bg-white h-28 w-screen drop-shadow-md p-6 flex flex-row justify-between items-center absolute z-40">
+        <div className="header duration-500 bg-white h-28 w-screen drop-shadow-md p-6 flex flex-row justify-between items-center sticky top-0 z-40">
             <Link href='/home'>
               <Image
                   src={Logo}
                   alt="Connected Sensors Logo"
-                  className="cursor-pointer hover:scale-105 duration-500 hidden md:flex"
+                  className="logo cursor-pointer hover:scale-105 duration-500 hidden md:flex"
               />
               <Image
                 src={logoSmall}
                 alt="Connected Sensors Logo"
-                className="cursor-pointer hover:scale-105 duration-500 md:hidden "
+                className="logo_small cursor-pointer hover:scale-105 duration-500 md:hidden "
               />
             </Link>
             <div className='flex flex-row items-center justify-between'>
-            <p className='mr-6 text-grey font-light hidden md:flex'>{session.user ? session.user.name : "Welcome"}</p>
+            <p className='username mr-6 text-grey font-light hidden md:flex'>{session.user ? session.user.name : "Welcome"}</p>
             <div>
                 <Image
                     src={(user.photo === undefined || !user.photo.startsWith('http')) ? userDefault : user.photo }
                     alt="User"
                     width={75}
                     height={75}
-                    className="cursor-pointer hover:scale-105 scale-75 md:scale-100 duration-500 rounded-full"
+                    className="user_image cursor-pointer hover:scale-105 scale-75 md:scale-100 duration-500 rounded-full"
                     onMouseEnter={()=> {
                       setMenu(true)
                     }}

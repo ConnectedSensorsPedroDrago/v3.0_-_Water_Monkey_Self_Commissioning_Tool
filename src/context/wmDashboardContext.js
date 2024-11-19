@@ -17,18 +17,18 @@ export const WMDashboardContextProvider = ({ children }) => {
     const [reloadChart, setReloadChart] = useState(true)
 
     const exportDashbaord = () => {
-
-    domtoimage.toSvg(document.querySelector('.dashboard-to-print'))
-    .then(function (dataUrl) {
-        var link = document.createElement('a');
-        link.download = 'my-image-name.svg';
-        link.href = dataUrl;
-        link.click();
-    })
-    .catch(function (error) {
-        console.error('oops, something went wrong!', error);
-    });
-}
+        console.log('exportDashboard')
+        domtoimage.toJpeg(document.querySelector('.dashboard_to_print'), { quality: 0.95 })
+        .then(function (dataUrl) {
+            var link = document.createElement('a');
+            link.download = 'my-image-name.jpeg';
+            link.href = dataUrl;
+            link.click();
+        })
+        .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        });
+    }
 
     return(
         <wmDashbaordContext.Provider

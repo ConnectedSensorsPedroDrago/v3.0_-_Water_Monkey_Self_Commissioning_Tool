@@ -12,6 +12,7 @@ import Message from "@/src/components/Message/page"
 import CSVModal from "@/src/components/CSVModal/page"
 import Calendar from '@/public/calendar.svg'
 import Image from "next/image"
+import RecalibrateModal from "@/src/components/Dashboard/RecalibrateModal/page"
 
 const Dashboard = ({ params }) => {
 
@@ -28,6 +29,7 @@ const Dashboard = ({ params }) => {
     const [leakAlert, setLeakAlert] = useState()
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
     const [csvModal, setCsvModal] = useState(false)
+    const [recalibrateModal, setRecalibrateModal] = useState(false)
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -222,6 +224,21 @@ const Dashboard = ({ params }) => {
         <Loader />
       }
       {
+        recalibrateModal && device &&
+        <RecalibrateModal 
+          setRecalibrateModal={setRecalibrateModal}
+          meterType={lastValues.meter_type.value}
+          commStage={device.properties.commission_stage}
+          volumePerPulse={device.properties.meter_type === "Compound" ? {
+              "primary": device.properties.primary_pulse_volume,
+              "secondary": device.properties.secondary_pulse_volume
+            } : {
+              "primary": device.properties.primary_pulse_volume
+          }}
+          label={device.label}
+        />
+      }
+      {
         csvModal && device &&
         <CSVModal device={device.id} setCsvModal={setCsvModal} setLoader={setLoader}/>
       }
@@ -243,9 +260,10 @@ const Dashboard = ({ params }) => {
               days={reportEnd && reportStart && (Number(reportEnd.timestamp) - Number(reportStart.timestamp))/86400000}
               metric={metric}
               setCsvModal={setCsvModal}
+              setRecalibrateModal={setRecalibrateModal}
               exportDashbaord={exportDashbaord}
             />
-            <div className="dashboard-to-print w-full">
+            <div className="dashboard_to_print w-full">
               <AddressHeader 
                 address={device.properties.address} 
               />

@@ -41,22 +41,22 @@ select::-ms-expand {
 
 @layer components {
   .container-pages {
-    @apply flex flex-col justify-start items-center w-screen min-h-screen pt-36 pl-8  pr-8 pb-8;
+    @apply flex flex-col justify-start items-center w-screen min-h-screen pt-8 pl-8  pr-8 pb-8;
   }
   .container-dashboard {
-    @apply flex flex-col justify-start items-center w-screen min-h-[100vh] h-[100%] pt-36 pl-2 pr-2 md:pl-8 md:pr-8 pb-8;
+    @apply flex flex-col justify-start items-center w-screen min-h-[90vh] h-fit pt-2 pl-2 pr-2 md:pl-2 md:pr-2 pb-2;
   }
   .container-pages-scroll {
-    @apply flex flex-col justify-start items-center w-screen h-screen pt-36 pl-8  pr-8 overflow-hidden;
+    @apply flex flex-col justify-start items-center w-screen h-screen pl-8 pr-8 overflow-hidden;
   }
   .title {
     @apply w-full flex justify-start items-center font-bold text-4xl md:text-6xl mt-4 mb-4 text-purple;
   }
   .input-base {
-    @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-14 border-[0.5px] border-grey p-2 lg:text-xl font-light text-grey mb-2  text-sm md:text-lg rounded;
+    @apply w-[240px] md:w-[350px] lg:w-[460px] md:h-14 border-[0.5px] border-grey p-2 lg:text-xl font-light text-grey mb-2 text-sm md:text-lg rounded;
   }
   .input-small {
-    @apply w-[240px] md:w-[350px] lg:w-[460px] h-10 border-[0.5px] border-grey p-2 lg:text-base font-light text-grey mb-2  text-sm md:text-sm rounded;
+    @apply w-[240px] md:w-[350px] lg:w-[460px] h-10 border-[0.5px] border-grey p-2 lg:text-base font-light text-grey mb-2 text-sm md:text-sm rounded;
   }
   .button-big {
     @apply w-[240px] md:w-[350px] lg:w-[460px] bg-purple rounded md:h-12 text-white font-light md:text-lg hover:border-purple hover:border-[0.5px] hover:bg-white hover:text-purple hover:font-bold h-8 text-sm cursor-pointer;
@@ -98,9 +98,12 @@ select::-ms-expand {
     @apply font-light text-dark-grey text-center text-sm mb-[1rem];
   }
   .section-dashboard {
-    @apply rounded w-full p-4 mt-4 bg-white drop-shadow-md;
+    @apply rounded w-full p-4 mt-2 bg-white drop-shadow-md;
   }
   .wm-button-quick-report {
     @apply rounded md:mr-[1rem] text-yellow text-[0.65rem] font-semibold cursor-pointer h-[1.5rem] w-[5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.05rem] hover:border-blue-hard;
+  }
+  .background-blur {
+    @apply backdrop-blur-[4px];
   }
 }

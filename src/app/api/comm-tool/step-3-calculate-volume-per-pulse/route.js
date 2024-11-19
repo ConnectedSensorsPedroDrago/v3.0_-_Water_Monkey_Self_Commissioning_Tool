@@ -35,7 +35,8 @@ export async function POST(req){
                         })
                         let data = await response.json()
                         if(data.wu_s){
-                            return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse}}))
+                            // console.log({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse, "wu_p_sum": wu_p_sum}})
+                            return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse, "wu_p_sum": wu_p_sum}}))
                         }else{
                             return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s calculating the volume per pulse. Please try again or contact support"}))
                         }
@@ -96,8 +97,7 @@ export async function POST(req){
                     })
                     if(wu_s_sum >= 0){
                         secondary_volume_per_pulse = ((JSONCommStage.second.high_unit === "gallons" ? Number(JSONCommStage.second.high)*3.78541 : JSONCommStage.second.high_unit === "liters" ? Number(JSONCommStage.second.high) : JSONCommStage.second.high_unit === "m3" && Number(JSONCommStage.second.high)*1000) - (JSONCommStage.first.high_unit === "gallons" ? Number(JSONCommStage.first.high)*3.78541 : JSONCommStage.first.high_unit === "liters" ? Number(JSONCommStage.first.high) : JSONCommStage.first.high_unit === "m3" && Number(JSONCommStage.first.high)*1000)) / wu_s_sum
-                        // return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": primary_volume_per_pulse, "secondary_volume_per_pulse": secondary_volume_per_pulse}}))
-                        return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": primary_volume_per_pulse === null ? 0.1 : primary_volume_per_pulse, "secondary_volume_per_pulse": secondary_volume_per_pulse === null ? 0.1 : secondary_volume_per_pulse}}))
+                        return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": primary_volume_per_pulse === null ? 0.1 : primary_volume_per_pulse, "secondary_volume_per_pulse": secondary_volume_per_pulse === null ? 0.1 : secondary_volume_per_pulse, "wu_p_sum": wu_p_sum, "wu_s_sum": wu_s_sum}}))
                     }else{
                         return new Response(JSON.stringify({"status": "error", "message": "Not enough pulses have gone through the high side, just " + wu_s_sum + ", we need at lest 100 . Please let more water flow and try again later."}))
                     }

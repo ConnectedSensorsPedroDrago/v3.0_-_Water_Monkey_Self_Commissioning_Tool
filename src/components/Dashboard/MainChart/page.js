@@ -7,8 +7,6 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterType, metric, cubic }) => {
 
-    console.log(mainChartValues)
-
     var donutChartConfig = {
         series: (mainChartValues.leak_cost_per_update && mainChartValues.actual_cost_per_update) ? [ (mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100, 100 -((mainChartValues.leak_cost_per_update / (mainChartValues.actual_cost_per_update + mainChartValues.leak_cost_per_update))*100) ] : [ (mainChartValues.leak_volume_per_update / (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update))*100, 100 -((mainChartValues.leak_volume_per_update / (mainChartValues.actual_consumption_per_update + mainChartValues.leak_volume_per_update))*100) ],
         labels: ['Leaked Water', 'Consumed Water'],
@@ -194,10 +192,10 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
                                     mainChartValues.low_flow_percentage ? 
-                                        (mainChartValues.low_flow_percentage >= 50 && mainChartValues.low_flow_percentage < 75) ? 
+                                        (Number(mainChartValues.low_flow_percentage) >= 50 && Number(mainChartValues.low_flow_percentage) < 75) ? 
                                             'text-[#F38007]' 
                                             : 
-                                            (lastValues.low_flow_percentage.value >= 75) ? 
+                                            (Number(mainChartValues.low_flow_percentage) >= 75) ? 
                                                 'text-red-shine' 
                                                 : 
                                                 'text-yellow'
@@ -208,10 +206,10 @@ const MainChart = ({ mainChartValues, lastValues, reportStart, reportEnd, meterT
                             <p className={`text-center w-[80px] font-semibold text-[2rem] 
                                 ${
                                     mainChartValues.high_flow_percentage ? 
-                                        (mainChartValues.high_flow_percentage >= 50 && mainChartValues.high_flow_percentage < 75) ? 
+                                        (Number(mainChartValues.high_flow_percentage) >= 50 && Number(mainChartValues.high_flow_percentage) < 75) ? 
                                             'text-[#F38007]' 
                                             : 
-                                            (mainChartValues.high_flow_percentage >= 75) ? 
+                                            (Number(mainChartValues.high_flow_percentage) >= 75) ? 
                                                 'text-red-shine' 
                                                 : 
                                                 'text-yellow'

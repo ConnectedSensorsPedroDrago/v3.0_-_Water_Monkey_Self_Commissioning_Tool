@@ -2,6 +2,8 @@ export async function POST(req){
 
     const { meterType, lowSideSecond, dateSecond, lowSideSecondUnit, picSecond, highSideSecond, highSideSecondUnit, picURL, params, commStage, propertyType } = await req.json()
 
+    console.log("lowSideSecond: " + lowSideSecond)
+
     let firstLowToCompare = commStage.first.low_unit === "m3" ? Number(commStage.first.low) : commStage.first.low_unit === "liters" ? Number(commStage.first.low)*0.001 : commStage.first.low_unit === "gallons" && Number(commStage.first.low)*0.00378541
 
     let secondLowToCompare = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(lowSideSecond)*0.00378541
@@ -21,7 +23,7 @@ export async function POST(req){
         return new Response(JSON.stringify({"status": "error", "message": "Not enough water has flown through the meter. Please let more time go by and make sure that at least 10m3 (or it's equivalent) of water has flown through the meter. If the meter is Compound, 10m3 (or it's equivalent) should flow per side."}))
     }else{
         if((meterType === "Single" && lowSideSecond && dateSecond && lowSideSecondUnit && picSecond) || (meterType === "Compound" && lowSideSecond && highSideSecond && lowSideSecondUnit && highSideSecondUnit && dateSecond && picSecond)){
-            let newLowSideSecond = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541
+            let newLowSideSecond = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(lowSideSecond)*0.00378541
             let newHighSideSecond = highSideSecondUnit === "m3" ? highSideSecond : highSideSecondUnit === "liters" ? Number(highSideSecond)*0.001 : highSideSecondUnit === "gallons" && Number(highSideSecond)*0.00378541        
             try{
                 let response = await fetch(`https://cs.ubidots.site/api/v2.0/variables/?label__in=tc_p,tc_s&fields=label,lastValue,device&device__label__in=${params.id}`, {
@@ -56,9 +58,9 @@ export async function POST(req){
                                             "stage": "second reading",
                                             "first": commStage.first,
                                             "second": meterType === "Single" ? 
-                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                 : 
-                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": highSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                         }
                                     })
                                 })
@@ -116,9 +118,9 @@ export async function POST(req){
                                                                     "stage": "second reading",
                                                                     "first": commStage.first,
                                                                     "second": meterType === "Single" ? 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                        {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                                         : 
-                                                                        {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                        {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                                                 })
                                                             }
                                                         })
@@ -129,9 +131,9 @@ export async function POST(req){
                                                             "stage": "second reading",
                                                             "first": commStage.first,
                                                             "second": meterType === "Single" ? 
-                                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                                 : 
-                                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": highSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                                         }})
                                                         return new Response(responseObject)
                                                     }else{
@@ -177,9 +179,9 @@ export async function POST(req){
                                             "stage": "second reading",
                                             "first": commStage.first,
                                             "second": meterType === "Single" ? 
-                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                 : 
-                                                {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": highSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                         }
                                     })
                                 })
@@ -220,9 +222,9 @@ export async function POST(req){
                                                                 "stage": "second reading",
                                                                 "first": commStage.first,
                                                                 "second": meterType === "Single" ? 
-                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                                    {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                                     : 
-                                                                    {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                                    {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                                             })
                                                         }
                                                     })
@@ -234,9 +236,9 @@ export async function POST(req){
                                                         "stage": "second reading",
                                                         "first": commStage.first,
                                                         "second": meterType === "Single" ? 
-                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
+                                                            {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL}
                                                             : 
-                                                            {"date_time": dateSecond, "low": newLowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
+                                                            {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": newHighSideSecond, "high_unit": highSideSecondUnit, "pic": picURL}
                                                     }})
                                                     return new Response(responseObject)
                                                 }else{

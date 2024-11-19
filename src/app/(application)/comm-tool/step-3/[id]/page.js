@@ -44,6 +44,7 @@ const Step3 = ({params}) => {
     const [rsrp, setRsrp] = useState()
     const [calibration, setCalibration] = useState()
     const [lowSignal, setLowSignal] = useState(false)
+    const [address, setAddress] = useState()
     
     useEffect(()=>{
         let commissionStage
@@ -53,6 +54,7 @@ const Step3 = ({params}) => {
                 setLoad(false)
                 if(data.status === "ok"){
                     commissionStage = JSON.parse(data.device.properties.commission_stage)
+                    setAddress(`${data.device.properties.address} (${data.device.organization.name})`)
                     setPropertyType(data.device.properties.property_type)
                     setMeterType(data.device.properties.meter_type)
                     setOrg(data.device.organization.name)
@@ -324,6 +326,7 @@ const Step3 = ({params}) => {
                 <CommToolTop 
                     title={"Step 3"}
                     back={`/comm-tool/step-2/${params.id}`}
+                    address={address}
                 />
                 { calibration && rsrp &&
                     <HealthCheck 

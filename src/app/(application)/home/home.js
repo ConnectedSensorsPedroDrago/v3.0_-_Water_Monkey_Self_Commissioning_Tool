@@ -42,7 +42,7 @@ const Portfolio = () => {
                 </Link>
               </div>
               <div className="flex flex-wrap flex-row items-center justify-start w-full mt-6 mb-3 md:mb-6">
-                <p className="text-purple text-xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey v3.0 </p>
+                <p className="text-purple text-xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey v3.0</p>
                 <p className="text-grey text-xl md:text-4xl lg:text-5xl font-thin ml-2"><p className="hidden md:flex">|</p> Device Overview</p>
               </div>
               <div className='justify-center w-screen pl-8 pr-8 pb-8 pt-8 flex flex-col items-center flex-wrap'>

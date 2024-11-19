@@ -9,7 +9,7 @@ const TimeRangeSelector = () => {
     let now = new Date()
 
   return (
-    <div className='bg-green w-full flex flex-row justify-center lg:justify-end items-center p-2 rounded sticky md:static top-2 md:top-4 md:initial z-20 md:z-auto'>
+    <div className='bg-green w-full flex flex-row justify-center lg:justify-end items-center p-2 rounded sticky top-14 z-20'>
         <div className='flex lg:flex-row flex-col'>
             <div className='flex flex-row items-center md:ml-2 flex-wrap '>
                 <div className='flex flex-row items-center w-[100%] md:w-full justify-between md:justify-around'>
@@ -66,17 +66,17 @@ const TimeRangeSelector = () => {
                 </div>
                 
             </div>
-            <div className='flex flex-row items-center justify-around md:justify-between md:ml-2 mt-[1rem] lg:mt-0 flex-wrap'>
+            <div className='flex flex-row items-center justify-around md:justify-between md:ml-2 mt-[0.5rem] lg:mt-0 flex-wrap'>
                 <p className='mr-1 text-white font-light text-[0.85rem] hidden md:flex'>Start:</p>
                 <input 
                     type="datetime-local" 
-                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] mr-[0.5rem] md:mr-0 '
+                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] md:mr-0 w-[36%] md:w-[30%]'
                     onChange={(e)=> setTimeRangeStart(toTimestamp(e.target.value))}
                 />
                 <p className='mr-1 text-white font-light text-[0.85rem] ml-[0.5rem] hidden md:flex'>End:</p>
                 <input 
                     type="datetime-local" 
-                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem]'
+                    className='rounded cursor-pointer font-light p-[0.1rem] text-dark-grey text-[0.75rem] w-[36%] md:w-[30%]'
                     onChange={(e)=> setTimeRangeEnd(toTimestamp(e.target.value))}
                 />
                 <button 
