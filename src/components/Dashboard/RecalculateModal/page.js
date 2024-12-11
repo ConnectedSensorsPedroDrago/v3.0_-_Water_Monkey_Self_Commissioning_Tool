@@ -5,12 +5,12 @@ import Image from 'next/image'
 import ButtonSmall from '../../buttonSmall/page'
 import { useState } from 'react'
 
-const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage }) => {
+const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) => {
 
     const [page, setPage] = useState(0)
 
     function setMessageForRecalibrate(){
-        setMessage(`This option will eventually redirect to the Recommission feature of the Commissioning Tool which is currently under development.`)
+        setMessage(`This option will eventually redirect to the Recalibrate feature of the Commissioning Tool which is currently under development.`)
     }
 
   return (
@@ -34,11 +34,11 @@ const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage }) =
                         </p>
                         <br />
                         <p className='text-[0.80rem] text-center text-dark-grey'>
-                            <b>RECOMMISSION</b>: is normally needed when there was physical interference with the device (it was moved, taken off the meter or it has been offline to too long) and it needs to be fully reseted. This process will imply erasing the old data and resetting the device (you will be able to export your old data on the next step before moving on to this process).
+                            <b>RECALIBRATE</b>: is normally needed when there was physical interference with the device (it was moved, taken off the meter or it has been offline to too long) and it needs to be fully reseted. This process will imply erasing the old data and resetting the device (you will be able to export your old data on the next step before moving on to this process).
                         </p>
                         <br />
                         <ButtonSmall 
-                            text={"Recommission"}
+                            text={"Recalibrate"}
                             type={"blue"}
                             action={()=> setMessageForRecalibrate()}
                         />
@@ -46,14 +46,14 @@ const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage }) =
                         <hr className='w-full border-dark-grey'/>
                         <br />
                         <p className='text-[0.80rem] text-center text-dark-grey'>
-                            <b>RECALIBRATION</b>: is suggested for situations in which the data shown on the dashboard seems not fully accurate and an adjustment to the measuring variables would be beneficial. In that case, the device must not have been physically tampered with, moved or its position modified for it to work. Since the measuring variables will be modified, the old data will be adjusted to this new metrics (you will be able to export your old data on the next step before moving on to this process).
+                            <b>RECOMMISSION</b>: is suggested for situations in which the data shown on the dashboard seems not fully accurate and an adjustment to the measuring variables would be beneficial. In that case, the device must not have been physically tampered with, moved or its position modified for it to work. Since the measuring variables will be modified, the old data will be adjusted to this new metrics (you will be able to export your old data on the next step before moving on to this process).
                         </p>
                         <br />
                         <ButtonSmall 
-                            text={"Recalibrate"}
+                            text={"Recommission"}
                             action={()=> {
                                 setPage(0)
-                                setRecalibrateModal(true)
+                                setRecommissionModal(true)
                                 setRecalculate(false)
                             }}
                             type={"blue"}
@@ -129,7 +129,7 @@ const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage }) =
             {
                 page === 4 &&
                 <div className="flex flex-col items-center w-full h-full align-center justify-center">
-                    <p className='text-[1.5rem] text-center text-dark-grey font-semibold mb-[1rem]'>Your device seems to be suitable for Recalibration</p>
+                    <p className='text-[1.5rem] text-center text-dark-grey font-semibold mb-[1rem]'>Your device seems to be suitable for Recommission</p>
                     <div className='w-full flex flex-row items-center justify-around'>
                         <ButtonSmall 
                             text={"Cancel"}
@@ -137,10 +137,10 @@ const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage }) =
                             type={"blue"}
                         />
                         <ButtonSmall 
-                            text={"Recalibrate"}
+                            text={"Recommission"}
                             action={()=> {
                                 setPage(0)
-                                setRecalibrateModal(true)
+                                setRecommissionModal(true)
                                 setRecalculate(false)
                             }}
                             type={"blue"}

@@ -12,7 +12,7 @@ import Message from "@/src/components/Message/page"
 import CSVModal from "@/src/components/CSVModal/page"
 import Calendar from '@/public/calendar.svg'
 import Image from "next/image"
-import RecalibrateModal from "@/src/components/Dashboard/RecalibrateModal/page"
+import RecommissionModal from "@/src/components/Dashboard/RecommissionModal/page"
 import RecalculateModal from "@/src/components/Dashboard/RecalculateModal/page"
 import { userContext } from "@/src/context/userContext"
 
@@ -32,7 +32,7 @@ const Dashboard = ({ params }) => {
     const [leakAlert, setLeakAlert] = useState()
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
     const [csvModal, setCsvModal] = useState(false)
-    const [recalibrateModal, setRecalibrateModal] = useState(false)
+    const [recommissionModal, setRecommissionModal] = useState(false)
     const [recalculate, setRecalculate] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
 
@@ -239,14 +239,14 @@ const Dashboard = ({ params }) => {
         recalculate && device &&
         <RecalculateModal 
           setRecalculate={setRecalculate}
-          setRecalibrateModal={setRecalibrateModal}
+          setRecommissionModal={setRecommissionModal}
           setMessage={setMessage}
         />
       }
       {
-        recalibrateModal && device &&
-        <RecalibrateModal 
-          setRecalibrateModal={setRecalibrateModal}
+        recommissionModal && device &&
+        <RecommissionModal 
+          setRecommissionModal={setRecommissionModal}
           meterType={lastValues.meter_type.value}
           commStage={JSON.parse(device.properties.commission_stage)}
           volumePerPulse={device.properties.meter_type === "Compound" ? {

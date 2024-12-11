@@ -24,7 +24,7 @@ export async function POST(req){
     let payload = meterType === "Single" ? 
     {
         "commission_stage": JSON.stringify({
-            "stage": "recalibrate",
+            "stage": "recommission",
             "first": {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "pic": picFirst},
             "second": {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picSecond},
             "primary_volume_per_pulse": primary_volume_per_pulse,
@@ -34,7 +34,7 @@ export async function POST(req){
     : 
     {
         "commission_stage": JSON.stringify({
-            "stage": "recalibrate",
+            "stage": "recommission",
             "first": {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "high": highSideFirst, "high_unit": highSideFirstUnit, "pic": picFirst},
             "second": {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": highSideSecond, "high_unit": highSideSecondUnit, "pic": picSecond},
             "primary_volume_per_pulse": primary_volume_per_pulse,
@@ -55,7 +55,7 @@ export async function POST(req){
             })
         })
         let data = await response.json()
-        if(data.label && data.label === params.id){
+        if(data.label && data.label === label){
             return new Response(JSON.stringify({"status": "ok", "data": payload}))
         }else{
             return new Response(JSON.stringify({"status": "error", "data": `There was an error writting the new readings. Please try again or contact support.`}))

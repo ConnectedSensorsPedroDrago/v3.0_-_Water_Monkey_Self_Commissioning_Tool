@@ -11,7 +11,7 @@ import { unitOfCost } from '@/src/dbs/formOptions'
 import { storage } from '@/src/firebase/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType }) {
+function RecommissionModal({ setRecommissionModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType }) {
 
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -38,11 +38,11 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
             setLoader(false)
             setMessage(`Please make sure that the second readings are a higher number than the first readings.`)
         }else{
-            submitRecalibration()
+            submitRecommissionn()
         }
     }
 
-    async function submitRecalibration(){
+    async function submitRecommissionn(){
         let picURL1
         let picURL2
         
@@ -129,7 +129,7 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                                                     body.primary_volume_per_pulse = data.data.primary_volume_per_pulse
                                                 }
                                                 setLoader(false)
-                                                fetch(`/api/dashboard/water-monkey/recalibrate`, {
+                                                fetch(`/api/dashboard/water-monkey/recommission`, {
                                                     method: 'POST',
                                                     headers: {
                                                         'Content-Type': 'application/json'
@@ -138,8 +138,13 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                                                 })
                                                 .then(res => res.json())
                                                 .then(data => {
-                                                    setLoader(false)
-                                                    setMessage("Your Water Monkey new readings have been successfully submitted. We will review them to make sure everything went ok, recalculate your historical data and restore the dashboard access.")
+                                                    if(data.status && data.status === 'ok'){
+                                                        setLoader(false)
+                                                        setMessage("Your Water Monkey new readings have been successfully submitted. We will review them to make sure everything went ok, recalculate your historical data and restore the dashboard access.")
+                                                    }else{
+                                                        setLoader(false)
+                                                        setMessage("There was an error submitting your readings, pelase try again or contact support.")
+                                                    }
                                                 })
                                             }else{
                                                 setLoader(false)
@@ -193,7 +198,7 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                     className="md:hover:scale-125 cursor-pointer scale-[300%] md:scale-100"
                     alt={"close modal"}
                     onClick={()=>{
-                        setRecalibrateModal(false)
+                        setRecommissionModal(false)
                     }}
                 />
             </div>
@@ -211,18 +216,18 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                         
                     </div>
                     <p>
-                        To recalibrate your Water Monkey you will be required to submit two new meter readings. If your Property Type is not "Residential - Single Family Home" please make sure that at least 10m3 has flown through your water meter between the first and the second reading (in both sides, if your water meter is a Compound one).
+                        To Recommission your Water Monkey you will be required to submit two new meter readings. If your Property Type is not "Residential - Single Family Home" please make sure that at least 10m3 has flown through your water meter between the first and the second reading (in both sides, if your water meter is a Compound one).
                     </p>
                     <p>
-                        Once you have gathered both readings, pelase come back to this window and load both readings to trigger the Recalibration process.
+                        Once you have gathered both readings, pelase come back to this window and load both readings to trigger the Recommissioning process.
                     </p>
                     <p>
-                        Please keep in mind that triggering a recalibration may cause your current historical data to be modified with the new calculated Volume Per Pulse value so, if you intend to keep a backup of that data, make sure to download it below before triggering the recalibration process.
+                        Please keep in mind that triggering a Recommission may cause your current historical data to be modified with the new calculated Volume Per Pulse value so, if you intend to keep a backup of that data, make sure to download it below before triggering the Recommissioning process.
                     </p>
                 </div>
             </div>
             <p className="font-semibold text-3xl text-blue-hard w-full text-start mt-[1rem] mb-[1rem]">Download Historical Data</p>
-            <p className={`text-dark-grey font-bold text-[1rem] md:text-[1.2rem] mb-[0.5rem]`}>Download historical data before modifying it with a new calibration</p>
+            <p className={`text-dark-grey font-bold text-[1rem] md:text-[1.2rem] mb-[0.5rem]`}>Download historical data before modifying it with new readings</p>
             <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
                 <div className='w-full flex flex-col'>
                     <InputFullPercentWithTitle 
@@ -247,7 +252,7 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
             >
                 Download
             </button>
-            <p className="font-semibold text-3xl text-blue-hard w-full text-start mt-[1rem] mb-[1rem]">Recalibrate</p>
+            <p className="font-semibold text-3xl text-blue-hard w-full text-start mt-[1rem] mb-[1rem]">Recommission</p>
             <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
                 <div className='w-full flex flex-col'>
                     <div className='flex flex-row items-start justify-between w-full'>
@@ -351,11 +356,11 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                     onSubmit()
                 }}
             >
-                Recalibrate
+                Recommission
             </button>
         </div>
     </div>
   )
 }
 
-export default RecalibrateModal
+export default RecommissionModal
