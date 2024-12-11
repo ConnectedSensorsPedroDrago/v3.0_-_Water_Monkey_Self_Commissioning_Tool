@@ -17,7 +17,6 @@ export const WMDashboardContextProvider = ({ children }) => {
     const [reloadChart, setReloadChart] = useState(true)
 
     const exportDashbaord = () => {
-        console.log('exportDashboard')
         domtoimage.toJpeg(document.querySelector('.dashboard_to_print'), { quality: 0.95 })
         .then(function (dataUrl) {
             var link = document.createElement('a');

@@ -68,7 +68,7 @@ export async function POST(req){
                 },
             })
             let data = await response.json()
-            if(data.results){
+            if(data.results[0]){
                 data.results.forEach(x => {
                     wu_p_sum = wu_p_sum + x.value
                 })
@@ -91,7 +91,8 @@ export async function POST(req){
                     },
                 })
                 let data = await response.json()
-                if(data.results){
+                console.log(data)
+                if(data.results[0]){
                     data.results.forEach(x => {
                         wu_s_sum = wu_s_sum + x.value
                     })

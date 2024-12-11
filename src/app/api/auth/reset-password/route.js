@@ -6,6 +6,7 @@ async function getUserFromEmail(email){
             }
         })
         let data = await response.json()
+        // console.log(data)
         if(data.results && data.results[0] && data.results[0].email === email){
             return {"status": "ok", "id": data.results[0].id}
         }else{
@@ -19,9 +20,10 @@ async function getUserFromEmail(email){
 export async function POST(req){
     const { email } = await req.json()
 
-    console.log(email)
+    // console.log(email)
 
     let check =  await getUserFromEmail(email)
+    console.log(check)
     if(check.status === "ok"){
         try{
             let response = await fetch('https://cs.api.ubidots.com/api/-/analysis/reports/6672e723ba7792000bda70a4/_/build_report/', {
@@ -36,7 +38,7 @@ export async function POST(req){
                     "bodyMessage": "Hi there. Please enter the following link to reset your password: https://main.d3cdq3qwwclosa.amplifyapp.com/auth/new_password/" + check.id,
                     "subject": "Connected Sensors | Password Reset",
                     "format": "xlsx",
-                    "timezone": "Canda/Eastern",
+                    "timezone": "Canada/Eastern",
                     "context": {
                         "datetimeRange": {
                             "start": 1718729873000,

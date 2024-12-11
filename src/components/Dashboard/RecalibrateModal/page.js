@@ -8,8 +8,10 @@ import Input50PercentWithTitle from '../../Input50PercentWithTitle/page'
 import Select50PercentWithTitle from '../../Select50PercentWithTitl/page'
 import { useState } from 'react'
 import { unitOfCost } from '@/src/dbs/formOptions'
+import { storage } from '@/src/firebase/firebase'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePerPulse, label }) {
+function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType }) {
 
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -23,76 +25,168 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
     const [highSideSecond, setHighSideSecond] = useState()
     const [highSideSecondUnit, setHighSideSecondUnit] = useState()
     const [picSecond, setPicSecond] = useState()
+    const [historicalStart, setHistoricalStart] = useState()
+    const [historicalEnd, setHistoricalEnd] = useState()
 
     async function onSubmit(){
-        let body = meterType === 0 ?
-            {
-                "label": label,
-                "commStage": JSON.parse(commStage),
-                "meterType": "Compound",
-                "dateFirst": dateFirst,
-                "lowSideFirst": lowSideFirst,
-                "lowSideFirstUnit": lowSideFirstUnit,
-                "highSideFirst": highSideFirst,
-                "highSideFirstUnit": highSideFirstUnit,
-                "picFirst": picFirst,
-                "dateSecond": dateSecond,
-                "lowSideSecond": lowSideSecond,
-                "lowSideSecondUnit": lowSideSecondUnit,
-                "highSideSecond": highSideSecond,
-                "highSideSecondUnit": highSideSecondUnit,
-                "picSecond": picSecond,
-                "volumePerPulse": volumePerPulse
-            }
-            :
-            {
-                "label": label,
-                "commStage": JSON.parse(commStage),
-                "meterType": "Single",
-                "dateFirst": dateFirst,
-                "lowSideFirst": lowSideFirst,
-                "lowSideFirstUnit": lowSideFirstUnit,
-                "picFirst": picFirst,
-                "dateSecond": dateSecond,
-                "lowSideSecond": lowSideSecond,
-                "lowSideSecondUnit": lowSideSecondUnit,
-                "picSecond": picSecond,
-                "volumePerPulse": volumePerPulse
-            }
+        setLoader(true)
+
+        if(propertyType && propertyType !== "Residential - Single Family Home" && (((meterType === "Single") && (lowSideSecond - lowSideFirst) < 10) || ((meterType === "Compound") && (lowSideSecond - lowSideFirst) >= 10) && (highSideSecond - highSideFirst) >= 10)){
+            setLoader(false)
+            setMessage(`Not enough water has flown through the water meter beteen the first and the second reading to properly calibrate your Water Monkey. Please make sure that 10m3 have flow through the water meter between the first and the second reading`)
+        }else if((meterType === "Single" && (lowSideSecond > lowSideFirst)) && (meterType === "Compound" && (lowSideSecond > lowSideFirst) && (highSideSecond > highSideFirst))){
+            setLoader(false)
+            setMessage(`Please make sure that the second readings are a higher number than the first readings.`)
+        }else{
+            submitRecalibration()
+        }
+    }
+
+    async function submitRecalibration(){
+        let picURL1
+        let picURL2
         
-        fetch(`/api/dashboard/water-monkey/recalibrate`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-            if(data.status && data.status === 'ok'){
-                console.log(data.data)
-                let combination
-                Object.keys(data.data).forEach(function(key, index) {
-                    if(key !== 'pulses_edges'){
-                        if(key == 0){
-                            combination = {key: key, percentage: data.data[key].mrl_percentage_low}
-                        }else{
-                            combination > data.data[key].mrl_percentage_low && (combination =  {key: key, percentage: data.data[key].mrl_percentage_low})
-                            if(key == '3'){
-                                console.log(combination)
-                                console.log(data.data[combination.key])
-                            }
-                        }
-                    }
-                })
-            }
-        })
+        const imageRef1 = ref(storage, `WM_Readings/${org.name}/${id}/${org.name}_${id}_FirstReadings_${user.name}_${dateFirst.timestamp}.jpg`)
+        const imageRef2 = ref(storage, `WM_Readings/${org.name}/${id}/${org.name}_${id}_FirstReadings_${user.name}_${dateSecond.timestamp}.jpg`)
+
+        uploadBytes(imageRef1, picFirst, {contentType: 'image/jpg'})
+            .then((snapshot)=> {
+                getDownloadURL(snapshot.ref)
+                    .then((url) =>{
+                        picURL1 = url.toString()
+                    })
+                    .then(()=> {
+                        uploadBytes(imageRef2, picSecond, {contentType: 'image/jpg'})
+                            .then((snapshot)=> {
+                                getDownloadURL(snapshot.ref)
+                                    .then((url) =>{
+                                        picURL2 = url.toString()
+                                    })
+                                    .then(()=> {
+                                        fetch("/api/comm-tool/step-3-calculate-volume-per-pulse", {
+                                            method: "POST",
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                "meterType": meterType === 1 ? "Single" : "Compound",
+                                                "label": label,
+                                                "commStage": meterType === 1 ? 
+                                                    {
+                                                        "stage": "recalibrate",
+                                                        "first": {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "pic": picURL1},
+                                                        "second": {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "pic": picURL2}
+                                                    }
+                                                    : 
+                                                    {
+                                                        "stage": "recalibrate",
+                                                        "first": {"date_time": dateFirst, "low": lowSideFirst, "low_unit": lowSideFirstUnit, "high": highSideFirst, "high_unit": highSideFirstUnit, "pic": picURL1},
+                                                        "second": {"date_time": dateSecond, "low": lowSideSecond, "low_unit": lowSideSecondUnit, "high": highSideSecond, "high_unit": highSideSecondUnit, "pic": picURL2}
+                                                    }
+                                            })
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            let body = meterType === 0 ?
+                                                {
+                                                    "label": label,
+                                                    "commStage": JSON.stringify(commStage),
+                                                    "meterType": "Compound",
+                                                    "dateFirst": dateFirst,
+                                                    "lowSideFirst": Number(lowSideFirst),
+                                                    "lowSideFirstUnit": lowSideFirstUnit,
+                                                    "highSideFirst": Number(highSideFirst),
+                                                    "highSideFirstUnit": highSideFirstUnit,
+                                                    "picFirst": picURL1,
+                                                    "dateSecond": dateSecond,
+                                                    "lowSideSecond": Number(lowSideSecond),
+                                                    "lowSideSecondUnit": lowSideSecondUnit,
+                                                    "highSideSecond": Number(highSideSecond),
+                                                    "highSideSecondUnit": highSideSecondUnit,
+                                                    "picSecond": picURL2,
+                                                    "volumePerPulse": volumePerPulse
+                                                }
+                                                :
+                                                {
+                                                    "label": label,
+                                                    "commStage": JSON.stringify(commStage),
+                                                    "meterType": "Single",
+                                                    "dateFirst": dateFirst,
+                                                    "lowSideFirst": Number(lowSideFirst),
+                                                    "lowSideFirstUnit": lowSideFirstUnit,
+                                                    "picFirst": picURL1,
+                                                    "dateSecond": dateSecond,
+                                                    "lowSideSecond": Number(lowSideSecond),
+                                                    "lowSideSecondUnit": lowSideSecondUnit,
+                                                    "picSecond": picURL2,
+                                                    "volumePerPulse": volumePerPulse
+                                                }
+                                            if(data.status === 'ok'){
+                                                if(meterType === 0){
+                                                    body.primary_volume_per_pulse = data.data.primary_volume_per_pulse
+                                                    body.secondary_volume_per_pulse = data.data.secondary_volume_per_pulse
+                                                }else{
+                                                    body.primary_volume_per_pulse = data.data.primary_volume_per_pulse
+                                                }
+                                                setLoader(false)
+                                                fetch(`/api/dashboard/water-monkey/recalibrate`, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(body)
+                                                })
+                                                .then(res => res.json())
+                                                .then(data => {
+                                                    setLoader(false)
+                                                    setMessage("Your Water Monkey new readings have been successfully submitted. We will review them to make sure everything went ok, recalculate your historical data and restore the dashboard access.")
+                                                })
+                                            }else{
+                                                setLoader(false)
+                                                setMessage(data.message)
+                                            }
+                                        })
+                                        .catch(e => {
+                                            setLoader(false)
+                                            setMessage('There was an error calculating the new volume per pulse: ' + e + '. Please try again or contact support.')
+                                        })
+                                    })
+                            })
+                            .catch(e => {
+                                setLoader(false)
+                                setMessage('There was an error uploading the picture of the second reding: ' + e + '. Please try again or contact support.')
+                            })
+                    })
+            })
+            .catch(e => {
+                setLoader(false)
+                setMessage('There was an error uploading the picture of the first reding: ' + e + '. Please try again or contact support.')
+            })
+    }
+
+    async function downloadHistoricalData(){
+        setMessage('Feature not available yet, to be launched soon.')
+        // setLoader(true)
+        // if(id && email && historicalStart && historicalStart.timestamp && historicalEnd && historicalEnd.timestamp){
+        //     fetch(`/api/devices/water-monkey/download-historical-data?device_id=${id}&email=${email}&timezone=${historicalStart.timezone}&start=${historicalStart.timestamp}&end=${historicalEnd.timestamp}`)
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             setLoader(false)
+        //             if(data.status === "ok"){
+        //                 setMessage(`Data requested successfully: you will shortly receive an email at ${email} with an CSV file with the requested historical data.`)
+        //             }else if(data.status === "error"){
+        //                 setMessage(`${data.message}`)
+        //             }
+        //         })
+        // }else{
+        //     setLoader(false)
+        //     setMessage('Please complete all the requested fields to request the Historical Data.')
+        // }
     }
 
   return (
-    <div className='fixed top-0 w-full h-full flex flex-col justify-center items-center background-blur z-1000'>
-        <div className=" flex flex-col items-center justify-start md:justify-center w-full md:max-w-[60rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-gold border-[0.05rem] overflow-scroll">
+    <div className='fixed top-0 w-full h-full flex flex-col justify-center items-center background-blur z-50'>
+        <div className=" flex flex-col items-center justify-start md:justify-center w-full md:max-w-[60rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-grey border-[0.05rem] overflow-scroll">
             <div className="w-full flex flex-row items-end justify-end">
                 <Image
                     src={closeSmallDark}
@@ -117,13 +211,42 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                         
                     </div>
                     <p>
-                        To recalibrate your Water Monkey you will be required to submit two new meter readings. We will use those readings in combination with the ones you already submited to determine the combination that will provide the best results possible for your calibration.
+                        To recalibrate your Water Monkey you will be required to submit two new meter readings. If your Property Type is not "Residential - Single Family Home" please make sure that at least 10m3 has flown through your water meter between the first and the second reading (in both sides, if your water meter is a Compound one).
                     </p>
                     <p>
-                        Please keep in mind that triggering a recalibration may result in calibration data loss for dates previous dates to the new first reading. Also keep in mind that the data prior to the date of your readings will remain the same and the new calibration will impact your stats after you trigger the process so you may see a different trend of data before and after the recalibration date.
+                        Once you have gathered both readings, pelase come back to this window and load both readings to trigger the Recalibration process.
+                    </p>
+                    <p>
+                        Please keep in mind that triggering a recalibration may cause your current historical data to be modified with the new calculated Volume Per Pulse value so, if you intend to keep a backup of that data, make sure to download it below before triggering the recalibration process.
                     </p>
                 </div>
             </div>
+            <p className="font-semibold text-3xl text-blue-hard w-full text-start mt-[1rem] mb-[1rem]">Download Historical Data</p>
+            <p className={`text-dark-grey font-bold text-[1rem] md:text-[1.2rem] mb-[0.5rem]`}>Download historical data before modifying it with a new calibration</p>
+            <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
+                <div className='w-full flex flex-col'>
+                    <InputFullPercentWithTitle 
+                        name={"Start"}
+                        type={"datetime-local"}
+                        setter={setHistoricalStart}
+                    />
+                </div>
+                <div className='w-full flex flex-col md:ml-[0.5rem] md:mt-0 mt-[1rem]'>
+                    <InputFullPercentWithTitle 
+                        name={"End"}
+                        type={"datetime-local"}
+                        setter={setHistoricalEnd}
+                    />
+                </div>
+            </div>
+            <button 
+                className="button-small-blue text-[1rem] mt-[1rem]"
+                onClick={()=>{
+                    downloadHistoricalData()
+                }}
+            >
+                Download
+            </button>
             <p className="font-semibold text-3xl text-blue-hard w-full text-start mt-[1rem] mb-[1rem]">Recalibrate</p>
             <div className='w-full md:w-[90%] flex md:flex-row flex-col items-start justify-center'>
                 <div className='w-full flex flex-col'>

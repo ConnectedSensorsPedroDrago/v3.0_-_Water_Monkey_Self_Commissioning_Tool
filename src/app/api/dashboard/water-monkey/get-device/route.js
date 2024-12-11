@@ -27,15 +27,20 @@ export async function GET(req){
                 if(data1.results){
                     let variables = []
                     let flow_variables = []
+                    let reset_variables = []
                     data1.results.forEach(variable => {
                         if(variable.label === "water_consumption_per_update" || variable.label === "water_consumption_per_update_g" || variable.label === "leak_volume_per_update" || variable.label === "leak_volume_per_update_g" || variable.label === "actual_consumption_per_update" || variable.label === "actual_consumption_per_update_g" || variable.label === "water_cost_per_update" || variable.label === "leak_cost_per_update" || variable.label === "actual_cost_per_update"){
                             variables.push({label: variable.label, id: variable.id})
+                            reset_variables.push({label: variable.label, id: variable.id})
                         }else if(variable.label === "high_flow_percentage" || variable.label === "low_flow_percentage"){
                             flow_variables.push({label: variable.label, id: variable.id})
+                        }else if(variable.label === "metric_min_daily_l" || variable.label === "metric_max_daily_l" || variable.label === "metric_average_daily_l"){
+                            reset_variables.push({label: variable.label, id: variable.id})
                         }
                     })
                     device.variables = variables
                     device.flow_variables = flow_variables
+                    device.reset_variables = reset_variables
                     return new Response(JSON.stringify({"status": "ok", "device": device}))
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error requesting the Water Monkey variable data. Please try again or contact support."}))

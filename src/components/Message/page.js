@@ -10,7 +10,7 @@ const Message = ({message, setMessage, time, type}) => {
   return (
     <>
     {   message &&
-        <div className="fixed flex flex-col items-start justify-center top-[8%] h-contain w-[20rem] md:w-auto md:max-w-[40rem] bg-white drop-shadow-md rounded p-4 border-gold border-[0.015rem] z-[200]">
+        <div className="fixed flex flex-col items-start justify-center top-[8%] h-contain w-[20rem] md:w-auto md:max-w-[40rem] bg-white drop-shadow-md rounded p-4 border-grey border-[0.015rem] z-[1000]">
             <div className="w-full flex flex-row justify-between items-start border-b-[0.05rem] border-b-blue-hard">
                 <p className='text-blue-hard font-semibold text-[0.75rem]'>Message</p>
                 <Image 

@@ -86,7 +86,7 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             />
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
                         </div>
-                        {/* <div 
+                        <div 
                             className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'
                             onClick={()=> {
                                 setRecalibrateModal(true)
@@ -97,8 +97,8 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                                 alt="Export CSV"
                                 className='mr-[0.5rem]'
                             />
-                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Recalibrate</p>
-                        </div> */}
+                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Recalculate</p>
+                        </div>
                         <Link
                             href='/support'
                         >

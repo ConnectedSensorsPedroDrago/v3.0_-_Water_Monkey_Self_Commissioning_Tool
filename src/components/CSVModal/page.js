@@ -51,7 +51,7 @@ const CSVModal = ({setCsvModal, device, setLoader}) => {
 
   return (
     <div className="fixed top-0 w-full h-full flex flex-col justify-center items-center background-blur z-1000">
-        <div className=" flex flex-col items-center justify-center w-full md:w-[40rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-gold border-[0.05rem]">
+        <div className=" flex flex-col items-center justify-center w-full md:w-[40rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-grey border-[0.05rem]">
             <div className="w-full flex flex-row items-end justify-end">
                 <Image
                     src={closeSmallDark}

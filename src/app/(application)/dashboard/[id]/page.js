@@ -13,11 +13,14 @@ import CSVModal from "@/src/components/CSVModal/page"
 import Calendar from '@/public/calendar.svg'
 import Image from "next/image"
 import RecalibrateModal from "@/src/components/Dashboard/RecalibrateModal/page"
+import RecalculateModal from "@/src/components/Dashboard/RecalculateModal/page"
+import { userContext } from "@/src/context/userContext"
 
 const Dashboard = ({ params }) => {
 
     const { timeRangeStart, timeRangeEnd, runReport, setRunReport, loader, setLoader, setTimeRangeStart, setTimeRangeEnd, error, setError, setMetric, metric, exportDashbaord } = useContext(wmDashbaordContext)
-    const [lastValues, setLastValues] = useState()
+    const { userSession, user } = useContext(userContext)
+    const [lastValues, setLastValues] = useState(userContext)
     const [device, setDevice] = useState()
     const [mainChartValues, setMainChartValues] = useState()
     const [reportStart, setReportStart] = useState()
@@ -30,6 +33,8 @@ const Dashboard = ({ params }) => {
     const [leakPercentageAlert, setLeakPercentageAlert] = useState()
     const [csvModal, setCsvModal] = useState(false)
     const [recalibrateModal, setRecalibrateModal] = useState(false)
+    const [recalculate, setRecalculate] = useState(false)
+    const [errorMessage, setErrorMessage] = useState()
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -42,6 +47,12 @@ const Dashboard = ({ params }) => {
       .then(resp => resp.json())
       .then(data => {
         if(data.status === "ok"){
+          let commStage = JSON.parse(data.device.properties.commission_stage)
+          if(commStage.stage === 'recalibrate'){
+            setMessage('Remember that your device recalibration process is pending revision.')
+          }else if(commStage.stage === 'recalibrate_failed'){
+            setErrorMessage(`Your recalibration process has failed: ${commStage.message}`)
+          }
           setDevice(data.device)
           label = data.device.label
           fetch(`/api/dashboard/water-monkey/get-last-values?device=${params.id}`)
@@ -55,6 +66,7 @@ const Dashboard = ({ params }) => {
               setLeakPercentageAlert((data.data.leak_percentage_alert && data.data.leak_percentage_alert.value) ? data.data.leak_alert.value : undefined)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
+
                 setReportStart({timestamp: timeRangeStart, timezone: timezone})
                 setReportEnd({timestamp: timeRangeEnd, timezone: timezone})
                 fetch(`/api/dashboard/water-monkey/get-report-data`, {
@@ -224,11 +236,19 @@ const Dashboard = ({ params }) => {
         <Loader />
       }
       {
+        recalculate && device &&
+        <RecalculateModal 
+          setRecalculate={setRecalculate}
+          setRecalibrateModal={setRecalibrateModal}
+          setMessage={setMessage}
+        />
+      }
+      {
         recalibrateModal && device &&
         <RecalibrateModal 
           setRecalibrateModal={setRecalibrateModal}
           meterType={lastValues.meter_type.value}
-          commStage={device.properties.commission_stage}
+          commStage={JSON.parse(device.properties.commission_stage)}
           volumePerPulse={device.properties.meter_type === "Compound" ? {
               "primary": device.properties.primary_pulse_volume,
               "secondary": device.properties.secondary_pulse_volume
@@ -236,16 +256,40 @@ const Dashboard = ({ params }) => {
               "primary": device.properties.primary_pulse_volume
           }}
           label={device.label}
+          id={params.id}
+          timezone={timezone}
+          email={userSession.user.email}
+          setLoader={setLoader}
+          setMessage={setMessage}
+          user={user}
+          org={device.organization}
+          propertyType={device.properties.property_type}
         />
       }
       {
         csvModal && device &&
-        <CSVModal device={device.id} setCsvModal={setCsvModal} setLoader={setLoader}/>
+        <CSVModal 
+          device={device.id} 
+          setCsvModal={setCsvModal} 
+          setLoader={setLoader}
+        />
       }
       <div className='container-dashboard bg-grey-light z-0'>
+        {
+          errorMessage && !loader &&
+          <Message 
+            message={errorMessage} 
+            setMessage={setErrorMessage} 
+            time={100000} 
+            type={"error"} 
+          />
+        }
         { 
           message && !loader &&
-          <Message message={message} setMessage={setMessage}/>
+          <Message 
+            message={message} 
+            setMessage={setMessage}
+          />
         }
         <TimeRangeSelector />
         {
@@ -260,7 +304,7 @@ const Dashboard = ({ params }) => {
               days={reportEnd && reportStart && (Number(reportEnd.timestamp) - Number(reportStart.timestamp))/86400000}
               metric={metric}
               setCsvModal={setCsvModal}
-              setRecalibrateModal={setRecalibrateModal}
+              setRecalibrateModal={setRecalculate}
               exportDashbaord={exportDashbaord}
             />
             <div className="dashboard_to_print w-full">

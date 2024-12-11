@@ -2,8 +2,6 @@ export async function POST(req){
 
     const { meterType, lowSideSecond, dateSecond, lowSideSecondUnit, picSecond, highSideSecond, highSideSecondUnit, picURL, params, commStage, propertyType } = await req.json()
 
-    console.log("lowSideSecond: " + lowSideSecond)
-
     let firstLowToCompare = commStage.first.low_unit === "m3" ? Number(commStage.first.low) : commStage.first.low_unit === "liters" ? Number(commStage.first.low)*0.001 : commStage.first.low_unit === "gallons" && Number(commStage.first.low)*0.00378541
 
     let secondLowToCompare = lowSideSecondUnit === "m3" ? lowSideSecond : lowSideSecondUnit === "liters" ? Number(lowSideSecond)*0.001 : lowSideSecondUnit === "gallons" && Number(lowSideSecond)*0.00378541
@@ -83,7 +81,6 @@ export async function POST(req){
                                             body: JSON.stringify(payload)
                                         })
                                         let data2 = await response2.json()
-                                        console.log(data2 ? data2.properties[0] : data2)
                                         if(!data2.label || (data2.label !== params.id)){
                                             return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                         }else{
