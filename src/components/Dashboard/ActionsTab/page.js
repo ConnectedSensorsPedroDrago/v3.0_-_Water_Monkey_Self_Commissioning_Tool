@@ -7,6 +7,7 @@ import ExportDashboard from '@/public/Dashboard/WaterMonkey/ExportDashboard.svg'
 import ExportCSV from '@/public/Dashboard/WaterMonkey/ExportCSV.svg'
 import Recalibrate from '@/public/Dashboard/WaterMonkey/Recalibrate.svg'
 import AskForHelp from '@/public/Dashboard/WaterMonkey/AskForHelp.svg'
+import DeviceInformation from '@/public/Dashboard/WaterMonkey/DeviceInformation.svg'
 import { useState } from "react"
 import Link from "next/link"
 
@@ -84,7 +85,7 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                                 alt="Export CSV"
                                 className='mr-[0.5rem]'
                             />
-                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV Data</p>
+                            <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Export CSV</p>
                         </div>
                         <div 
                             className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'
@@ -100,15 +101,15 @@ const ActionsTab = ({ alerts, unit, unitOrCubic, device, consumption, days, metr
                             <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Recalculate</p>
                         </div>
                         <Link
-                            href='/support'
+                            href={`/device_details/${device}`}
                         >
                             <div className='flex flex-row items-center mr-4 md:mr-4 h-[2rem] mt-2 mb-2 md:mt-0 md:mb-0'>
                                 <Image 
-                                    src={AskForHelp}
-                                    alt="Ask For Help"
+                                    src={DeviceInformation}
+                                    alt="Device Information"
                                     className='mr-[0.5rem]'
                                 />
-                                <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Ask For Help</p>
+                                <p className='text-blue-hard font-light text-[0.75rem] hover:underline cursor-pointer'>Device Info</p>
                             </div>
                         </Link>
                     </div>

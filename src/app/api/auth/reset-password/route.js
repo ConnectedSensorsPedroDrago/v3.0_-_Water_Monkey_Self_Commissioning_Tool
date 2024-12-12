@@ -6,7 +6,6 @@ async function getUserFromEmail(email){
             }
         })
         let data = await response.json()
-        // console.log(data)
         if(data.results && data.results[0] && data.results[0].email === email){
             return {"status": "ok", "id": data.results[0].id}
         }else{
@@ -20,10 +19,7 @@ async function getUserFromEmail(email){
 export async function POST(req){
     const { email } = await req.json()
 
-    // console.log(email)
-
     let check =  await getUserFromEmail(email)
-    console.log(check)
     if(check.status === "ok"){
         try{
             let response = await fetch('https://cs.api.ubidots.com/api/-/analysis/reports/6672e723ba7792000bda70a4/_/build_report/', {
@@ -48,7 +44,6 @@ export async function POST(req){
                 })
             })
             let data = await response.json()
-            console.log(data)
             if(data.task.id){
                 return new Response(JSON.stringify({"status": "ok", "email": email}))
             }else{

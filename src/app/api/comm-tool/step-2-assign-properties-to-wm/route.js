@@ -4,7 +4,7 @@ export async function POST(req){
 
     const { props, meterType, id } = await req.json()
 
-    let payload = {
+    let payload = (props.commission_stage && props.added) ? {
         "properties": {
             "country": props.country.value,
             "state": props.state.value,
@@ -31,6 +31,25 @@ export async function POST(req){
             "primary_pulse_volume": null
         }
     }
+    :
+    {
+        "properties": {
+            "country": props.country.value,
+            "state": props.state.value,
+            "city": props.city.value,
+            "zip_code": props.zip_code.value,
+            "address": props.address.value,
+            "building_name": props.building_name.value,
+            "property_type":  props.property_type.value,
+            "room_details": props.room_details.value,
+            "floor": props.floor.value,
+            "meter_brand": props.meter_brand.value,
+            "meter_model": props.meter_model.value,
+            "low_side": props.low_side.value,
+            "high_side": props.high_side.value,
+        }
+    }
+
     try{
         let response = await fetch(`https://cs.api.ubidots.com/api/v2.0/devices/~${id}/`, {
             method: 'PATCH',

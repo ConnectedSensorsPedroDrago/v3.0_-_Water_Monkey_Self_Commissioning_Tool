@@ -59,9 +59,7 @@ export async function POST(req){
                     body: JSON.stringify(properties)
                 })
                 let data = await response.json()
-                console.log(data)
                 if(data.label === params.id){
-                    // let comm_stage = data.properties.commission_stage
                     return new Response(JSON.stringify({"status": "ok", "commission_stage": JSON.parse(data.properties.commission_stage)}))
                 }else{
                     return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the first readings. Please try again or contact support."}))

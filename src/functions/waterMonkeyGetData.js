@@ -549,7 +549,6 @@ export default async function getValues(device, start, end, quick){
         }catch(e){
             return new Response(JSON.stringify({"status": "error", "message": "There was a problem requesting the high flow side rate: " + e + ". Please try again or contact support"}))
         }finally{
-            console.log('Done')
             return new Response(JSON.stringify({"status": "ok", "device_data": deviceData}))
         }
     }

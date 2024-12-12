@@ -325,8 +325,9 @@ const Step3 = ({params}) => {
             <>
                 <CommToolTop 
                     title={"Step 3"}
-                    back={`/comm-tool/step-2/${params.id}`}
+                    back={`/device_details/${params.id}`}
                     address={address}
+                    stage={commStage.stage}
                 />
                 { calibration && rsrp &&
                     <HealthCheck 

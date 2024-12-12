@@ -35,7 +35,6 @@ export async function POST(req){
                         })
                         let data = await response.json()
                         if(data.wu_s){
-                            // console.log({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse, "wu_p_sum": wu_p_sum}})
                             return new Response(JSON.stringify({"status": "ok", "data": {"primary_volume_per_pulse": volume_per_pulse, "wu_p_sum": wu_p_sum}}))
                         }else{
                             return new Response(JSON.stringify({"status": "error", "message": "There was an error resetting wu_s calculating the volume per pulse. Please try again or contact support"}))
@@ -91,7 +90,6 @@ export async function POST(req){
                     },
                 })
                 let data = await response.json()
-                console.log(data)
                 if(data.results[0]){
                     data.results.forEach(x => {
                         wu_s_sum = wu_s_sum + x.value

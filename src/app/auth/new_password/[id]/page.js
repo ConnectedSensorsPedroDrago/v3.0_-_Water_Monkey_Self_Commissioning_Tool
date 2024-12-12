@@ -91,7 +91,6 @@ const NewPassword = ({params}) => {
                 className="button-big mb-24 mt-[1rem]"
                 onClick={()=> {
                     checkPasswords(password, repeatPassword)
-                    console.log("Password: " + password + " | Repeat Password: " + repeatPassword)
                 }}
             >
                 Create new password

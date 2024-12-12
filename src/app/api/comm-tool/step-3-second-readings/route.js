@@ -32,7 +32,6 @@ export async function POST(req){
                     }
                 })
                 let data = await response.json()
-                console.log(data)
                 if(data.count === 2){
                     if(meterType === "Single"){
                         let check
@@ -63,7 +62,6 @@ export async function POST(req){
                                     })
                                 })
                                 let data1 = await response.json()
-                                console.log(data1.data)
                                 if(data1.status === 'ok'){
                                     try{
                                         let payload = {
@@ -202,7 +200,6 @@ export async function POST(req){
                                             body: JSON.stringify(payload)
                                         })
                                         let data2 = await response2.json()
-                                        console.log(data2)
                                         if(!data2.label || (data2.label !== params.id)){
                                             return new Response(JSON.stringify({"status": "error", "message": "There was an error writting the second readings. Please try again or contact support."}))
                                         }else{
@@ -227,7 +224,6 @@ export async function POST(req){
                                                     })
                                                 })
                                                 let data = await response.json()
-                                                console.log(data)
                                                 if(data.label == params.id){
                                                     let responseObject = JSON.stringify({"status": "ok", "commission_stage": {
                                                         "stage": "second reading",

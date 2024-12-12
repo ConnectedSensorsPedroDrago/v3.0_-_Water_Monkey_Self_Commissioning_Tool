@@ -3,7 +3,7 @@ import Image from 'next/image'
 import BackArrow from '@/public/backArrow.svg'
 import Link from 'next/link'
 
-const CommToolTop = ({title, back, address}) => {
+const CommToolTop = ({title, back, address, stage}) => {
   return (
     <div className='border-b-[0.05rem] border-blue-hard w-full flex items-center justify-between pb-[0.5rem] mb-[1rem] flex-wrap'>
         <Link 
@@ -16,7 +16,7 @@ const CommToolTop = ({title, back, address}) => {
                     className='mr-[0.5rem]'
                     alt="back button"
                 />
-                <p className='font-light text-blue-hard'>Back</p>
+                <p className='font-light text-blue-hard'>{stage && (stage === "commissioned" || stage === "recommission" || stage === "recommission_failed") ? "Dashboard" : stage && (stage === "none" || stage === "first reading" || stage === "second reading") ? "Edit Details" : "Back"}</p>
             </div>
         </Link>
         {

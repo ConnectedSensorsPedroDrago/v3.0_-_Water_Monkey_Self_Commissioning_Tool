@@ -20,7 +20,6 @@ export default async function updateOrganization(org, address, description, setL
         let data = await response.json()
         return { data: data }
     } catch (e) {
-        console.log("There was an error updating the organization's details: " + e + " . Please try again or contact support")
         return { message: "There was an error updating the organization's details: " + e + " . Please try again or contact support" }
     }finally{
         setLoad(false)

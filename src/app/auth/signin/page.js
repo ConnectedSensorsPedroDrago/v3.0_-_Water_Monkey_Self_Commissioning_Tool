@@ -23,7 +23,6 @@ const SignIn = () => {
         setProcessing(true)
         signIn("credentials", { user, password, redirect: false })
             .then(({ok, error})=>{
-                console.log(ok)
                 if(error !== null){
                     if(error === 'CredentialsSignin'){
                         setError("Wrong user and/or password, please try again")
