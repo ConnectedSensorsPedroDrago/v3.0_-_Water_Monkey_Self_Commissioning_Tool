@@ -9,10 +9,6 @@ const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage, se
 
     const [page, setPage] = useState(0)
 
-    function setMessageForRecalibrate(){
-        setMessage(`This option will eventually redirect to the Recalibrate feature of the Commissioning Tool which is currently under development.`)
-    }
-
   return (
     <div className='fixed top-0 w-full h-full flex flex-col justify-center items-center background-blur z-1000'>
         <div className=" flex flex-col items-center justify-start md:justify-center w-full md:max-w-[60rem] h-full md:h-fit bg-white rounded shadow-md p-4 md:border-grey border-[0.05rem] overflow-scroll">

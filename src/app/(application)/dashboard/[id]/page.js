@@ -244,6 +244,9 @@ const Dashboard = ({ params }) => {
           setRecommissionModal={setRecommissionModal}
           setMessage={setMessage}
           setRecalibrateModal={setRecalibrateModal}
+          label={device.label}
+          timezone={timezone}
+          email={userSession.user.email}
         />
       }
       {
@@ -276,14 +279,18 @@ const Dashboard = ({ params }) => {
           setRecalibrateModal={setRecalibrateModal} 
           setMessage={setMessage}
           label={device.label}
+          timezone={timezone}
+          email={userSession.user.email}
+          setLoader={setLoader}
         />
       }
       {
         csvModal && device &&
         <CSVModal 
-          device={device.id} 
+          device={device.label} 
           setCsvModal={setCsvModal} 
           setLoader={setLoader}
+          setMessage={setMessage}
         />
       }
       <div className='container-dashboard bg-grey-light z-0'>

@@ -3,7 +3,7 @@ const SelectFullPercentWithTitle = ({name, setter, placeholder, type, disabled, 
     <div className="flex flex-col justify-start w-full">
         <p className="text-sm font-medium">{name}</p>
         <select 
-          className={`cursor-pointer bg-white w-full input-small text-sm ${disabled === true && `disabled:text-dark-grey disabled:bg-white `}`}
+          className={`cursor-pointer bg-white w-full input-small text-sm text-dark-grey ${disabled === true && `disabled:text-dark-grey disabled:bg-white `}`}
           onChange={(e)=> setter(e.target.value !== undefined ? e.target.value : undefined)} 
           placeholder={placeholder} 
           type={type ? type : "text"}

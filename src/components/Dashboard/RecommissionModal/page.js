@@ -11,7 +11,7 @@ import { unitOfCost } from '@/src/dbs/formOptions'
 import { storage } from '@/src/firebase/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-function RecommissionModal({ setRecommissionModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType }) {
+function RecommissionModal({ setRecommissionModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType, timezone }) {
 
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
@@ -170,23 +170,38 @@ function RecommissionModal({ setRecommissionModal, meterType, commStage, volumeP
     }
 
     async function downloadHistoricalData(){
-        setMessage('Feature not available yet, to be launched soon.')
-        // setLoader(true)
-        // if(id && email && historicalStart && historicalStart.timestamp && historicalEnd && historicalEnd.timestamp){
-        //     fetch(`/api/devices/water-monkey/download-historical-data?device_id=${id}&email=${email}&timezone=${historicalStart.timezone}&start=${historicalStart.timestamp}&end=${historicalEnd.timestamp}`)
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             setLoader(false)
-        //             if(data.status === "ok"){
-        //                 setMessage(`Data requested successfully: you will shortly receive an email at ${email} with an CSV file with the requested historical data.`)
-        //             }else if(data.status === "error"){
-        //                 setMessage(`${data.message}`)
-        //             }
-        //         })
-        // }else{
-        //     setLoader(false)
-        //     setMessage('Please complete all the requested fields to request the Historical Data.')
-        // }
+        setLoader(true)
+        if(label && email && historicalStart && historicalStart.timestamp && historicalEnd && historicalEnd.timestamp){
+            fetch('/api/devices/dowload-historical-data', {
+                'method': 'POST',
+                'headers': {
+                    'Content-Type': 'application/json'
+                },
+                'body': JSON.stringify({
+                    email: email,
+                    label: label,
+                    timezone: timezone,
+                    timestamp_start: historicalStart.timestamp,
+                    timestamp_end: historicalEnd.timestamp
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "ok"){
+                        setLoader(false)
+                        setMessage(`The Historical Data has been requested properly. You will receive an email (at the one associated to your account: ${email}) with a csv file containing the requested data. This may take some minutes, please be patient. If you do not receive it soon, please try again or contact support. Please keep in mind that continuig with the Recalibration process will result in the deletion of old data so please make sure you have properly received your csv back up before moving forward. Thanks.`)
+                    }else if(data.status === "error"){
+                        setLoader(false)
+                        setMessage(data.message)
+                    }else{
+                        setLoader(false)
+                        setMessage("There was an error requesting your historical data download. Please try again or contact support.")
+                    }
+                })
+        }else{
+            setLoader(false)
+            setMessage('Please make sure to complete all the required fields before requesting the Historical Data download.')
+        }
     }
 
   return (
