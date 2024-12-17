@@ -14,6 +14,7 @@ import Calendar from '@/public/calendar.svg'
 import Image from "next/image"
 import RecommissionModal from "@/src/components/Dashboard/RecommissionModal/page"
 import RecalculateModal from "@/src/components/Dashboard/RecalculateModal/page"
+import RecalibrateModal from "@/src/components/Dashboard/RecalibrateModal/page"
 import { userContext } from "@/src/context/userContext"
 
 const Dashboard = ({ params }) => {
@@ -34,6 +35,7 @@ const Dashboard = ({ params }) => {
     const [csvModal, setCsvModal] = useState(false)
     const [recommissionModal, setRecommissionModal] = useState(false)
     const [recalculate, setRecalculate] = useState(false)
+    const [recalibrateModal, setRecalibrateModal] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
 
     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -241,6 +243,7 @@ const Dashboard = ({ params }) => {
           setRecalculate={setRecalculate}
           setRecommissionModal={setRecommissionModal}
           setMessage={setMessage}
+          setRecalibrateModal={setRecalibrateModal}
         />
       }
       {
@@ -264,6 +267,15 @@ const Dashboard = ({ params }) => {
           user={user}
           org={device.organization}
           propertyType={device.properties.property_type}
+          setRecalibrateModal={setRecalibrateModal}
+        />
+      }
+      {
+        recalibrateModal && device &&
+        <RecalibrateModal 
+          setRecalibrateModal={setRecalibrateModal} 
+          setMessage={setMessage}
+          label={device.label}
         />
       }
       {

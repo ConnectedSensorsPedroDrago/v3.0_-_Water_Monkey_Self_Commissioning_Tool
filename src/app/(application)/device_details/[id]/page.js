@@ -75,7 +75,7 @@ const WaterMonkeyDeviceDetails = ({ params }) => {
   }, [params.id])
 
   const onSubmit = async() => {
-    let data = {
+    let data = commStage && commStage.stage ? {
         "country": {
           "key": "country",
           "text": "Country",
@@ -168,6 +168,129 @@ const WaterMonkeyDeviceDetails = ({ params }) => {
           "description": "High Side Size"
         },
     }
+    :
+    {
+        "country": {
+          "key": "country",
+          "text": "Country",
+          "type": "text",
+          "value": country,
+          "description": "Country"
+        },
+        "state": {
+          "key": "state",
+          "text": "State",
+          "type": "text",
+          "value": state,
+          "description": "State"
+        },
+        "city": {
+          "key": "city",
+          "text": "City",
+          "type": "text",
+          "value": city,
+          "description": "City"
+        },
+        "zip_code": {
+          "key": "zip_code",
+          "text": "Zip Code",
+          "type": "text",
+          "value": zipCode,
+          "description": "Zip Code"
+        },
+        "address": {
+          "key": "address",
+          "text": "Address",
+          "type": "text",
+          "value": address,
+          "description": "Address"
+        },
+        "building_name": {
+          "key": "building_name",
+          "text": "Building Name",
+          "type": "text",
+          "value": buildingName,
+          "description": "Building Name"
+        },
+        "property_type": {
+          "key": "property_type",
+          "text": "Property Type",
+          "type": "text",
+          "value": propertyType,
+          "description": "Property Type"
+        },
+        "cost_per_unit": {
+          "key": "cost_per_unit",
+          "text": "Cost Per Unit",
+          "type": "number",
+          "value": costPerUnit,
+          "description": "Cost Per Unit"
+        },
+        "cost_unit": {
+          "key": "cost_unit",
+          "text": "Unit Cost",
+          "type": "text",
+          "value": costUnit,
+          "description": "Unit Cost"
+        },
+        "room_details": {
+          "key": "room_details",
+          "text": "Room Details",
+          "type": "text",
+          "value": roomDetails,
+          "description": "Room Details"
+        },
+        "floor": {
+          "key": "floor",
+          "text": "Floor",
+          "type": "number",
+          "value": floor,
+          "description": "Floor"
+        },
+        "meter_brand": {
+          "key": "meter_brand",
+          "text": "Meter Brand",
+          "type": "text",
+          "value": meterBrand,
+          "description": "Meter Brand"
+        },
+        "meter_model": {
+          "key": "meter_model",
+          "text": "Meter Model",
+          "type": "text",
+          "value": meterModel,
+          "description": "Meter Model"
+        },
+        "low_side": {
+          "key": "low_side",
+          "text": "Low Side Size",
+          "type": "text",
+          "value": lowSideSize,
+          "description": "Low Side Size"
+        },
+        "high_side": {
+          "key": "high_side",
+          "text": "High Side Size",
+          "type": "text",
+          "value": highSideSize,
+          "description": "High Side Size"
+        },
+        "added": {
+          "key": "added",
+          "text": "Added at",
+          "type": "json",
+          "value": JSON.stringify({"timestamp": toTimestamp(now), "timezone": timezone, "utc_time": now}),
+          "description": "When were the Property and Meter properties were added to this WM in the Commissioning Tool"
+        },
+        "commission_stage": {
+          "key": "commission_stage",
+          "text": "Commissioning Process Stage",
+          "type": "json",
+          "value": JSON.stringify({stage: "none", first: {}, second: {}}),
+          "description": "Stage of the Commissioning Process"
+        }
+    }
+
     if(!country || !state || !city || !zipCode || !address || !buildingName || !propertyType || !meterType || !costPerUnit || !costUnit || !meterBrand || !meterModel || !lowSideSize || ((meterType === "Compound" && !highSideSize) ? true : (meterType === "Single" && !highSideSize) && false) || !floor || !roomDetails){
       (!country || country.length < 1) ? setError("Please complete the Country field") :
       (!state || state.length < 1 )? setError("Please complete the State field") :
@@ -200,8 +323,12 @@ const WaterMonkeyDeviceDetails = ({ params }) => {
         .then(resp => resp.json())
         .then(data => {
           if(data.status === "ok"){
-            setLoader(false)
-            setMessage('The Property and Meter details for this Water Monkey were successfully updated.')
+            if(!commStage || !commStage.stage){
+              router.push(`/comm-tool/step-3/${params.id}`)
+            }else{
+              setLoader(false)
+              setMessage('The Property and Meter details for this Water Monkey were successfully updated.')
+            }
           }else if(data.status === "error"){
             setLoader(false)
             setError(data.message)

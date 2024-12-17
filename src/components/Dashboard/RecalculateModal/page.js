@@ -5,7 +5,7 @@ import Image from 'next/image'
 import ButtonSmall from '../../buttonSmall/page'
 import { useState } from 'react'
 
-const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) => {
+const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage, setRecalibrateModal }) => {
 
     const [page, setPage] = useState(0)
 
@@ -40,7 +40,10 @@ const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) 
                         <ButtonSmall 
                             text={"Recalibrate"}
                             type={"blue"}
-                            action={()=> setMessageForRecalibrate()}
+                            action={()=> {
+                                setRecalibrateModal(true)
+                                setRecalculate(false)
+                            }}
                         />
                         <br />
                         <hr className='w-full border-dark-grey'/>
@@ -80,7 +83,10 @@ const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) 
                         <ButtonSmall 
                             text={"Yes"}
                             type={"blue"}
-                            action={()=> setMessageForRecalibrate()}
+                            action={()=> {
+                                setRecalibrateModal(true)
+                                setRecalculate(false)
+                            }}
                         />
                         <ButtonSmall 
                             text={"No"}
@@ -98,7 +104,10 @@ const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) 
                         <ButtonSmall 
                             text={"Yes"}
                             type={"blue"}
-                            action={()=> setMessageForRecalibrate()}
+                            action={()=> {
+                                setRecalibrateModal(true)
+                                setRecalculate(false)
+                            }}
                         />
                         <ButtonSmall 
                             text={"No"}
@@ -116,7 +125,10 @@ const RecalculateModal = ({ setRecalculate, setRecommissionModal, setMessage }) 
                         <ButtonSmall 
                             text={"Yes"}
                             type={"blue"}
-                            action={()=> setMessageForRecalibrate()}
+                            action={()=> {
+                                setRecalibrateModal(true)
+                                setRecalculate(false)
+                            }}
                         />
                         <ButtonSmall 
                             text={"No"}
