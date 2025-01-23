@@ -14,41 +14,6 @@ const CSVModal = ({setCsvModal, device, setLoader, setMessage}) => {
     const [start, setStart] = useState()
     const [end, setEnd] = useState()
     const [timezone, setTimezone] = useState()
-    const [error, setError] = useState()
-    const [success, setSuccess] = useState()
-
-    // async function handleSubmit(){
-    //     setLoader(true)
-    //     if(email && start && end && timezone){
-    //         fetch(`/api/dashboard/water-monkey/actions/request-csv`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({
-    //                 device: device,
-    //                 email: email,
-    //                 start: start,
-    //                 end: end,
-    //                 timezone: timezone
-    //             })
-    //         })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             if(data.status === "ok"){
-    //                 setLoader(false)
-    //                 setSuccess(data.message)
-    //             }else if(data.status === "error"){
-    //                 setLoader(false)
-    //                 setError(data.message)
-    //             }
-    //         })
-    //     }else{
-    //         setLoader(false)
-    //         setError("Please complete all the required fields.")
-    //     }
-    // }
-
 
     async function downloadHistoricalData(){
         setLoader(true)
@@ -68,10 +33,9 @@ const CSVModal = ({setCsvModal, device, setLoader, setMessage}) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
                     if(data.status === "ok"){
                         setLoader(false)
-                        setMessage(`The Historical Data has been requested properly. You will receive an email (at the one associated to your account: ${email}) with a csv file containing the requested data. This may take some minutes, please be patient. If you do not receive it soon, please try again or contact support. Please keep in mind that continuig with the Recalibration process will result in the deletion of old data so please make sure you have properly received your csv back up before moving forward. Thanks.`)
+                        setMessage(`The report has been requested properly. You will receive an email (at ${email}) with a csv file containing the requested data. This may take some minutes, please be patient. If you do not receive it soon, please try again or contact support. Thanks.`)
                     }else if(data.status === "error"){
                         setLoader(false)
                         setMessage(data.message)
@@ -124,14 +88,6 @@ const CSVModal = ({setCsvModal, device, setLoader, setMessage}) => {
                <div className="mt-[1rem] w-full h-fit flex justify-center items-center">
                 <ButtonSmall text="Request CSV" type="blue" action={downloadHistoricalData} />
                </div>
-                {
-                    error &&
-                    <p className="error-message">{error}</p>
-                }
-                {
-                    success &&
-                    <p className="success-message">{success}</p>
-                }
             </div>
         </div>
     </div>

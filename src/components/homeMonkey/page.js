@@ -39,15 +39,15 @@ const HomeMonkey = ({ monkey }) => {
                 className="md:mr-4 hidden md:flex md:scale-100"
             />
             <Link 
-                href={commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? `/comm-tool/step-3/${monkey.label}` : (commissionStage && (commissionStage.stage === 'commissioned' || commissionStage.stage === 'recalibrate_failed' || commissionStage.stage === 'recalibrate')) ? `/dashboard/${monkey.id}` : `/comm-tool/step-2/${monkey.label}`}
+                href={commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading') ? `/comm-tool/step-3/${monkey.label}` : (commissionStage && (commissionStage.stage === 'commissioned' || commissionStage.stage === 'recommission_failed' || commissionStage.stage === 'recommission')) ? `/dashboard/${monkey.id}` : `/comm-tool/step-2/${monkey.label}`}
             >
                 <p className="home-text home-text-hover">{monkey.properties && monkey.properties.address ? monkey.properties.address : `${"Water Monkey ID: " + monkey.id}`}</p>
             </Link>
         </div>
-        { commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading'|| commissionStage.stage === 'recalibrate' || commissionStage.stage === 'recalibrate_failed') 
+        { commissionStage && (commissionStage.stage === 'none' || commissionStage.stage === 'first reading' || commissionStage.stage === 'second reading'|| commissionStage.stage === 'recommission' || commissionStage.stage === 'recommission_failed') 
             ?
             <div className="w-full md:w-1/2 flex h-14 flex-row items-center justify-end">
-                <p className="text-center md:text-end w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">{commissionStage.stage === 'none' ? "Commissioning Stage: Pending First Reading" : commissionStage.stage === 'first reading' ? "Commissioning Stage: Pending Second Reading" : commissionStage.stage === 'second reading' ? "Commissioning Stage: Pending Final Confirmation" : commissionStage.stage === 'recalibrate' ? "Pending Recalibration Confirmation" : commissionStage.stage === 'recalibrate_failed' && "Recalibration Failed"}</p>
+                <p className="text-center md:text-end w-full text-blue-hard text-sm md:font-semibold lg:text-base mt-4 md:mt-0">{commissionStage.stage === 'none' ? "Commissioning Stage: Pending First Reading" : commissionStage.stage === 'first reading' ? "Commissioning Stage: Pending Second Reading" : commissionStage.stage === 'second reading' ? "Commissioning Stage: Pending Final Confirmation" : commissionStage.stage === 'recommission' ? "Pending Recommission Confirmation" : commissionStage.stage === 'recommission_failed' && "Recommission Failed"}</p>
             </div>
             :
             (!commissionStage) ?

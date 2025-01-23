@@ -22,7 +22,7 @@ export async function POST(req){
         let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + date_start + '&end=' + date_end + '&page_size=70000', {
             method: 'GET',
             headers: {
-                'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
             }
         })
         let data = await response.json()
@@ -60,7 +60,7 @@ export async function POST(req){
                 let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + timestamp_start + '&end=' + timestamp_end + '&page_size=70000', {
                 method: 'GET',
                 headers: {
-                    'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                 }
                 })
                 let data = await response.json()
@@ -86,7 +86,7 @@ export async function POST(req){
                     let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + date_start + '&end=' + date_end + '&page_size=70000', {
                     method: 'GET',
                     headers: {
-                        'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                        'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                     }
                     })
                     let data = await response.json()
@@ -110,7 +110,7 @@ export async function POST(req){
                         let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + date_start + '&end=' + date_end + '&page_size=70000', {
                             method: 'GET',
                             headers: {
-                                'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                                'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                             }
                         })
                         let data = await response.json()
@@ -134,7 +134,7 @@ export async function POST(req){
                             let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + date_start + '&end=' + date_end + '&page_size=70000', {
                                 method: 'GET',
                                 headers: {
-                                    'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                                    'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                                 }
                             })
                             let data = await response.json()
@@ -159,7 +159,7 @@ export async function POST(req){
                                     let response = await fetch(devicesURL + '/' + label+ `/${metric === 'gallons' ? inGallons : inLiters}/values/?start=` + date_start + '&end=' + date_end + '&page_size=70000', {
                                         method: 'GET',
                                         headers: {
-                                            'X-Auth-Token': 'BBFF-xQknHkxQgISqybh9pWb18ego7pOK4t'
+                                            'X-Auth-Token': process.env.UBIDOTS_AUTHTOKEN
                                         }
                                     })
                                     let data = await response.json()

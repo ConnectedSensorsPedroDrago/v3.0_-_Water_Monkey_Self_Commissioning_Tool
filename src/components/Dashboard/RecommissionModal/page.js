@@ -37,6 +37,9 @@ function RecommissionModal({ setRecommissionModal, meterType, commStage, volumeP
         }else if((meterType === "Single" && (lowSideSecond > lowSideFirst)) && (meterType === "Compound" && (lowSideSecond > lowSideFirst) && (highSideSecond > highSideFirst))){
             setLoader(false)
             setMessage(`Please make sure that the second readings are a higher number than the first readings.`)
+        }else if(!dateFirst || !lowSideFirst || !lowSideFirstUnit || (meterType === 0 && !highSideFirst) || (meterType === 0  && !highSideFirstUnit) || !picFirst || !dateSecond || !lowSideSecond || !lowSideSecondUnit || (meterType === 0 && !highSideSecond) || (meterType === 0 && !highSideSecondUnit) || !picSecond){
+            setLoader(false)
+            setMessage(`Please make sure that all the required fields are completed. Keep in mind that, in this case, both readings should be submitted at the same time.`)
         }else{
             submitRecommissionn()
         }

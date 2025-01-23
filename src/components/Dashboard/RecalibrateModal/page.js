@@ -6,8 +6,11 @@ import warningIcon from '@/public/warningIcon.svg'
 import InputFullPercentWithTitle from "../../InputFullPercentWithTitle/page"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { convertToLiters } from "@/src/functions/convertToLiters"
 
 function RecalibrateModal({ setRecalibrateModal, setMessage, label, email, timezone, setLoader }) {
+
+    console.log(convertToLiters(10.87, 'gallons'))
 
     const [historicalStart, setHistoricalStart] = useState()
     const [historicalEnd, setHistoricalEnd] = useState()
