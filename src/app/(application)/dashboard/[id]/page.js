@@ -12,9 +12,9 @@ import Message from "@/src/components/Message/page"
 import CSVModal from "@/src/components/CSVModal/page"
 import Calendar from '@/public/calendar.svg'
 import Image from "next/image"
-import RecommissionModal from "@/src/components/Dashboard/RecommissionModal/page"
-import RecalculateModal from "@/src/components/Dashboard/RecalculateModal/page"
 import RecalibrateModal from "@/src/components/Dashboard/RecalibrateModal/page"
+import RecalculateModal from "@/src/components/Dashboard/RecalculateModal/page"
+import RecommissionModal from "@/src/components/Dashboard/RecommissionModal/page"
 import { userContext } from "@/src/context/userContext"
 
 const Dashboard = ({ params }) => {
@@ -244,6 +244,7 @@ const Dashboard = ({ params }) => {
           setRecommissionModal={setRecommissionModal}
           setMessage={setMessage}
           setRecalibrateModal={setRecalibrateModal}
+          org={device.organization}
           label={device.label}
           timezone={timezone}
           email={userSession.user.email}
@@ -270,7 +271,6 @@ const Dashboard = ({ params }) => {
           user={user}
           org={device.organization}
           propertyType={device.properties.property_type}
-          setRecalibrateModal={setRecalibrateModal}
         />
       }
       {
@@ -280,6 +280,8 @@ const Dashboard = ({ params }) => {
           setMessage={setMessage}
           label={device.label}
           timezone={timezone}
+          user={user}
+          org={device.organization}
           email={userSession.user.email}
           setLoader={setLoader}
         />
