@@ -30,7 +30,7 @@ const RecalculateModal = ({ setRecalculate, setRecalibrateModal, setMessage, set
                         </p>
                         <br />
                         <p className='text-[0.80rem] text-center text-dark-grey'>
-                            <b>RECOMMISSION</b>: is normally needed when there was physical interference with the device (it was moved, taken off the meter or it has been offline to too long) and it needs to be fully reseted. This process will imply erasing the old data and resetting the device (you will be able to export your old data on the next step before moving on to this process).
+                            <b>RECOMMISSION</b>: is normally needed when there was physical interference with the device (it was moved, taken off the meter or it has been offline to too long) and it needs to be fully reseted. This process will imply erasing the old data and reset the device (you will be able to export your old data on the next step before moving on to this process).
                         </p>
                         <br />
                         <ButtonSmall 
