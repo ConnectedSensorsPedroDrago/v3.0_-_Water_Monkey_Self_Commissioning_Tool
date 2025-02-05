@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import Loader from "@/src/components/loader/page"
 import Input50PercentWithTitle from "@/src/components/Input50PercentWithTitle/page"
 import ButtonSmall from "@/src/components/buttonSmall/page"
-import updateUser from "@/src/functions/updateUser"
 
 const Profile = () => {
 
@@ -22,18 +21,31 @@ const Profile = () => {
   const handleUpdate = async() => {
     setError('')
     setSuccess('')
-    await updateUser(user.id, name, surname, setLoad)
-    .then(data => {
-      if(data.data.firstName === name && data.data.lastName === surname){
-        setSuccess('User updated successfully!')
-        setReloadUser(!reloadUser)
-        setTimeout(()=>{
-          router.push(`/profile`)
-        }, 1500)
-      }else{
-        setError('There was an error trying to update the user, please try again or contact support')
-      }
+    fetch('/api/users/update-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'user': user.id,
+        'firstName': name,
+        'lastName': surname
+      })
     })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status && data.status === 'ok'){
+          setSuccess('User updated successfully!')
+          setReloadUser(!reloadUser)
+          setTimeout(()=>{
+            router.push(`/profile`)
+          }, 1500)
+        }else if(data.status && data.status === 'error'){
+          setError(data.message)
+        }else{
+          setError('There was an error trying to update the user, please try again or contact support')
+        }
+      })
   }
 
   return (
