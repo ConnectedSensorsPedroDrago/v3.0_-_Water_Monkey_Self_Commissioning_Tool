@@ -13,6 +13,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePerPulse, label, id, email, setLoader, setMessage, user, org, propertyType, timezone }) {
 
+    console.log("meterType: " + meterType)
+
     const [dateFirst, setDateFirst] = useState()
     const [lowSideFirst, setLowSideFirst] = useState()
     const [lowSideFirstUnit, setLowSideFirstUnit] = useState()
@@ -132,7 +134,7 @@ function RecalibrateModal({ setRecalibrateModal, meterType, commStage, volumePer
                                                     body.primary_volume_per_pulse = data.data.primary_volume_per_pulse
                                                 }
                                                 setLoader(false)
-                                                fetch(`/api/dashboard/water-monkey/Recalibrate`, {
+                                                fetch(`/api/dashboard/water-monkey/recalibrate`, {
                                                     method: 'POST',
                                                     headers: {
                                                         'Content-Type': 'application/json'

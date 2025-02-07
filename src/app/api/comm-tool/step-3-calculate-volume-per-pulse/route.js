@@ -1,5 +1,5 @@
 export async function POST(req){
-    const { meterType, label, commStage } = await req.json()    
+    const { meterType, label, commStage } = await req.json()
 
     let JSONCommStage = commStage
 

@@ -20,7 +20,7 @@ const Portfolio = () => {
       org.monkeys !== undefined && org.monkeys.map(device => {
         let commission_stage = device.properties.commission_stage !== undefined ? device.properties.commission_stage : undefined
         device.properties.commission_stage = commission_stage
-        if(commission_stage !== undefined && (commission_stage.stage === 'none' || commission_stage.stage === 'first reading' || commission_stage.stage === 'second reading' || commission_stage.stage === 'failed' || commission_stage.stage === 'recalibrate' || commission_stage.stage === 'recalibrate_failed')){
+        if(commission_stage !== undefined && (commission_stage.stage === 'none' || commission_stage.stage === 'first reading' || commission_stage.stage === 'second reading' || commission_stage.stage === 'failed' || commission_stage.stage === 'recalibrate' || commission_stage.stage === 'recalibration_failed')){
           toCommissionMonkeys.push(device)
         }
       })

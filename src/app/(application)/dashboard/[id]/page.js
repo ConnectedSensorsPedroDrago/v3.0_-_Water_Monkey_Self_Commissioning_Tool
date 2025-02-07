@@ -52,7 +52,7 @@ const Dashboard = ({ params }) => {
           let commStage = JSON.parse(data.device.properties.commission_stage)
           if(commStage.stage === 'recalibrate'){
             setMessage('Remember that your device recalibration process is pending revision.')
-          }else if(commStage.stage === 'recalibrate_failed'){
+          }else if(commStage.stage === 'recalibration_failed'){
             setErrorMessage(`Your recalibration process has failed: ${commStage.message}`)
           }
           setDevice(data.device)
@@ -68,7 +68,6 @@ const Dashboard = ({ params }) => {
               setLeakPercentageAlert((data.data.leak_percentage_alert && data.data.leak_percentage_alert.value) ? data.data.leak_alert.value : undefined)
               setLastValues(data.data)
               if(timeRangeStart && timeRangeEnd){
-
                 setReportStart({timestamp: timeRangeStart, timezone: timezone})
                 setReportEnd({timestamp: timeRangeEnd, timezone: timezone})
                 fetch(`/api/dashboard/water-monkey/get-report-data`, {
@@ -280,6 +279,8 @@ const Dashboard = ({ params }) => {
           setMessage={setMessage}
           label={device.label}
           timezone={timezone}
+          meterType={lastValues.meter_type.value}
+          commStage={JSON.parse(device.properties.commission_stage)}
           user={user}
           org={device.organization}
           email={userSession.user.email}
