@@ -7,7 +7,7 @@ import healthCheck from '@/public/healthCheck.svg'
 
 const HealthCheck = ({rsrp, calibration}) => {
   return (
-    <div className='w-full flex flex-row items-center justify-center md:justify-end border-b-[0.025rem] mb-[2rem] pb-[0.75rem] bg'>
+    <div className='w-full flex flex-row items-center justify-center md:justify-end border-b-[0.025rem] mb-[1rem] pb-[0.75rem] bg'>
         <div className="flex flex-row items-center justify-between">
             <Image
                 src={healthCheck}

@@ -41,8 +41,8 @@ const Portfolio = () => {
                     />
                   </Link>
                 </div>
-                <div className="flex flex-wrap flex-row items-center justify-start w-full mt-6 mb-3 md:mb-6">
-                  <p className="text-purple text-xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey v3.0</p>
+                <div className="flex flex-wrap flex-row items-center justify-start w-full mt-2 mb-3 md:mb-6">
+                  <p className="text-purple text-xl md:text-4xl lg:text-5xl font-bold mt-0 mb-4">Water Monkey</p>
                   <p className="text-grey text-xl md:text-4xl lg:text-5xl font-thin ml-2"><p className="hidden md:flex">|</p> Device Overview</p>
                 </div>
                 <div className='justify-center w-screen pl-8 pr-8 pb-8 pt-8 flex flex-col items-center flex-wrap'>
@@ -74,10 +74,12 @@ const Portfolio = () => {
                     />
                   </Link>
                 </div>
-                <div className="flex flex-row items-center justify-start w-full mt-2 mb-2">
-                  <p className="text-purple text-2xl md:text-4xl lg:text-5xl font-bold mt-4 mb-4">Water Monkey</p>
-                  <p className="text-grey text-xl md:text-4xl lg:text-5xl font-thin ml-2">| Device Overview</p>
+                {/* <hr className="border-[0.025rem] border-grey w-[55vw] opacity-25 mb-6"/> */}
+                <div className="flex flex-row items-center justify-start w-full mt-0 mb-4">
+                  <p className="text-purple text-2xl md:text-4xl lg:text-5xl font-bold mt-0 mb-0">Water Monkey</p>
+                  <p className="text-grey text-xl md:text-4xl lg:text-5xl font-thin ml-2">| Commissioning Tool</p>
                 </div>
+                {/* <hr className="border-[0.025rem] border-grey w-[55vw] opacity-25 mt-2"/> */}
                 {/* <div className="flex flex-row items-center justify-start w-full">
                   <input type="text" placeholder={"Search Devices"} className="w-full rounded border-[0.025rem] border-grey font-[2rem] p-[0.5rem]"/>
                 </div> */}

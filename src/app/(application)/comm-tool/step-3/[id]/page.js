@@ -335,7 +335,7 @@ const Step3 = ({params}) => {
                         calibration={calibration && calibration}
                     />
                 }
-                <div className='flex flex-col justify-around items-center w-[100%] min-h-[75vh] grow'>
+                <div className='flex flex-col justify-around items-center w-[100%] min-h-[60vh] grow'>
                     {
                         (recalibrate !== "no" && calibration === "Ok") && (!commStage.first.date_time || (commStage.first.date_time && (rsrp !== 'none' || rsrp > 24))) ?
                             <ReadingsInputs 

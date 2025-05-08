@@ -41,10 +41,10 @@ select::-ms-expand {
 
 @layer components {
   .container-pages {
-    @apply flex flex-col justify-start items-center w-screen min-h-screen pt-8 pl-8  pr-8 pb-8;
+    @apply flex flex-col justify-start items-center w-screen min-h-screen pt-2 pl-8  pr-8 pb-8;
   }
   .container-dashboard {
-    @apply flex flex-col justify-start items-center w-screen min-h-[90vh] h-fit pt-2 pl-2 pr-2 md:pl-2 md:pr-2 pb-2;
+    @apply flex flex-col justify-start items-center w-screen min-h-[92.5vh] pt-2 pl-2 pr-2 md:pl-2 md:pr-2 pb-2;
   }
   .container-pages-scroll {
     @apply flex flex-col justify-start items-center w-screen h-screen pl-8 pr-8 overflow-hidden;
@@ -101,7 +101,7 @@ select::-ms-expand {
     @apply rounded w-full p-4 mt-2 bg-white drop-shadow-md;
   }
   .wm-button-quick-report {
-    @apply rounded md:mr-[1rem] text-yellow text-[0.65rem] font-semibold cursor-pointer h-[1.5rem] w-[5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.05rem] hover:border-blue-hard;
+    @apply rounded md:mr-[1rem] text-yellow text-[0.65rem] font-semibold cursor-pointer h-[1.5rem] border-yellow border-[0.025rem] w-[5rem] bg-blue-hard hover:bg-white hover:text-blue-hard hover:border-[0.025rem] hover:border-yellow;
   }
   .background-blur {
     @apply backdrop-blur-[4px];

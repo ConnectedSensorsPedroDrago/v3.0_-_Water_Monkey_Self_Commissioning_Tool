@@ -9,7 +9,7 @@ const ToCommission = ({device}) => {
     const [close, setClose] = useState(false)
 
   return (
-    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-10 hover:shadow-xl border-[0.05rem] border-grey ${(device.properties.commission_stage.stage === 'failed' || device.properties.commission_stage.stage === 'recalibration_failed') ? 'bg-gradient-to-r from-red-300 to-red-100' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
+    <div className={`${close && "hidden"} hover:scale-[110%] duration-500 shadow-md hover:z-10 hover:shadow-xl border-[0.02rem] border-[#dddfdf] ${(device.properties.commission_stage.stage === 'failed' || device.properties.commission_stage.stage === 'recalibration_failed') ? 'bg-gradient-to-r from-red-300 to-red-100' : 'bg-gradient-to-t from-gray-50 to-zinc-100'} mr-4 rounded-md`}>
          <Image 
             src={CloseSmall}
             alt="close"

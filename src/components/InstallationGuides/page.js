@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 const InstallationGuides = ({commStage}) => {
   return (
-    <div className={`flex flex-col w-full items-center justify-around mb-[2rem] ${commStage.first.date_time ? 'order-2' : 'order-1'}`}>
+    <div className={`flex flex-col w-full items-center justify-around mb-[1rem] ${commStage.first.date_time ? 'order-2' : 'order-1'}`}>
         <h1 className="text-[1.5rem] lg:text-[3.25rem] font-bold text-center text-purple">{commStage && commStage.first.date_time ? 'Review the Water Monkey Installation Guides' : 'First, install your Water Monkey following the Installation Guides'}</h1>
         <div className='flex flex-col md:flex-row justify-center items-center w-full mt-[1.5rem] md:mt-[1.5rem]'>
             <div className='flex flex-col items-center w-full justify-center'>
