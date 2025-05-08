@@ -79,7 +79,7 @@ const NavBar = ({session}) => {
         </div>
       }
       { user && !error &&
-        <div className="header duration-500 bg-white h-28 w-screen p-6 flex flex-row justify-between items-center sticky top-0 z-40">
+        <div className="header duration-500 bg-white h-15 md:h-22 w-screen p-6 flex flex-row justify-between items-center sticky top-0 z-40 bg-opacity-75">
             <Link href='/home'>
               <Image
                   src={logoSmall}
